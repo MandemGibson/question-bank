@@ -1,0 +1,43 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100vh;
+    width: 250px;
+    background: linear-gradient(180deg, #fff 80%, #83eaf8);
+    /* transition: 0.4s; */
+}
+
+.sidebar__collapsed {
+    width: 75px
+}
+
+.sidebar__upper {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.sidebar__upper--collapsed {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.space1 {
+    border: 1px solid #83eaf8;
+    margin: 20px 0 30px 20px;
+}
+
+.space1__collapsed {
+    margin: 20px 0 30px 20px;
+}
+
+.sidebar__options {
+    margin-left: 30px;
+}
+
+.space2 {
+    border: 1px solid #83eaf8;
+    margin: 10px 0 30px 20px;
+}
