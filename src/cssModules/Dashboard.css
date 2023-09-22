@@ -1,0 +1,28 @@
+h3 {
+    font-family: "Rubik";
+    font-weight: 700;
+}
+
+.boxes {
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+.boxes:hover {
+    cursor: pointer;
+}
+
+.box1 {
+    background: linear-gradient(180deg, #D0F2F6 0%, #83EAF8 100%);
+    margin: 10px 0 10px 0;
+}
+
+.box2 {
+    background: linear-gradient(180deg, #B5D7F5 0%, #2F95CE 100%);
+    margin: 10px 0 10px 20px;
+}
+
+.box3 {
+    background: linear-gradient(180deg, #E7A371 0%, #E46E00 100%);
+    margin: 10px 0px 10px 20px;
+}

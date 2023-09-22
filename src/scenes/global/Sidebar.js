@@ -13,8 +13,14 @@ import { ReactComponent as feedbackIcon } from "../../svg/Vector.svg";
 import { useSidebar } from "../../SidebarContext";
 
 function Sidebar() {
-  const [selected, setSelected] = useState("Dashboard");
   const { isCollapsed, setIsCollapsed } = useSidebar();
+  const [selectedItem, setSelectedItem] = useState("Dashboard");
+
+  const handleItemClick = (title) => {
+    setSelectedItem(title);
+
+    console.log(title);
+  };
 
   return (
     <div className={isCollapsed ? "sidebar" : "sidebar sidebar__collapsed"}>
@@ -55,26 +61,30 @@ function Sidebar() {
         <SidebarItems
           Icon={dashboardIcon}
           title="Dashboard"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Dashboard"}
+          setSelected={handleItemClick}
+          to="/"
         />
         <SidebarItems
           Icon={questionsIcon}
           title="Questions"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Questions"}
+          setSelected={handleItemClick}
+          to="/questions"
         />
         <SidebarItems
           Icon={resultsIcon}
           title="Results"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Results"}
+          setSelected={handleItemClick}
+          to="/results"
         />
         <SidebarItems
           Icon={statisticsIcon}
           title="Statistics"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Statistics"}
+          setSelected={handleItemClick}
+          to="/statistics"
         />
       </div>
       <div className="space2"></div>
@@ -82,14 +92,16 @@ function Sidebar() {
         <SidebarItems
           Icon={usersGuideIcon}
           title="Users Guide"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Users Guide"}
+          setSelected={handleItemClick}
+          to="/guide"
         />
         <SidebarItems
           Icon={feedbackIcon}
           title="Feedback"
-          selected={selected}
-          setSelected={setSelected}
+          selected={selectedItem === "Feedback"}
+          setSelected={handleItemClick}
+          to="/feedback"
         />
       </div>
       {isCollapsed ? (
