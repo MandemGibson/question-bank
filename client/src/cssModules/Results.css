@@ -1,0 +1,23 @@
+.best__stu {
+    background: linear-gradient(228deg, #F33 30.37%, rgba(255, 255, 255, 0.87) 100.3%);
+}
+
+.average {
+    background: linear-gradient(224deg, #FFEB33 33.54%, rgba(255, 255, 255, 0.00) 98.31%);
+}
+
+.unknown {
+    background: linear-gradient(115deg, #9AF883 30.52%, rgba(255, 255, 255, 0.00) 101.23%);
+}
+
+.worst__stu {
+    background: linear-gradient(107deg, #83EAF8 34.55%, #FFF 105.52%);
+}
+
+.best__stu:hover,
+.average:hover,
+.unknown:hover,
+.worst__stu:hover {
+    cursor: pointer;
+    margin-top: -20px;
+}
