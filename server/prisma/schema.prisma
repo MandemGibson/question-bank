@@ -42,7 +42,7 @@ model Staff {
   middlename        String?
   lastname          String
   email             String         @unique
-  primary_contact   String
+  primary_contact   String         @unique
   secondary_contact String?
   dob               DateTime
   residence         String
@@ -51,9 +51,8 @@ model Staff {
   subjects          StaffSubject[]
   date_registered   DateTime?
   question          Question[]
-  profile_pic       Bytes          @unique
-  class             Class          @relation(fields: [classId], references: [id])
-  classId           Int
+  profile_pic       Bytes
+  class             Class[]
 }
 
 model StaffSubject {
@@ -64,14 +63,12 @@ model StaffSubject {
   academic_year_id Int
   term_id          Int
   class_id         Int
-  staff            Staff        @relation(fields: [staffId], references: [id])
-  staffId          Int
+  staff            Staff[]
   academic_year    AcademicYear @relation(fields: [academicYearId], references: [id])
   academicYearId   Int
   term             Term         @relation(fields: [termId], references: [id])
   termId           Int
-  class            Class        @relation(fields: [classId], references: [id])
-  classId          Int
+  class            Class[]
 }
 
 model AcademicYear {
@@ -105,14 +102,14 @@ model Question {
   answerChoices AnswerChoice[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  category      Category[]
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    Int
 }
 
 model Category {
-  id         Int      @id @default(autoincrement())
-  name       String   @unique
-  question   Question @relation(fields: [questionId], references: [id])
-  questionId Int
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  question Question[]
 }
 
 model AnswerChoice {
