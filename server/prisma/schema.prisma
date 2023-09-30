@@ -23,6 +23,7 @@ model Student {
   guardians       Guardian[]
   date_registered DateTime?
   profile_pic     Bytes      @unique
+  Results         Results[]
 }
 
 model Guardian {
@@ -99,6 +100,8 @@ model Question {
   class         Class          @relation(fields: [classId], references: [id])
   classId       Int
   question      String
+  timeLimit     Int            @default(0)
+  title         String         @default("No title")
   answerChoices AnswerChoice[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -110,6 +113,7 @@ model Category {
   id       Int        @id @default(autoincrement())
   name     String     @unique
   question Question[]
+  Results  Results[]
 }
 
 model AnswerChoice {
@@ -118,4 +122,15 @@ model AnswerChoice {
   questionId Int
   choice     String
   isCorrect  Boolean  @default(false)
+}
+
+model Results {
+  id         Int      @id @default(autoincrement())
+  result     Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  student    Student  @relation(fields: [studentId], references: [id])
+  studentId  Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

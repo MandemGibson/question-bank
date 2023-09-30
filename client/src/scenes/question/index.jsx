@@ -1,14 +1,21 @@
 import { Box, Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionSet from "../../components/QuestionSet";
 import ola from "../../images/ola.jpg";
 import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { useNavigate } from "react-router-dom";
+import { fetchQuestions } from "../../features/questionSlice";
+import { useDispatch } from "react-redux";
 
 function Questions() {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab1");
+
+  useEffect(() => {
+   dispatch(fetchQuestions())
+  }, [dispatch]);
 
   const handleHomeBtnClick = () => {
     setSelected("tab1");
@@ -83,33 +90,12 @@ function Questions() {
 
       <h3 style={{ margin: "0px" }}>Previous Questions</h3>
       <QuestionSet
-        title="English"
-        subtitle="jhs 2"
-        duration="1:30:00"
-        days="2 days ago"
-        image={ola}
-      />
-      <QuestionSet
-        title="English"
-        subtitle="jhs 2"
-        duration="1:30:00"
-        days="2 days ago"
-        image={ola}
-      />
-      <QuestionSet
-        title="English"
-        subtitle="jhs 2"
-        duration="1:30:00"
-        days="2 days ago"
-        image={ola}
-      />
-      <QuestionSet
-        title="English"
-        subtitle="jhs 2"
-        duration="1:30:00"
-        days="2 days ago"
-        image={ola}
-      />
+          title="English"
+          subtitle="jhs 2"
+          duration="1:30:00"
+          days="2 hours ago"
+          image={ola}
+        />
       <Box>
         <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
         <QuestionSet

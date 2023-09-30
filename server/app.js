@@ -11,7 +11,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.get("/", async (req, res, next) => {
-  res.send({ message: "Awesome it works perfect🐻" });
+  res.send({ message: "Awesome it works 🐻" });
 });
 
 app.use("/api", require("./routes/api.route"));
@@ -20,13 +20,15 @@ app.use((req, res, next) => {
   next(createError.NotFound());
 });
 
+console.log(`listening on port ${process.env.PORT}`);
+
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    status: err.status || 500,
+  let status = err.status || 500;
+  res.status(status).send({
+    status,
     message: err.message,
   });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`@ http://localhost:${PORT}`));

@@ -1,5 +1,4 @@
-import { ExpandMoreRounded } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../../cssModules/Results.css";
 import Performance from "../../components/Performance";
@@ -8,51 +7,70 @@ import CollapsibleTable from "../../components/Table";
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Results() {
-  const [width, setWidth] = useState(window.innerWidth)
-  
+  const [level, setLevel] = React.useState("");
+  const [when, setWhen]= useState("Today")
+  const [width, setWidth] = useState(window.innerWidth);
+
   const handleResize = () => {
-    setWidth(window.innerWidth)
-  }
+    setWidth(window.innerWidth);
+  };
+
+  const handleChange = (event) => {
+    setLevel(event.target.value);
+  };
+
+  const handleWhen = (event) => {
+    setWhen(event.target.value);
+  };
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize)
+    window.addEventListener("resize", handleResize);
 
-    return (()=> {
-      window.removeEventListener("resize", handleResize)
-    })
-  })
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
       <Box display="flex" justifyContent="right">
-        <Box
-          display="flex"
-          alignItems="center"
-          borderRadius="0.625rem"
-          bgcolor="white"
-          padding="0 0 0 10px"
-        >
-          <p style={{ margin: "0px", fontSize: "15px", color: "#6b6a6a" }}>
-            Today
-          </p>
-          <IconButton>
-            <ExpandMoreRounded />
-          </IconButton>
+        <Box>
+          <FormControl sx={{ m: 1, minWidth: 80, bgcolor: "white" }} >
+            <Select
+              id="demo-simple-select-autowidth"
+              value={when}
+              onChange={handleWhen}
+              autoWidth
+            >
+              <MenuItem value="">
+                <em>My class</em>
+              </MenuItem>
+              <MenuItem value={10}>Today</MenuItem>
+              <MenuItem value={21}>Last week</MenuItem>
+              <MenuItem value={22}>Last month</MenuItem>
+              <MenuItem value={23}>Last year</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
-        <Box
-          display="flex"
-          alignItems="center"
-          borderRadius="0.625rem"
-          bgcolor="white"
-          padding="0 0 0 10px"
-          ml="10px"
-        >
-          <p style={{ margin: "0px", fontSize: "15px", color: "#6b6a6a" }}>
-            My Classes
-          </p>
-          <IconButton>
-            <ExpandMoreRounded />
-          </IconButton>
+        <Box>
+          <FormControl sx={{ m: 1, minWidth: 80, bgcolor:"white" }}>
+            <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+            <Select
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={level}
+              onChange={handleChange}
+              autoWidth
+              label="Age"
+            >
+              <MenuItem value="">
+                <em>My class</em>
+              </MenuItem>
+              <MenuItem value={10}>Twenty</MenuItem>
+              <MenuItem value={21}>Twenty one</MenuItem>
+              <MenuItem value={22}>Twenty one and a half</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </Box>
       <Box className="flexBoxes" display="flex" mt="40px">
@@ -121,7 +139,11 @@ function Results() {
           >
             Grade-
             <span
-              style={{ fontWeight: "700", fontSize: width <= 1067 ? "30px" : "50px", color: "#00B1C9" }}
+              style={{
+                fontWeight: "700",
+                fontSize: width <= 1067 ? "30px" : "50px",
+                color: "#00B1C9",
+              }}
             >
               B
             </span>
@@ -166,7 +188,7 @@ function Results() {
       </Box>
 
       <Box mt="20px">
-        <CollapsibleTable/>
+        <CollapsibleTable />
       </Box>
     </Box>
   );
