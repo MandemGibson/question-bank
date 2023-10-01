@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { Close } from "@mui/icons-material";
-import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectQuestion } from "../../features/questionSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function AddQuestion() {
+  const questions = useSelector(selectQuestion)
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab2");
   const [question, setQuestion] = useState(() => {
@@ -140,6 +143,28 @@ function AddQuestion() {
     setImage(null);
     setFilename("No image selected");
   };
+
+  const handlePostToDB = async (e) => {
+    e.preventDefault();
+  
+    const newQuestionSet = {
+      question,
+      answerChoices,
+      correctAnswer,
+      image,
+      
+    };
+  
+    try {
+      const response = await axios.post("http://localhost:3005/api/questions", newQuestionSet);
+      
+      console.log("Posted successfully", response.data);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
+    }
+  };
+  
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -437,7 +462,7 @@ function AddQuestion() {
       <h3 style={{ margin: "0px", marginTop: "40px" }}>Preview</h3>
 
       {/*Added questions appear here*/}
-      <form>
+      <form onSubmit={handlePostToDB}>
         <Box
           display="flex"
           flexDirection="column"
@@ -459,7 +484,7 @@ function AddQuestion() {
                 <ol type="A">
                   {q.answerChoices.map((choice, i) => (
                     <Box key={i} style={{ display: "flex" }}>
-                      <li id={uuidv4()}>{choice}</li>
+                      <li>{choice}</li>
                       <input
                         type="checkbox"
                         id={`answer-${index}_${i}`}
@@ -537,7 +562,28 @@ function AddQuestion() {
               </li>
             ))}
           </ol>
-          <Button type="submit">Post to Questions</Button>
+          <Button
+            variant="contained"
+            type="submit"
+            style={{
+              textTransform: "capitalize",
+              backgroundColor: "#1494A6",
+              borderRadius: "0.625rem",
+              width: "70%",
+              alignSelf: "center",
+            }}
+            
+          >
+            <p
+              style={{
+                margin: "0px",
+                fontFamily: "Rubik",
+                fontWeight: "bold",
+              }}
+            >
+              Post to Questions
+            </p>
+          </Button>
         </Box>
       </form>
     </Box>

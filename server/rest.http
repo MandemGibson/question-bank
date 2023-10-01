@@ -1,1 +1,28 @@
-GET  http://localhost:3000/api/questions
+GET  http://localhost:3005/api/questions
+
+###
+POST  http://localhost:3005/api/questions
+Content-Type: application/json
+
+{
+    "title": "Science",
+    "categoryId": 2,
+    "question": "What is science",
+    "staffId": 1,
+    "classId": 1
+}
+
+###
+DELETE  http://localhost:3005/api/questions/5
+
+###
+PATCH http://localhost:3005/api/questions/1
+Content-Type: application/json
+
+{
+    "title": "Science",
+    "categoryId": 2,
+    "question": "Is coding fun",
+    "staffId": 1,
+    "classId": 1
+}

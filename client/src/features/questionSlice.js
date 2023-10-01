@@ -1,19 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const storedTitle = localStorage.getItem("title");
-// const initialTitle = storedTitle || "Dashboard";
-
 export const fetchQuestions = createAsyncThunk(
   "questions/fetchQuestions",
   async () => {
-    const response = await axios.get("/api/questions");
-    return response.data;
+    try {
+      const response = await axios.get("http://localhost:3005/api/questions");
+      return response.data;
+    } catch (error) {
+      console.error("There is an error:", error);
+      throw error;
+    }
   }
 );
 
 const initialState = {
-  questions: {},
+  questions: [],
 };
 
 const questionSlice = createSlice({
@@ -26,14 +28,18 @@ const questionSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addCase(fetchQuestions.fulfilled, (state, action) => {
-      return { ...state, questions: action.payload };
-    });
+    builder
+      .addCase(fetchQuestions.fulfilled, (state, action) => {
+        state.questions = action.payload;
+      })
+      .addCase(fetchQuestions.rejected, (state, action) => {
+        state.error = action.error.message;
+      });
   },
 });
 
 export const { newQuestions } = questionSlice.actions;
 
-export const selectQuestion = (state) => state.questions.questions;
+export const selectQuestion = (state) => state.question.questions;
 
 export default questionSlice.reducer;

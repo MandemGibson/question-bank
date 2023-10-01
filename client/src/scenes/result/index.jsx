@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../../cssModules/Results.css";
 import Performance from "../../components/Performance";
@@ -7,20 +7,10 @@ import CollapsibleTable from "../../components/Table";
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Results() {
-  const [level, setLevel] = React.useState("");
-  const [when, setWhen]= useState("Today")
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleResize = () => {
     setWidth(window.innerWidth);
-  };
-
-  const handleChange = (event) => {
-    setLevel(event.target.value);
-  };
-
-  const handleWhen = (event) => {
-    setWhen(event.target.value);
   };
 
   useEffect(() => {
@@ -34,44 +24,46 @@ function Results() {
   return (
     <Box display="flex" flexDirection="column" padding="20px">
       <Box display="flex" justifyContent="right">
-        <Box>
-          <FormControl sx={{ m: 1, minWidth: 80, bgcolor: "white" }} >
-            <Select
-              id="demo-simple-select-autowidth"
-              value={when}
-              onChange={handleWhen}
-              autoWidth
+        
+        <select
+              style={{
+                border: "none",
+                backgroundColor: "#fff",
+                borderRadius: "0.45rem",
+                color: "#6b6a6a",
+                minWidth: "min-content",
+                fontFamily: "Allerta",
+                padding: "10px",
+              outline: "none",
+            width: "8rem",
+                marginRight:"15px"
+              }}
             >
-              <MenuItem value="">
-                <em>My class</em>
-              </MenuItem>
-              <MenuItem value={10}>Today</MenuItem>
-              <MenuItem value={21}>Last week</MenuItem>
-              <MenuItem value={22}>Last month</MenuItem>
-              <MenuItem value={23}>Last year</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box>
-          <FormControl sx={{ m: 1, minWidth: 80, bgcolor:"white" }}>
-            <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
-            <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              value={level}
-              onChange={handleChange}
-              autoWidth
-              label="Age"
+              <option>Today</option>
+              <option>Last Week</option>
+              <option>Last Month</option>
+              <option>Last Year</option>
+            </select>
+      
+        
+        <select
+              style={{
+                border: "none",
+                backgroundColor: "#fff",
+                borderRadius: "0.45rem",
+                color: "#6b6a6a",
+                minWidth: "min-content",
+                fontFamily: "Allerta",
+                padding: "10px",
+              outline: "none",
+                width:"8rem"
+              }}
             >
-              <MenuItem value="">
-                <em>My class</em>
-              </MenuItem>
-              <MenuItem value={10}>Twenty</MenuItem>
-              <MenuItem value={21}>Twenty one</MenuItem>
-              <MenuItem value={22}>Twenty one and a half</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+              <option>Combined</option>
+              <option>Jhs 1</option>
+              <option>Jhs 2</option>
+            </select>
+        
       </Box>
       <Box className="flexBoxes" display="flex" mt="40px">
         <Box

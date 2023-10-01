@@ -8,18 +8,20 @@ import Recent from "../../components/Recent";
 import { Link } from "react-router-dom";
 import AttendanceSheet from "../../components/AttendanceSheet";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectQuestion } from "../../features/questionSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
-const num1 = 2;
-const num2 = 2;
 
 function Dashboard() {
-  const navigator = useNavigate()
+  const questions = useSelector(selectQuestion);
+  const navigator = useNavigate();
 
   const handleClick = () => {
-    navigator("/questions")
-  }
-
+    navigator("/questions");
+  };
+  const num1 = 2;
+  const num2 = questions.length;
   return (
     <Box display="flex">
       <Box m="10px 20px 10px 20px">
@@ -54,6 +56,7 @@ function Dashboard() {
             borderRadius="0.625rem"
             justifyContent="space-between"
             className="box2"
+            onClick={() => navigator("/results")}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
               Results
@@ -74,6 +77,7 @@ function Dashboard() {
             borderRadius="0.625rem"
             justifyContent="space-between"
             className="box3"
+            onClick={() => navigator("/statistics")}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
               Statistics

@@ -4,7 +4,7 @@ import React from "react";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
-function QuestionSet({ image, title, subtitle, duration, days }) {
+function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
   return (
     <Box
       display="flex"
@@ -14,6 +14,7 @@ function QuestionSet({ image, title, subtitle, duration, days }) {
       borderRadius="0.625rem"
       boxShadow={boxShadow}
       margin="20px 0 20px 0"
+      onClick={onClick}
     >
       <img
         src={image}

@@ -11,6 +11,7 @@ import Guide from "./scenes/guide";
 import Feedback from "./scenes/feedback";
 import AddQuestion from "./scenes/question/setquestion";
 import AddQuiz from "./scenes/question/addquiz";
+import QuesetionDetails from "./components/QuestionDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Dashboard />} />
           <Route path="/questions" element={<Questions />} />
+          <Route path="/questions/:id" element={<QuesetionDetails />} />
           <Route path="/questions/exams-questions" element={<AddQuestion />} />
           <Route path="/questions/quiz-questions" element={<AddQuiz />} />
           <Route path="/results" element={<Results />} />
