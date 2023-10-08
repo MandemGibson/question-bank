@@ -36,6 +36,13 @@ function Dashboard() {
             justifyContent="space-between"
             className="box1"
             onClick={handleClick}
+            sx={{
+              transition: "all 0.3s",
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition:"all 0.3s"
+              }
+            }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
               Questions
@@ -57,6 +64,13 @@ function Dashboard() {
             justifyContent="space-between"
             className="box2"
             onClick={() => navigator("/results")}
+            sx={{
+              transition: "all 0.3s",
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition:"all 0.3s"
+              }
+            }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
               Results
@@ -78,6 +92,13 @@ function Dashboard() {
             justifyContent="space-between"
             className="box3"
             onClick={() => navigator("/statistics")}
+            sx={{
+              transition: "all 0.3s",
+              "&:hover": {
+                transform: "scale(1.1)",
+                transition:"all 0.3s"
+              }
+            }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
               Statistics

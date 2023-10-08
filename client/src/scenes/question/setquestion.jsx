@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { Close } from "@mui/icons-material";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectQuestion } from "../../features/questionSlice";
+// import { useDispatch } from "react-redux";
+// import axios from "axios";
+// import { useSelector } from "react-redux";
+// import { selectQuestion } from "../../features/questionSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function AddQuestion() {
-  const questions = useSelector(selectQuestion)
+  // const questions = useSelector(selectQuestion)
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab2");
   const [question, setQuestion] = useState(() => {
@@ -64,7 +65,6 @@ function AddQuestion() {
   });
 
   const [selectedAnswer, setSelectedAnswer] = useState("");
-  // const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("image", JSON.stringify(image));
@@ -146,23 +146,25 @@ function AddQuestion() {
 
   const handlePostToDB = async (e) => {
     e.preventDefault();
+
+    // const data = questionList
   
-    const newQuestionSet = {
-      question,
-      answerChoices,
-      correctAnswer,
-      image,
-      
-    };
-  
-    try {
-      const response = await axios.post("http://localhost:3005/api/questions", newQuestionSet);
-      
-      console.log("Posted successfully", response.data);
-    } catch (error) {
-      console.error("An error occurred:", error);
-      throw error;
-    }
+    // try {
+    //    const response = await fetch("http://localhost:3005/api/questions", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(data)
+    //    })
+    //   if (response.ok) {
+    //     console.log("Successful")
+    //   } else {
+    //     console.log("Failed")
+    //   }
+    // } catch (error) {
+    //   console.error("An error has occured:", error)
+    // }
   };
   
 

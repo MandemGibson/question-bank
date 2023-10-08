@@ -1,0 +1,38 @@
+.img-slider-btn {
+    all: unset;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: block;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.img-slider-btn:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 0.625rem;
+}
+
+.img-slider-btn:hover>* {
+    animation: bounce 2s;
+    color: white;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-30px);
+    }
+
+    60% {
+        transform: translateY(-15px);
+    }
+}

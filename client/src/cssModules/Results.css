@@ -19,5 +19,6 @@
 .unknown:hover,
 .worst__stu:hover {
     cursor: pointer;
-    margin-top: -20px;
+    transform: scale(1.1);
+    transition: all 0.3s;
 }

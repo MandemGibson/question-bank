@@ -28,7 +28,7 @@ console.log(`listening on port ${process.env.PORT}`);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
-  res.status().json({
+  res.status(status).json({
     status: status,
     message: err.message,
   });

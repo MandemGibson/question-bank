@@ -8,10 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { fetchQuestions, selectQuestion } from "../../features/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-
 function Questions() {
   const dispatch = useDispatch();
-  const questions = useSelector(selectQuestion)
+  const questions = useSelector(selectQuestion);
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab1");
 
@@ -36,8 +35,8 @@ function Questions() {
   };
 
   const handleQuestionClick = (questionId) => {
-    navigate(`/questions/${questionId}`)
-  }
+    navigate(`/questions/${questionId}`);
+  };
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -53,6 +52,7 @@ function Questions() {
         mb="30px"
         position="sticky"
         top="60px"
+        zIndex={999}
       >
         <Box display="flex">
           <Button
@@ -94,30 +94,34 @@ function Questions() {
         </Box>
       </Box>
 
-      <h3 style={{ margin: "0px" }}>Completed Questions</h3>     
-      <p style={{margin:"30px", fontStyle:'italic', fontFamily:"Amaranth"}}>No Completed Questions.</p>
+      <h3 style={{ margin: "0px" }}>Completed Questions</h3>
+      <p
+        style={{ margin: "30px", fontStyle: "italic", fontFamily: "Amaranth" }}
+      >
+        No Completed Questions.
+      </p>
 
       <Box>
         <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
-        {questions ? (
-        questions.length === 0 ? (
-          <p>No questions available</p>
-        ) : (
-          questions.map((question) => (
-            <QuestionSet
-              key={question.id}
-              title={question.title}
-              subtitle="JHS 2"
-              duration={question.timeLimit}
-              days={question.createdAt}
-              image={ola}
-              onClick={()=>handleQuestionClick(question.id)}
-            />
-          ))
-        )
-      ) : (
-        <p>Loading...</p>
-      )}
+            {questions ? (
+              questions.length === 0 ? (
+                <p>No questions available</p>
+              ) : (
+                questions.map((question) => (
+                  <QuestionSet
+                    key={question.id}
+                    title={question.title}
+                    subtitle="JHS 2"
+                    duration={question.timeLimit}
+                    days={question.createdAt}
+                    image={ola}
+                    onClick={() => handleQuestionClick(question.id)}
+                  />
+                ))
+              )
+            ) : (
+              <p>Loading...</p>
+            )}
       </Box>
     </Box>
   );

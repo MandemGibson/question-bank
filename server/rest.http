@@ -1,4 +1,5 @@
 GET  http://localhost:3005/api/questions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFmZklkIjoiIiwiaWF0IjoxNjk2NTg5OTUxfQ.W5OQOG72HO3lT_lpuwXELbkwN6bXPeuoAXI4en5yDJI
 
 ###
 POST  http://localhost:3005/api/questions
@@ -16,13 +17,87 @@ Content-Type: application/json
 DELETE  http://localhost:3005/api/questions/5
 
 ###
-PATCH http://localhost:3005/api/questions/1
+GET  http://localhost:3005/api/staffs
+
+###
+POST  http://localhost:3005/api/staffs
 Content-Type: application/json
 
 {
-    "title": "Science",
-    "categoryId": 2,
-    "question": "Is coding fun",
-    "staffId": 1,
-    "classId": 1
+  "staff_id": "staff123",
+  "firstname": "John",
+  "middlename": "Doe",
+  "lastname": "Smith",
+  "email": "john.smith@example.com",
+  "primary_contact": "+1234567890",
+  "secondary_contact": "+9876543210",
+  "dob": "1990-01-15T00:00:00.000Z",
+  "residence": "123 Main St, City",
+  "is_admin": true,
+  "is_active": true,
+  "subjects": {
+    "create":{
+    "name": "English Language",
+    "code": "ENGL 157",
+    "staff_id": "staff123",
+    "academic_year_id": 1,
+    "term_id": 1,
+    "class_id": 1,
+    "academic_year":{
+      "create":{
+        "name": "2023/2024 Academic Year"
+      }
+    },
+    "term":{
+      "create":{
+        "name":"First term"
+      }
+    }
+    }
+  },
+  "date_registered": "2023-09-30T08:00:00.000Z",
+  "question": {
+    "create":{
+      "question": "What is your name",
+      "class": {
+        "create":{
+          "name": "JHS 2"
+        }
+      },
+      "category":{
+        "connect":{
+          "id": 1
+        }       
+      }
+    }
+  },
+  "profile_pic": {
+    "type": "Buffer",
+    "data":[128, 108]
+  },
+  "class":{
+    "create":{
+      "name":"JHS 2"
+    }
+  }
+}
+
+###
+PATCH http://localhost:3005/api/staffs/4
+Content-Type: application/json
+
+{
+  "profile_pic":{
+    "type": "Buffer",
+    "data": [128,108]
+  }
+}
+
+###
+POST http://localhost:3005/api/login
+Content-Type: application/json
+
+{
+  "name": "Emily",
+  "staffId": ""
 }
