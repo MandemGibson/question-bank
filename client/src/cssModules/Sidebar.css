@@ -3,7 +3,7 @@
     flex-direction: column;
     position: relative;
     height: 100vh;
-    width: 250px;
+    width: 300px;
     background: linear-gradient(180deg, #fff 70%, #83eaf8);
     /* transition: 0.4s; */
 }

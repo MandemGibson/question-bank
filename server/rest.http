@@ -7,63 +7,63 @@ Content-Type: application/json
 {
     "title": "English",
     "categoryId": 1,
-    "questions":[
+    "question": [
       {
         "text": "What is a noun",
-        "answerChoices":{
-          "create":[
+        "answerChoices": {
+          "create": [
             {
-              "choice":"verb",
-            }
+              "choice": "verb"
+            },
             {
-              "choice":"preposition",
-            }
+              "choice": "preposition"
+            },
             {
-              "choice":"part of speech",
+              "choice": "part of speech",
               "isCorrect": true
-            }
+            },
             {
-              "choice":"adverb",
+              "choice": "adverb"
             }
           ]
         }
       },
       {
-        "text": "What is a noun",
-        "answerChoices":{
-          "create":[
+        "text": "What is a pronoun",
+        "answerChoices": {
+          "create": [
             {
-              "choice":"verb",
-            }
+              "choice": "verb"
+            },
             {
-              "choice":"preposition",
-            }
+              "choice": "preposition"
+            },
             {
-              "choice":"part of speech",
+              "choice": "part of speech",
               "isCorrect": true
-            }
+            },
             {
-              "choice":"adverb",
+              "choice": "adverb"
             }
           ]
         }
       },
       {
-        "text": "What is a noun",
-        "answerChoices":{
-          "create":[
+        "text": "What is a verb",
+        "answerChoices": {
+          "create": [
             {
-              "choice":"verb",
-            }
+              "choice": "verb"
+            },
             {
-              "choice":"preposition",
-            }
+              "choice": "preposition"
+            },
             {
-              "choice":"part of speech",
+              "choice": "part of speech",
               "isCorrect": true
-            }
+            },
             {
-              "choice":"adverb",
+              "choice": "adverb"
             }
           ]
         }
