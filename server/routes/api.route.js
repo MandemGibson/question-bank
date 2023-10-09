@@ -34,7 +34,7 @@ apiRouter.get("/questions/:id", async (req, res, next) => {
 apiRouter.post("/questions", async (req, res, next) => {
   try {
     const data = req.body;
-    const question = await prisma.question.create({
+    const question = await prisma.question.createMany({
       data: data,
     });
     res.json(question);

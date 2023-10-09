@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import Sidebar from "./scenes/global/Sidebar";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Topbar from "./scenes/global/Topbar";
 import Dashboard from "./scenes/dashboard";
 import Questions from "./scenes/question";
@@ -24,15 +24,18 @@ import Grades from "./StudentSide/scenes/grades";
 import OpenQuiz from "./components/OpenQuiz";
 
 const isLoggedIn = true;
-const isTeacher = false;
-const isStudent = true;
+const isTeacher = true;
+const isStudent = false;
 
 function App() {
+  const location = useLocation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchQuestions());
-  });
+  }, [dispatch]);
+
+  const isOpenQuiz = /^\/quiz-tab\/\d+/.test(location.pathname);
   return (
     <div className="app">
       {isLoggedIn && isTeacher ? (
@@ -58,9 +61,9 @@ function App() {
         </>
       ) : isLoggedIn && isStudent ? (
         <>
-          <StuSidebar />
+          {isOpenQuiz ? null : <StuSidebar />}
           <main className="content">
-            <StuTopbar />
+            {isOpenQuiz ? null : <StuTopbar />}
             <Routes>
               <Route exact path="/" element={<StudentDashBoard />} />
               <Route exact path="/quiz-tab" element={<QuizTab />} />

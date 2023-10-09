@@ -1,16 +1,106 @@
 GET  http://localhost:3005/api/questions
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGFmZklkIjoiIiwiaWF0IjoxNjk2NTg5OTUxfQ.W5OQOG72HO3lT_lpuwXELbkwN6bXPeuoAXI4en5yDJI
 
 ###
 POST  http://localhost:3005/api/questions
 Content-Type: application/json
 
 {
-    "title": "Science",
-    "categoryId": 2,
-    "question": "What is science",
+    "title": "English",
+    "categoryId": 1,
+    "questions":[
+      {
+        "text": "What is a noun",
+        "answerChoices":{
+          "create":[
+            {
+              "choice":"verb",
+            }
+            {
+              "choice":"preposition",
+            }
+            {
+              "choice":"part of speech",
+              "isCorrect": true
+            }
+            {
+              "choice":"adverb",
+            }
+          ]
+        }
+      },
+      {
+        "text": "What is a noun",
+        "answerChoices":{
+          "create":[
+            {
+              "choice":"verb",
+            }
+            {
+              "choice":"preposition",
+            }
+            {
+              "choice":"part of speech",
+              "isCorrect": true
+            }
+            {
+              "choice":"adverb",
+            }
+          ]
+        }
+      },
+      {
+        "text": "What is a noun",
+        "answerChoices":{
+          "create":[
+            {
+              "choice":"verb",
+            }
+            {
+              "choice":"preposition",
+            }
+            {
+              "choice":"part of speech",
+              "isCorrect": true
+            }
+            {
+              "choice":"adverb",
+            }
+          ]
+        }
+      }
+    ],
     "staffId": 1,
     "classId": 1
+}
+
+###
+PATCH http://localhost:3005/api/questions/7
+Content-Type: application/json
+
+{
+  "answerChoices":{
+    "create":
+    [
+    {
+      "choice": "Gibson",
+      "isCorrect": true
+    },
+    {
+      "choice": "Yaw",
+      "isCorrect": false
+    },
+    {
+      "choice": "George",
+      "isCorrect": false
+    },
+    {
+      "choice": "Jonah",
+      "isCorrect": false
+    }
+  ]},
+  "question":{
+      "set":"What is your name"
+    }
 }
 
 ###

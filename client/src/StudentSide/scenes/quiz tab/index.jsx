@@ -10,24 +10,6 @@ import { useNavigate } from "react-router";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
-// const Quizzes = [
-//   {
-//     title: "Mathematics",
-//     deadline: "24th Semptember 2023",
-//     duration: "1 hour",
-//   },
-//   {
-//     title: "Mathematics",
-//     deadline: "24th Semptember 2023",
-//     duration: "1 hour",
-//   },
-//   {
-//     title: "Mathematics",
-//     deadline: "24th Semptember 2023",
-//     duration: "1 hour",
-//   },
-// ];
-
 function QuizTab() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -32,9 +32,9 @@ function Topbar() {
         <Avatar src={staff?.profile_pic} sx={{ borderRadius: "10px" }} />
         <Box display="flex" flexDirection="column" alignItems="normal" ml="5px">
           <p id="name" style={{ margin: "0px" }}>
-            {staff[0].firstname}
+            {staff[0]?.firstname}
             {""}
-            {staff[1].middlename} {staff[0].lastname}
+            {staff[1]?.middlename} {staff[0]?.lastname}
           </p>
 
           <p id="position" style={{ margin: "0px" }}>
