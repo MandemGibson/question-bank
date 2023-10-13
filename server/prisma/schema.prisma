@@ -94,19 +94,29 @@ model Class {
 }
 
 model Question {
+  id           Int            @id @default(autoincrement())
+  staff        Staff          @relation(fields: [staffId], references: [id])
+  staffId      Int
+  class        Class          @relation(fields: [classId], references: [id])
+  classId      Int
+  title        String         @default("No title")
+  questions    QuestionText[]
+  timeLimit    Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  category     Category       @relation(fields: [categoryId], references: [id])
+  categoryId   Int
+  answerChoice AnswerChoice[]
+}
+
+model QuestionText {
   id            Int            @id @default(autoincrement())
-  staff         Staff          @relation(fields: [staffId], references: [id])
-  staffId       Int
-  class         Class          @relation(fields: [classId], references: [id])
-  classId       Int
   question      String
-  timeLimit     Int            @default(0)
-  title         String         @default("No title")
   answerChoices AnswerChoice[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  category      Category       @relation(fields: [categoryId], references: [id])
-  categoryId    Int
+  Question      Question?      @relation(fields: [questionId], references: [id])
+  questionId    Int?
 }
 
 model Category {
@@ -117,11 +127,13 @@ model Category {
 }
 
 model AnswerChoice {
-  id         Int      @id @default(autoincrement())
-  question   Question @relation(fields: [questionId], references: [id])
-  questionId Int
-  choice     String
-  isCorrect  Boolean  @default(false)
+  id             Int           @id @default(autoincrement())
+  question       Question      @relation(fields: [questionId], references: [id])
+  questionId     Int
+  choice         String
+  isCorrect      Boolean       @default(false)
+  questionText   QuestionText? @relation(fields: [questionTextId], references: [id])
+  questionTextId Int?
 }
 
 model Results {

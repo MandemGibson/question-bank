@@ -1,10 +1,26 @@
 import { MoreVert } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
-import React from "react";
+import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import React, { useState } from "react";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOptionClick = (option, e) => {
+    e.stopPropagation();
+    handleClose();
+  };
+
   return (
     <Box
       display="flex"
@@ -60,7 +76,9 @@ function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
           justifyContent="space-between"
           alignItems="flex-end"
         >
-          <IconButton>{<MoreVert style={{ color: "#6b6a6a" }} />}</IconButton>
+          <IconButton onClick={handleClick}>
+            {<MoreVert style={{ color: "#6b6a6a" }} />}
+          </IconButton>
           <p
             style={{
               margin: "0px",
@@ -73,6 +91,20 @@ function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
           </p>
         </Box>
       </Box>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        onClick={handleClose}
+      >
+        <MenuItem onClick={(e) => handleOptionClick("Edit", e)}>Edit</MenuItem>
+        <MenuItem onClick={(e) => handleOptionClick("Delete", e)}>
+          Delete
+        </MenuItem>
+        <MenuItem onClick={(e) => handleOptionClick("Download", e)}>
+          Download
+        </MenuItem>
+      </Menu>
     </Box>
   );
 }

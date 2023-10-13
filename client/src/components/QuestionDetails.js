@@ -26,8 +26,31 @@ function QuesetionDetails() {
       bgcolor="#fff"
       borderRadius="0.625rem"
       p="20px"
+      fontFamily="Rubik"
     >
-      {question.question}
+      <ol>
+        {question.questions.map((q) => {
+          return (
+            <li key={q.id} style={{ marginBottom: "20px" }}>
+              {q.question}
+              <Box>
+                <ol type="a">
+                  {q.answerChoices.map((choice) => {
+                    return (
+                      <li
+                        key={choice.id}
+                        style={{ marginTop: "5px", fontSize: "14px" }}
+                      >
+                        {choice.choice}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </Box>
+            </li>
+          );
+        })}
+      </ol>
     </Box>
   );
 }

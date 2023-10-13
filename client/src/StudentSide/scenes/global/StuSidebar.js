@@ -5,9 +5,9 @@ import ola from "../../../images/ola.jpg";
 import { Button, IconButton } from "@mui/material";
 import SidebarItems from "../../../components/SidebarItems";
 import { ReactComponent as dashboardIcon } from "../../../svg/dashboard.svg";
-import { ReactComponent as questionsIcon } from "../../../svg/questions.svg";
-import { ReactComponent as resultsIcon } from "../../../svg/Component 6.svg";
-import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.svg";
+import { ReactComponent as quizIcon } from "../../../svg/quiz.svg";
+import { ReactComponent as examsIcon } from "../../../svg/exams.svg";
+import { ReactComponent as gradesIcon } from "../../../svg/grades.svg";
 import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
 import { useSidebar } from "../../../SidebarContext";
@@ -75,21 +75,21 @@ function StuSidebar() {
           to="/"
         />
         <SidebarItems
-          Icon={questionsIcon}
+          Icon={quizIcon}
           title="Quiz Tab"
           selected={selectedItem === "Quiz Tab"}
           setSelected={handleItemClick}
           to="/quiz-tab"
         />
         <SidebarItems
-          Icon={resultsIcon}
+          Icon={examsIcon}
           title="Exams Tab"
           selected={selectedItem === "Exams Tab"}
           setSelected={handleItemClick}
           to="/exams-tab"
         />
         <SidebarItems
-          Icon={statisticsIcon}
+          Icon={gradesIcon}
           title="My Grades"
           selected={selectedItem === "My Grades"}
           setSelected={handleItemClick}

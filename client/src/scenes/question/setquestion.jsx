@@ -489,7 +489,7 @@ function AddQuestion() {
                       <li>{choice}</li>
                       <input
                         type="checkbox"
-                        id={`answer-${index}_${i}`}
+                        name={`${choice}&&${choice.i}`}
                         value={choice}
                         checked={selectedAnswer === choice}
                         onChange={(e) => {

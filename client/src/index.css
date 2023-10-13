@@ -23,3 +23,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.spinner {
+  height: 150px;
+  width: 150px;
+  border: 6px solid;
+  border-color: white transparent white transparent;
+  border-radius: 50%;
+  align-self: center;
+  animation: spin 1.2s ease linear
+}
+
+@keyframes spin {
+  to {
+    rotate: (360deg);
+  }
+}

@@ -65,7 +65,7 @@ function QuizTab() {
                   <QuizQuest
                     key={question.id}
                     title={question.title}
-                    deadline={question.createdAt}
+                    deadline={question.createdAt.split("T")[0]}
                     duration={question.timeLimit}
                     onClick={() => handleAttempt(question.id)}
                   />

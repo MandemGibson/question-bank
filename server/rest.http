@@ -1,77 +1,38 @@
-GET  http://localhost:3005/api/questions
+GET  http://localhost:3005/api/students
 
 ###
 POST  http://localhost:3005/api/questions
 Content-Type: application/json
 
 {
-    "title": "English",
-    "categoryId": 1,
-    "question": [
-      {
-        "text": "What is a noun",
-        "answerChoices": {
-          "create": [
-            {
-              "choice": "verb"
-            },
-            {
-              "choice": "preposition"
-            },
-            {
-              "choice": "part of speech",
-              "isCorrect": true
-            },
-            {
-              "choice": "adverb"
-            }
-          ]
-        }
-      },
-      {
-        "text": "What is a pronoun",
-        "answerChoices": {
-          "create": [
-            {
-              "choice": "verb"
-            },
-            {
-              "choice": "preposition"
-            },
-            {
-              "choice": "part of speech",
-              "isCorrect": true
-            },
-            {
-              "choice": "adverb"
-            }
-          ]
-        }
-      },
-      {
-        "text": "What is a verb",
-        "answerChoices": {
-          "create": [
-            {
-              "choice": "verb"
-            },
-            {
-              "choice": "preposition"
-            },
-            {
-              "choice": "part of speech",
-              "isCorrect": true
-            },
-            {
-              "choice": "adverb"
-            }
-          ]
-        }
-      }
-    ],
-    "staffId": 1,
-    "classId": 1
+  "questionTexts": [
+    {
+      "question": "What is the capital of Ghana?"
+    }
+  ],
+  "answerChoices": [
+    {
+      "create":{
+      "choice": "Kumasi",
+      "isCorrect": false
+    },
+    {
+      "choice": "Accra",
+      "isCorrect": true
+    },
+    {
+      "choice": "Sekondi",
+      "isCorrect": false
+    },
+    {
+      "choice": "Obuasi",
+      "isCorrect": false
+    }
+    }
+    
+  ]
 }
+
 
 ###
 PATCH http://localhost:3005/api/questions/7

@@ -9,7 +9,12 @@ const prisma = new PrismaClient();
 apiRouter.get("/questions", async (req, res, next) => {
   try {
     const questions = await prisma.question.findMany({
-      include: { category: true, answerChoices: true },
+      include: {
+        questions: {
+          include: { answerChoices: true },
+        },
+        category: true,
+      },
     });
     res.json(questions);
   } catch (error) {
@@ -34,9 +39,28 @@ apiRouter.get("/questions/:id", async (req, res, next) => {
 apiRouter.post("/questions", async (req, res, next) => {
   try {
     const data = req.body;
-    const question = await prisma.question.createMany({
-      data: data,
+    const { questionTexts, answerChoices, ...questionData } = data;
+
+    const createdQuestionTexts = await prisma.questionText.createMany({
+      data: questionTexts,
     });
+
+    const createdAnswerChoices = await prisma.answerChoice.createMany({
+      data: answerChoices,
+    });
+
+    const question = await prisma.question.create({
+      data: {
+        ...questionData,
+        questions: {
+          connect: createdQuestionTexts.map((text) => ({ id: text.id })),
+        },
+        answerChoices: {
+          connect: createdAnswerChoices.map((choice) => ({ id: choice.id })),
+        },
+      },
+    });
+
     res.json(question);
   } catch (error) {
     next(error);
@@ -137,6 +161,15 @@ apiRouter.post("/login", async (req, res, next) => {
 
     const accesToken = jwt.sign(user, process.env.ACCESS_TOKEN);
     res.json({ accesToken: accesToken });
+  } catch (error) {
+    next(error);
+  }
+});
+
+apiRouter.get("/students", async (req, res, next) => {
+  try {
+    const students = await prisma.student.findMany({});
+    res.json(students);
   } catch (error) {
     next(error);
   }

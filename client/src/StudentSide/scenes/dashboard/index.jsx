@@ -51,7 +51,6 @@ function StudentDashBoard() {
     <Box display="flex" m="20px" justifyContent="space-between">
       <Box display="flex" width="68%" flexDirection="column">
         <Box
-          justifyContent="center"
           borderRadius="0.625rem"
           bgcolor="white"
           height="10rem"
@@ -59,6 +58,9 @@ function StudentDashBoard() {
           display="flex"
           boxShadow={boxShadow}
         >
+          <Box padding="10px" fontFamily="Rubik" fontWeight="600">
+            <p style={{ margin: "0px" }}>Latest Announcement</p>
+          </Box>
           <p style={{ margin: "0px", alignSelf: "center" }}>
             No new quiz or exams posted
           </p>
@@ -73,7 +75,7 @@ function StudentDashBoard() {
           padding="10px"
           position="relative"
         >
-          <p style={{ margin: "0px" }}>Recently Accessed Subjects</p>
+          <p style={{ margin: "0px", fontFamily:"Rubik", fontWeight:"600" }}>Recently Accessed Subjects</p>
           <Box display="flex">
             <button
               className="img-slider-btn"
@@ -130,7 +132,11 @@ function StudentDashBoard() {
         boxShadow={boxShadow}
         minHeight="15rem"
         height="min-content"
-      ></Box>
+      >
+        <Box padding="10px">
+        <p style={{ margin: "0px", fontFamily:"Rubik", fontWeight:"600" }}>Online Users</p>
+        </Box>
+      </Box>
     </Box>
   );
 }

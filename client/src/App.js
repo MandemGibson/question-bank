@@ -21,11 +21,12 @@ import StuTopbar from "./StudentSide/scenes/global/StuTopbar";
 import QuizTab from "./StudentSide/scenes/quiz tab";
 import ExamsTab from "./StudentSide/scenes/exams tab";
 import Grades from "./StudentSide/scenes/grades";
-import OpenQuiz from "./components/OpenQuiz";
+import OpenQuestion from "./components/OpenQuestion";
+import { fetchStudents } from "./features/studentSlice";
 
 const isLoggedIn = true;
-const isTeacher = true;
-const isStudent = false;
+const isTeacher = false;
+const isStudent = true;
 
 function App() {
   const location = useLocation();
@@ -33,9 +34,12 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchQuestions());
+    dispatch(fetchStudents());
   }, [dispatch]);
 
-  const isOpenQuiz = /^\/quiz-tab\/\d+/.test(location.pathname);
+  const isOpenQuiz = /^\/quiz-tab\/\d+|^\/exams-tab\/\d+/.test(
+    location.pathname
+  );
   return (
     <div className="app">
       {isLoggedIn && isTeacher ? (
@@ -67,11 +71,12 @@ function App() {
             <Routes>
               <Route exact path="/" element={<StudentDashBoard />} />
               <Route exact path="/quiz-tab" element={<QuizTab />} />
-              <Route exact path="/quiz-tab/:id" element={<OpenQuiz />} />
+              <Route exact path="/quiz-tab/:id" element={<OpenQuestion />} />
               <Route exact path="/exams-tab" element={<ExamsTab />} />
+              <Route exact path="/exams-tab/:id" element={<OpenQuestion />} />
               <Route exact path="/grades" element={<Grades />} />
-              <Route exact path="/guide" element={<StudentDashBoard />} />
-              <Route exact path="/feedback" element={<StudentDashBoard />} />
+              <Route exact path="/guide" element={<Guide />} />
+              <Route exact path="/feedback" element={<Feedback />} />
             </Routes>
           </main>
         </>

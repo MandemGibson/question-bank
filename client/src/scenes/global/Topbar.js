@@ -33,7 +33,6 @@ function Topbar() {
         <Box display="flex" flexDirection="column" alignItems="normal" ml="5px">
           <p id="name" style={{ margin: "0px" }}>
             {staff[0]?.firstname}
-            {""}
             {staff[1]?.middlename} {staff[0]?.lastname}
           </p>
 
