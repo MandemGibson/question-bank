@@ -11,15 +11,15 @@ datasource db {
 }
 
 model Student {
-  id              Int        @id @default(autoincrement())
+  id              String     @id @default(uuid())
   student_id      String     @unique
   firstname       String
   middlename      String?
   lastname        String
   dob             DateTime
   residence       String
-  class           Class      @relation(fields: [classId], references: [id])
-  classId         Int
+  class           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  classId         String
   guardians       Guardian[]
   date_registered DateTime?
   profile_pic     Bytes      @unique
@@ -27,17 +27,17 @@ model Student {
 }
 
 model Guardian {
-  id                Int      @id @default(autoincrement())
+  id                String   @id @default(uuid())
   student_id        String
   primary_contact   String
   secondary_contact String?
   date_created      DateTime
   student           Student  @relation(fields: [studentId], references: [id])
-  studentId         Int
+  studentId         String
 }
 
 model Staff {
-  id                Int            @id @default(autoincrement())
+  id                String         @id @default(uuid())
   staff_id          String         @unique
   firstname         String
   middlename        String?
@@ -51,13 +51,13 @@ model Staff {
   is_active         Boolean
   subjects          StaffSubject[]
   date_registered   DateTime?
-  question          Question[]
+  topics            Topic[]
   profile_pic       Bytes
   class             Class[]
 }
 
 model StaffSubject {
-  id               Int          @id @default(autoincrement())
+  id               String       @id @default(uuid())
   staff_id         String
   name             String
   code             String
@@ -66,87 +66,87 @@ model StaffSubject {
   class_id         Int
   staff            Staff[]
   academic_year    AcademicYear @relation(fields: [academicYearId], references: [id])
-  academicYearId   Int
+  academicYearId   String
   term             Term         @relation(fields: [termId], references: [id])
-  termId           Int
+  termId           String
   class            Class[]
 }
 
 model AcademicYear {
-  id           Int            @id @default(autoincrement())
+  id           String         @id @default(uuid())
   name         String
   staffSubject StaffSubject[]
 }
 
 model Term {
-  id           Int            @id @default(autoincrement())
+  id           String         @id @default(uuid())
   name         String
   staffSubject StaffSubject[]
 }
 
 model Class {
-  id           Int            @id @default(autoincrement())
+  id           String         @id @default(uuid())
   name         String
   Student      Student[]
   staffSubject StaffSubject[]
-  question     Question[]
+  topics       Topic[]
   staff        Staff[]
 }
 
-model Question {
-  id           Int            @id @default(autoincrement())
-  staff        Staff          @relation(fields: [staffId], references: [id])
-  staffId      Int
-  class        Class          @relation(fields: [classId], references: [id])
-  classId      Int
-  title        String         @default("No title")
-  questions    QuestionText[]
-  timeLimit    Int            @default(0)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  category     Category       @relation(fields: [categoryId], references: [id])
-  categoryId   Int
-  answerChoice AnswerChoice[]
+model Topic {
+  id            String         @id @default(uuid())
+  staff         Staff          @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  staffId       String
+  class         Class          @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  classId       String
+  title         String
+  questions     Question[]
+  timeLimit     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  category      Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId    String
+  answerChoices AnswerChoice[]
 }
 
-model QuestionText {
-  id            Int            @id @default(autoincrement())
+model Question {
+  id            String         @id @default(uuid())
   question      String
   answerChoices AnswerChoice[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  Question      Question?      @relation(fields: [questionId], references: [id])
-  questionId    Int?
+  topic         Topic?         @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  questionId    String?
 }
 
 model Category {
-  id       Int        @id @default(autoincrement())
-  name     String     @unique
-  question Question[]
-  Results  Results[]
+  id      String    @id @default(uuid())
+  name    String    @unique
+  topics  Topic[]
+  Results Results[]
 }
 
 model AnswerChoice {
-  id             Int           @id @default(autoincrement())
-  question       Question      @relation(fields: [questionId], references: [id])
-  questionId     Int
-  choice         String
-  isCorrect      Boolean       @default(false)
-  questionText   QuestionText? @relation(fields: [questionTextId], references: [id])
-  questionTextId Int?
+  id         String    @id @default(uuid())
+  topic      Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  topicId    String
+  choice     String
+  isCorrect  Boolean   @default(false)
+  question   Question? @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  questionId String?
 }
 
 model Results {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   result     Int
   category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
-  student    Student  @relation(fields: [studentId], references: [id])
-  studentId  Int
+  categoryId String
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId  String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 }

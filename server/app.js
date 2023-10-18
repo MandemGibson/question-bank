@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const express = require("express");
 const createError = require("http-errors");
 
-const apiRouter = require("./routes/api.route");
+const apiRouter = require("./routes/api.routes");
 
 const PORT = process.env.PORT || 3000;
 

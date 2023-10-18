@@ -5,6 +5,10 @@ POST  http://localhost:3005/api/questions
 Content-Type: application/json
 
 {
+  "classId" : "string",
+  "title" : "string",
+  "timeLimit" : int,
+  "categoryId" : "string",
   "questionTexts": [
     {
       "question": "What is the capital of Ghana?"
@@ -12,7 +16,6 @@ Content-Type: application/json
   ],
   "answerChoices": [
     {
-      "create":{
       "choice": "Kumasi",
       "isCorrect": false
     },
@@ -28,8 +31,6 @@ Content-Type: application/json
       "choice": "Obuasi",
       "isCorrect": false
     }
-    }
-    
   ]
 }
 
