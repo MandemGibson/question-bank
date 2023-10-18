@@ -25,8 +25,8 @@ import OpenQuestion from "./components/OpenQuestion";
 import { fetchStudents } from "./features/studentSlice";
 
 const isLoggedIn = true;
-const isTeacher = false;
-const isStudent = true;
+const isTeacher = true;
+const isStudent = false;
 
 function App() {
   const location = useLocation();

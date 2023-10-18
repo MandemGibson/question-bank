@@ -99,7 +99,9 @@ apiRouter.patch("/questions/:id", async (req, res, next) => {
 
 apiRouter.get("/staffs", async (req, res, next) => {
   try {
-    const staff = await prisma.staff.findMany({});
+    const staff = await prisma.staff.findMany({
+      include: { class: true },
+    });
     res.json(staff);
   } catch (error) {
     next(error);

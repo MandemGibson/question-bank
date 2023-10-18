@@ -1,18 +1,142 @@
-import { Box, Button, Fab, TextField } from "@mui/material";
+import { Box, Button, Fab, IconButton, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { Close } from "@mui/icons-material";
-// import { useDispatch } from "react-redux";
-// import axios from "axios";
-// import { useSelector } from "react-redux";
-// import { selectQuestion } from "../../features/questionSlice";
+import { useSelector } from "react-redux";
+import { selectStaff } from "../../features/staffSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
+export function Modal({ onClose }) {
+  const staff = useSelector(selectStaff);
+  return (
+    <Box
+      display="flex"
+      bgcolor="rgba(0,0,0, 0.3)"
+      position="absolute"
+      top="0"
+      width="100vw"
+      height="100vh"
+      alignItems="center"
+      justifyContent="center"
+      left="0"
+    >
+      <Box
+        position="relative"
+        bgcolor="white"
+        width="30rem"
+        minHeight="20rem"
+        borderRadius="1.25rem"
+        alignItems="center"
+        display="flex"
+        flexDirection="column"
+        boxShadow={boxShadow}
+      >
+        <form style={{ display: "flex", flexDirection: "column" }}>
+          <IconButton
+            sx={{ position: "absolute", right: 0, mr: "5px", mt: "5px" }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
+
+          <Box textAlign="center">
+            <p
+              style={{
+                margin: "20px 0 0 0",
+                fontWeight: "600",
+                fontSize: "20px",
+              }}
+            >
+              Please fill this form
+            </p>
+          </Box>
+
+          <Box display="flex" flexDirection="column" mt={3}>
+            <input
+              required
+              name="title"
+              placeholder="Title"
+              style={{
+                width: "25rem",
+                border: "1px solid rgb(192,192,192)",
+                outline: "none",
+                borderRadius: "0.625rem",
+                marginBottom: "20px",
+                padding: "10px",
+                fontSize: "15px",
+                fontFamily: "Rubik",
+              }}
+            />
+            <input
+              required
+              name="deadline"
+              placeholder="Deadline (eg. 15-10-2023)"
+              style={{
+                border: "1px solid rgb(192,192,192)",
+                outline: "none",
+                borderRadius: "0.625rem",
+                marginBottom: "20px",
+                padding: "10px",
+                fontSize: "15px",
+                fontFamily: "Rubik",
+              }}
+            />
+            <input
+              required
+              name="duration"
+              placeholder="Duration in minutes"
+              style={{
+                border: "1px solid rgb(192,192,192)",
+                outline: "none",
+                borderRadius: "0.625rem",
+                marginBottom: "20px",
+                padding: "10px",
+                fontSize: "15px",
+                fontFamily: "Rubik",
+              }}
+            />
+            <select
+              name="class"
+              style={{
+                border: "1px solid rgb(192,192,192)",
+                outline: "none",
+                borderRadius: "0.625rem",
+                marginBottom: "20px",
+                padding: "10px",
+                fontSize: "15px",
+                fontFamily: "Rubik",
+              }}
+            ><option style={{ fontWeight: "bold" }}>
+                      Which class should see this questions
+              </option>
+              <option></option>
+            </select>
+            <input
+              type="submit"
+              style={{
+                marginTop: "20px",
+                marginBottom: "20px",
+                fontFamily: "Rubik",
+                fontWeight: "600",
+                borderRadius: "0.625rem",
+                outline: "none",
+                padding: "10px",
+                backgroundColor: "#83eaf8",
+                border: "none",
+                color: "white",
+              }}
+            />
+          </Box>
+        </form>
+      </Box>
+    </Box>
+  );
+}
+
 function AddQuestion() {
-  // const questions = useSelector(selectQuestion)
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab2");
   const [question, setQuestion] = useState(() => {
@@ -65,6 +189,7 @@ function AddQuestion() {
   });
 
   const [selectedAnswer, setSelectedAnswer] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("image", JSON.stringify(image));
@@ -147,8 +272,10 @@ function AddQuestion() {
   const handlePostToDB = async (e) => {
     e.preventDefault();
 
+    setOpenModal(!openModal);
+
     // const data = questionList
-  
+
     // try {
     //    const response = await fetch("http://localhost:3005/api/questions", {
     //   method: "POST",
@@ -166,7 +293,6 @@ function AddQuestion() {
     //   console.error("An error has occured:", error)
     // }
   };
-  
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -502,7 +628,7 @@ function AddQuestion() {
                   <Box display="flex" flexDirection="column" mt="15px">
                     {q.result !== null && (
                       <Box>
-                        {q.result === true ? (
+                        {q.result ? (
                           <span style={{ color: "green" }}>Correct!</span>
                         ) : (
                           <span style={{ color: "red" }}>
@@ -574,7 +700,6 @@ function AddQuestion() {
               width: "70%",
               alignSelf: "center",
             }}
-            
           >
             <p
               style={{
@@ -588,6 +713,7 @@ function AddQuestion() {
           </Button>
         </Box>
       </form>
+      {openModal && <Modal onClose={() => setOpenModal(!openModal)} />}
     </Box>
   );
 }

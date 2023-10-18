@@ -111,7 +111,7 @@ function Grades() {
   return (
     <Box display="flex" flexDirection="column" margin="20px">
       <Box display="flex" justifyContent="space-between" mb="40px">
-        <Box sx={boxStyle} height="16rem" width="32rem">
+        <Box sx={boxStyle} height="16rem" width="32rem" flex="1" mr="10px">
           <p style={{ margin: "10px", color: "#6b6a6a", marginBottom: "10px" }}>
             My Average Grade
           </p>
@@ -121,7 +121,7 @@ function Grades() {
             </p>
           </Box>
         </Box>
-        <Box sx={boxStyle} height="16rem" width="32rem">
+        <Box sx={boxStyle} height="16rem" width="32rem" flex="1" ml="10px">
           <p style={{ margin: "10px", color: "#6b6a6a", marginBottom: "10px" }}>
             My Rank
           </p>
