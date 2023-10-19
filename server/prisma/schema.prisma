@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Student {
-  id              String     @id @default(uuid())
+  id              Int        @id @default(autoincrement())
   student_id      String     @unique
   firstname       String
   middlename      String?
@@ -33,12 +33,11 @@ model Guardian {
   secondary_contact String?
   date_created      DateTime
   student           Student  @relation(fields: [studentId], references: [id])
-  studentId         String
+  studentId         Int
 }
 
 model Staff {
-  id                String         @id @default(uuid())
-  staff_id          String         @unique
+  id                String         @id
   firstname         String
   middlename        String?
   lastname          String
@@ -47,12 +46,12 @@ model Staff {
   secondary_contact String?
   dob               DateTime
   residence         String
-  is_admin          Boolean
-  is_active         Boolean
+  is_admin          Boolean        @default(false)
+  is_active         Boolean        @default(true)
   subjects          StaffSubject[]
-  date_registered   DateTime?
+  date_registered   DateTime?      @default(now())
   topics            Topic[]
-  profile_pic       Bytes
+  // profile_pic       Bytes
   class             Class[]
 }
 
@@ -142,7 +141,7 @@ model Results {
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
   student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  studentId  String
+  studentId  Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Staff" ALTER COLUMN "date_registered" SET DEFAULT CURRENT_TIMESTAMP;

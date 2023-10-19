@@ -26,14 +26,14 @@ apiRouter.post("/login", async (req, res, next) => {
   }
 });
 
-apiRouter.get("/students", async (req, res, next) => {
-  try {
-    const students = await prisma.student.findMany({});
-    res.json(students);
-  } catch (error) {
-    next(error);
-  }
-});
+// apiRouter.get("/students", async (req, res, next) => {
+//   try {
+//     const students = 
+//     res.json(students);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 function authenticateToken(req, res, next) {
   const authHeaders = req.headers["authorization"];
