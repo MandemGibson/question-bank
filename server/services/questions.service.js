@@ -18,27 +18,37 @@ async function getQuestionById(id) {
         where: {
             id,
         },
+        include: {
+            questions: {
+                include: {
+                    answerChoices: true
+                }
+            }
+        }
     });
 }
 
-async function createQuestions({ topicData, questionTexts, answerChoices }) {
-    return await prisma.topic.create({
+async function createTopic({ data, questionTexts }) {
+    const { id } = await prisma.topic.create({
+        data: data,
+    })
+
+    for (const { question, answerChoices } of questionTexts) {
+        await createQuestion({ questionData: { topicId: id, question }, answerChoices })
+    }
+
+    return await getQuestionById(id)
+}
+
+async function createQuestion({ questionData, answerChoices }) {
+    return await prisma.question.create({
         data: {
-            ...topicData,
-            questions: {
-                createMany: {
-                    data: questionTexts
-                }
-            },
+            ...questionData,
             answerChoices: {
                 createMany: {
                     data: answerChoices
                 }
             }
-        },
-        include: {
-            questions,
-            answerChoices
         }
     })
 }
@@ -51,31 +61,34 @@ async function deleteQuestionById(id) {
     });
 }
 
-async function updateQuestionById({ id, topicData, questionTexts, answerChoices }) {
-    return await prisma.topic.update({
+async function updateQuestionById({ id, question, answerChoices }) {
+    for (const answerChoice of answerChoices) {
+        await prisma.answerChoice.update({
+            where: {
+                id: answerChoice.id
+            },
+            data: answerChoice
+        })
+    }
+
+    return await prisma.question.update({
         where: {
             id,
         },
         data: {
-            ...topicData,
-            questions: {
-                updateMany: {
-                    data: questionTexts
-                }
-            },
-            answerChoices: {
-                updateMany: {
-                    data: answerChoices
-                }
-            }
+            question,
         },
+        include: {
+            answerChoices: true
+        }
     })
 }
 
 module.exports = {
+    createTopic,
     getQuestions,
+    createQuestion,
     getQuestionById,
-    createQuestions,
     deleteQuestionById,
     updateQuestionById,
 }

@@ -2,14 +2,14 @@ const { getQuestionsHandler, getQuestionByIdHandler, createQuestionsHandler, del
 
 const questionRouter = require("express").Router();
 
-questionRouter.get("/questions", getQuestionsHandler);
+questionRouter.get("/", getQuestionsHandler);
 
-questionRouter.get("/questions/:id", getQuestionByIdHandler);
+questionRouter.get("/:id", getQuestionByIdHandler);
 
-questionRouter.post("/questions", createQuestionsHandler);
+questionRouter.post("/", createQuestionsHandler);
 
-questionRouter.delete("/questions/:id", deleteQuestionsHandler);
+questionRouter.delete("/:id", deleteQuestionsHandler);
 
-questionRouter.patch("/questions/:id", updateQuestionHandler);
+questionRouter.patch("/:id", updateQuestionHandler);
 
 module.exports = questionRouter

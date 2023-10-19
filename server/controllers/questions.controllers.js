@@ -1,4 +1,4 @@
-const { getQuestions, getQuestionById, createQuestions, deleteQuestionById, updateQuestionById } = require("../services/questions.service");
+const { getQuestions, getQuestionById, deleteQuestionById, updateQuestionById, createTopic } = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
     try {
@@ -28,14 +28,13 @@ async function createQuestionsHandler(req, res, next) {
             classId: data.classId,
             title: data.title,
             timeLimit: data.timeLimit,
+            deadline: new Date(data.deadline),
             categoryId: data.categoryId,
         }
 
-        const { questionTexts, answerChoices } = data
+        const topic = await createTopic(topicData, questionTexts)
 
-        const question = await createQuestions({ topicData, questionTexts, answerChoices })
-
-        res.json(question);
+        res.status(201).json(topic);
     } catch (error) {
         next(error);
     }
@@ -54,19 +53,10 @@ async function deleteQuestionsHandler(req, res, next) {
 async function updateQuestionHandler(req, res, next) {
     try {
         const { id } = req.params;
-        const data = req.body
+        const { question, answerChoices } = req.body
 
-        const topicData = {
-            classId: data.classId,
-            title: data.title,
-            timeLimit: data.timeLimit,
-            categoryId: data.categoryId,
-        }
-
-        const { questionTexts, answerChoices } = data
-
-        const question = updateQuestionById({ id, topicData, questionTexts, answerChoices })
-        res.json(question);
+        const updatedQuestion = await updateQuestionById({ id, question, answerChoices })
+        res.json(updatedQuestion);
     } catch (error) {
         next(error);
     }
