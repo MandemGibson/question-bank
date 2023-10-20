@@ -3,7 +3,7 @@ const {
   getQuestionById,
   deleteQuestionById,
   updateQuestionById,
-  createTopic,
+  createQuestions,
 } = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
@@ -30,14 +30,14 @@ async function createQuestionsHandler(req, res, next) {
     const data = req.body;
 
     const topicData = {
-      classId: classId,
-      title: title,
-      timeLimit: timeLimit,
-      deadline: new Date(deadline),
-      categoryId: categoryId,
+      classId: data.classId,
+      title: data.title,
+      timeLimit: data.timeLimit,
+      deadline: new Date(data.deadline),
+      categoryId: data.categoryId,
     };
 
-    const topic = await createTopic({ data: topicData, questionTexts });
+    const topic = await createQuestions({ data: topicData, questionTexts });
 
     res.status(201).json(topic);
   } catch (error) {
