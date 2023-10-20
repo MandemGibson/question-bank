@@ -4,15 +4,16 @@ const apiRouter = require("express").Router();
 
 const jwt = require("jsonwebtoken");
 
-const PrismaService = require('../services/prisma.service')
+const PrismaService = require("../services/prisma.service");
 const staffRouter = require("./staffs.routes");
 const questionRouter = require("./questions.routes");
+const { studentRouter } = require("./students.routes");
 
 const prisma = PrismaService;
 
-apiRouter.use('/staffs', staffRouter)
-apiRouter.use('/questions', questionRouter)
-
+apiRouter.use("/staffs", staffRouter);
+apiRouter.use("/questions", questionRouter);
+apiRouter.use("/students", studentRouter);
 
 apiRouter.post("/login", async (req, res, next) => {
   try {
@@ -26,14 +27,7 @@ apiRouter.post("/login", async (req, res, next) => {
   }
 });
 
-// apiRouter.get("/students", async (req, res, next) => {
-//   try {
-//     const students = 
-//     res.json(students);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+// apiRouter.get("/students",);
 
 function authenticateToken(req, res, next) {
   const authHeaders = req.headers["authorization"];

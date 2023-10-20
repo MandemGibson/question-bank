@@ -4,13 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { Close } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { selectStaff } from "../../features/staffSlice";
+import axios from "axios";
+// import { useSelector } from "react-redux";
+// import { selectStaff } from "../../features/staffSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
-export function Modal({ onClose }) {
-  const staff = useSelector(selectStaff);
+export function Modal({ onClose, onSubmit }) {
+  const [title, setTitle] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [duration, setDuration] = useState("");
+  // const staff = useSelector(selectStaff);
   return (
     <Box
       display="flex"
@@ -34,7 +38,10 @@ export function Modal({ onClose }) {
         flexDirection="column"
         boxShadow={boxShadow}
       >
-        <form style={{ display: "flex", flexDirection: "column" }}>
+        <form
+          style={{ display: "flex", flexDirection: "column" }}
+          onSubmit={(e) => onSubmit(e, title, deadline, duration)}
+        >
           <IconButton
             sx={{ position: "absolute", right: 0, mr: "5px", mt: "5px" }}
             onClick={onClose}
@@ -59,6 +66,8 @@ export function Modal({ onClose }) {
               required
               name="title"
               placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               style={{
                 width: "25rem",
                 border: "1px solid rgb(192,192,192)",
@@ -73,7 +82,9 @@ export function Modal({ onClose }) {
             <input
               required
               name="deadline"
-              placeholder="Deadline (eg. 15-10-2023)"
+              placeholder="Deadline (eg. 15/10/2023)"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
               style={{
                 border: "1px solid rgb(192,192,192)",
                 outline: "none",
@@ -88,6 +99,8 @@ export function Modal({ onClose }) {
               required
               name="duration"
               placeholder="Duration in minutes"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
               style={{
                 border: "1px solid rgb(192,192,192)",
                 outline: "none",
@@ -109,8 +122,9 @@ export function Modal({ onClose }) {
                 fontSize: "15px",
                 fontFamily: "Rubik",
               }}
-            ><option style={{ fontWeight: "bold" }}>
-                      Which class should see this questions
+            >
+              <option style={{ fontWeight: "bold" }}>
+                Which class should see this questions
               </option>
               <option></option>
             </select>
@@ -269,29 +283,29 @@ function AddQuestion() {
     setFilename("No image selected");
   };
 
-  const handlePostToDB = async (e) => {
+  const handleOpenModal = async (e) => {
     e.preventDefault();
 
     setOpenModal(!openModal);
+  };
 
-    // const data = questionList
+  const handlePostToDB = async (e, title, deadline, duration) => {
+    e.preventDefault();
 
-    // try {
-    //    const response = await fetch("http://localhost:3005/api/questions", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify(data)
-    //    })
-    //   if (response.ok) {
-    //     console.log("Successful")
-    //   } else {
-    //     console.log("Failed")
-    //   }
-    // } catch (error) {
-    //   console.error("An error has occured:", error)
-    // }
+    const data = questionList;
+
+    try {
+      await axios.post("http://localhost:3005/api/questions", {
+        data: {
+          questions: data.question,
+          title,
+          deadline,
+          duration,
+        },
+      });
+    } catch (error) {
+      console.error("An error has occured:", error);
+    }
   };
 
   return (
@@ -590,7 +604,7 @@ function AddQuestion() {
       <h3 style={{ margin: "0px", marginTop: "40px" }}>Preview</h3>
 
       {/*Added questions appear here*/}
-      <form onSubmit={handlePostToDB}>
+      <form onSubmit={handleOpenModal}>
         <Box
           display="flex"
           flexDirection="column"
@@ -713,7 +727,12 @@ function AddQuestion() {
           </Button>
         </Box>
       </form>
-      {openModal && <Modal onClose={() => setOpenModal(!openModal)} />}
+      {openModal && (
+        <Modal
+          onClose={() => setOpenModal(!openModal)}
+          onSubmit={handlePostToDB}
+        />
+      )}
     </Box>
   );
 }

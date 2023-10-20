@@ -1,155 +1,102 @@
-GET  http://localhost:3005/api/students
+GET http://localhost:3005/api/questions
 
 ###
-POST  http://localhost:3005/api/questions
+POST http://localhost:3005/api/staffs
 Content-Type: application/json
 
 {
-  "classId" : "string",
-  "title" : "string",
-  "timeLimit" : int,
-  "categoryId" : "string",
-  "questionTexts": [
-    {
-      "question": "What is the capital of Ghana?"
-    }
-  ],
-  "answerChoices": [
-    {
-      "choice": "Kumasi",
-      "isCorrect": false
-    },
-    {
-      "choice": "Accra",
-      "isCorrect": true
-    },
-    {
-      "choice": "Sekondi",
-      "isCorrect": false
-    },
-    {
-      "choice": "Obuasi",
-      "isCorrect": false
-    }
-  ]
-}
-
-
-###
-PATCH http://localhost:3005/api/questions/7
-Content-Type: application/json
-
-{
-  "answerChoices":{
-    "create":
-    [
-    {
-      "choice": "Gibson",
-      "isCorrect": true
-    },
-    {
-      "choice": "Yaw",
-      "isCorrect": false
-    },
-    {
-      "choice": "George",
-      "isCorrect": false
-    },
-    {
-      "choice": "Jonah",
-      "isCorrect": false
-    }
-  ]},
-  "question":{
-      "set":"What is your name"
-    }
+    "firstname": "Emily",
+    "middlename": "Doe",
+    "lastname": "Smith",
+    "email": "emily@test.io",
+    "primary_contact": "020030300",
+    "dob": "1990/06/25",
+    "residence": "Mpraeso"
 }
 
 ###
-DELETE  http://localhost:3005/api/questions/5
-
-###
-GET  http://localhost:3005/api/staffs
-
-###
-POST  http://localhost:3005/api/staffs
+POST http://localhost:3005/api/questions
 Content-Type: application/json
 
 {
-  "staff_id": "staff123",
-  "firstname": "John",
-  "middlename": "Doe",
-  "lastname": "Smith",
-  "email": "john.smith@example.com",
-  "primary_contact": "+1234567890",
-  "secondary_contact": "+9876543210",
-  "dob": "1990-01-15T00:00:00.000Z",
-  "residence": "123 Main St, City",
-  "is_admin": true,
-  "is_active": true,
-  "subjects": {
-    "create":{
-    "name": "English Language",
-    "code": "ENGL 157",
-    "staff_id": "staff123",
-    "academic_year_id": 1,
-    "term_id": 1,
-    "class_id": 1,
-    "academic_year":{
-      "create":{
-        "name": "2023/2024 Academic Year"
-      }
-    },
-    "term":{
-      "create":{
-        "name":"First term"
-      }
-    }
-    }
-  },
-  "date_registered": "2023-09-30T08:00:00.000Z",
-  "question": {
-    "create":{
-      "question": "What is your name",
-      "class": {
-        "create":{
-          "name": "JHS 2"
+    "title": "English",
+    "timeLimit": 30,
+    "categoryId": "85c0ada3-321b-4d98-9e78-d33b89daa533",
+    "deadline": "2023/10/29",
+    "classId": "e23a0727-a533-490c-9226-1f8cb75bbd14",
+    "questionTexts":[
+        {
+            "question":"Ha_ _iness",
+            "answerChoices": [
+                {
+                    "choice": "pp",
+                    "isCorrect": true
+                },
+                {
+                    "choice": "rv"
+                },
+                {
+                    "choice": "su"
+                },
+                {
+                    "choice": "rp"
+                }
+            ]
+        },
+        {
+            "question":"Aero_ _ane",
+            "answerChoices": [
+                {
+                    "choice": "pl",
+                    "isCorrect": true
+                },
+                {
+                    "choice": "rv"
+                },
+                {
+                    "choice": "su"
+                },
+                {
+                    "choice": "rp"
+                }
+            ]
+        },
+        {
+            "question":"Me_ _ _ge",
+            "answerChoices": [
+                {
+                    "choice": "pp",
+                    "isCorrect": false
+                },
+                {
+                    "choice": "ssa",
+                    "isCorrect": true
+                },
+                {
+                    "choice": "su"
+                },
+                {
+                    "choice": "rp"
+                }
+            ]
+        },
+        {
+            "question":"Gh_n_",
+            "answerChoices": [
+                {
+                    "choice": "a and a",
+                    "isCorrect": true
+                },
+                {
+                    "choice": "rv and a"
+                },
+                {
+                    "choice": "su and a"
+                },
+                {
+                    "choice": "rp and a"
+                }
+            ]
         }
-      },
-      "category":{
-        "connect":{
-          "id": 1
-        }       
-      }
-    }
-  },
-  "profile_pic": {
-    "type": "Buffer",
-    "data":[128, 108]
-  },
-  "class":{
-    "create":{
-      "name":"JHS 2"
-    }
-  }
-}
-
-###
-PATCH http://localhost:3005/api/staffs/4
-Content-Type: application/json
-
-{
-  "profile_pic":{
-    "type": "Buffer",
-    "data": [128,108]
-  }
-}
-
-###
-POST http://localhost:3005/api/login
-Content-Type: application/json
-
-{
-  "name": "Emily",
-  "staffId": ""
+    ]
 }

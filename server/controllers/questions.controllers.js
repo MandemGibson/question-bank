@@ -1,71 +1,80 @@
-const { getQuestions, getQuestionById, deleteQuestionById, updateQuestionById, createTopic } = require("../services/questions.service");
+const {
+  getQuestions,
+  getQuestionById,
+  deleteQuestionById,
+  updateQuestionById,
+  createTopic,
+} = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
-    try {
-        const questions = await getQuestions()
-        res.json(questions);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const questions = await getQuestions();
+    res.json(questions);
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function getQuestionByIdHandler(req, res, next) {
-    const { id } = req.params;
-    try {
-        const question = await getQuestionById(id)
-        res.json(question);
-    } catch (error) {
-        next(error);
-    }
+  const { id } = req.params;
+  try {
+    const question = await getQuestionById(id);
+    res.json(question);
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function createQuestionsHandler(req, res, next) {
-    try {
+  try {
+    const data = req.body;
 
-        const { classId, title, timeLimit, deadline, categoryId, questionTexts } = req.body
+    const topicData = {
+      classId: classId,
+      title: title,
+      timeLimit: timeLimit,
+      deadline: new Date(deadline),
+      categoryId: categoryId,
+    };
 
-        const topicData = {
-            classId: classId,
-            title: title,
-            timeLimit: timeLimit,
-            deadline: new Date(deadline),
-            categoryId: categoryId,
-        }
+    const topic = await createTopic({ data: topicData, questionTexts });
 
-        const topic = await createTopic({ data: topicData, questionTexts })
-
-        res.status(201).json(topic);
-    } catch (error) {
-        next(error);
-    }
+    res.status(201).json(topic);
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function deleteQuestionsHandler(req, res, next) {
-    try {
-        const { id } = req.params;
-        await deleteQuestionById(id)
-        res.sendStatus(200);
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const { id } = req.params;
+    await deleteQuestionById(id);
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
 }
 
 async function updateQuestionHandler(req, res, next) {
-    try {
-        const { id } = req.params;
-        const { question, answerChoices } = req.body
+  try {
+    const { id } = req.params;
+    const { question, answerChoices } = req.body;
 
-        const updatedQuestion = await updateQuestionById({ id, question, answerChoices })
-        res.json(updatedQuestion);
-    } catch (error) {
-        next(error);
-    }
+    const updatedQuestion = await updateQuestionById({
+      id,
+      question,
+      answerChoices,
+    });
+    res.json(updatedQuestion);
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = {
-    getQuestionsHandler,
-    getQuestionByIdHandler,
-    createQuestionsHandler,
-    deleteQuestionsHandler,
-    updateQuestionHandler,
-}
+  getQuestionsHandler,
+  getQuestionByIdHandler,
+  createQuestionsHandler,
+  deleteQuestionsHandler,
+  updateQuestionHandler,
+};
