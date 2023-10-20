@@ -22,17 +22,17 @@ async function getQuestionByIdHandler(req, res, next) {
 async function createQuestionsHandler(req, res, next) {
     try {
 
-        const data = req.body
+        const { classId, title, timeLimit, deadline, categoryId, questionTexts } = req.body
 
         const topicData = {
-            classId: data.classId,
-            title: data.title,
-            timeLimit: data.timeLimit,
-            deadline: new Date(data.deadline),
-            categoryId: data.categoryId,
+            classId: classId,
+            title: title,
+            timeLimit: timeLimit,
+            deadline: new Date(deadline),
+            categoryId: categoryId,
         }
 
-        const topic = await createTopic(topicData, questionTexts)
+        const topic = await createTopic({ data: topicData, questionTexts })
 
         res.status(201).json(topic);
     } catch (error) {
