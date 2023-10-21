@@ -5,15 +5,24 @@ const prisma = PrismaService
 
 async function getAllStaff() {
     return await prisma.staff.findMany({
+        select: { password: false },
         include: { class: true },
     })
 }
 
+async function getStaffById(id) {
+    return await prisma.staff.findUnique({
+        where: {
+            id
+        }
+    })
+}
+
 async function createStaff(staffDetails) {
-    const id = await generateId(await getAllStaff())
+    const staff_id = await generateId(await getAllStaff(), 'staff')
     return await prisma.staff.create({
         data: {
-            id,
+            staff_id,
             ...staffDetails
         },
     });
@@ -41,4 +50,5 @@ module.exports = {
     createStaff,
     updateStaff,
     deleteStaff,
+    getStaffById,
 }

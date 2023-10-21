@@ -5,7 +5,8 @@ const express = require("express");
 const createError = require("http-errors");
 
 const apiRouter = require("./routes/api.routes");
-const createAdmin = require("./util/createAdmin");
+const { createAdmin } = require("./services/admin.service");
+const deserialiseUser = require("./middleware/deserialiseUser");
 
 const PORT = process.env.PORT || 3000;
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
+app.use(deserialiseUser())
 
 app.get("/", async (req, res, next) => {
   res.send({ message: "Awesome it works 🐻" });
@@ -36,7 +38,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, async () => {
+app.listen(PORT, '127.0.0.1', async () => {
   console.log(`@ http://localhost:${PORT}`)
   await createAdmin()
 });

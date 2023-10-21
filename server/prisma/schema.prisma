@@ -10,8 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Auth {
+  id         String   @id @unique @default(uuid())
+  userId     String   @unique
+  staff_id   String?
+  student_id String?
+  password   String
+  staff      Staff?   @relation(fields: [staff_id, userId], references: [id, staff_id], onDelete: Cascade, onUpdate: Cascade, map: "staff_auth_fk")
+  student    Student? @relation(fields: [student_id, userId], references: [id, student_id], onDelete: Cascade, onUpdate: Cascade, map: "student_auth_fk")
+
+  @@unique([staff_id, userId], map: "staff_auth_pk")
+  @@unique([student_id, userId], map: "student_auth_pk")
+}
+
 model Student {
-  id              Int        @id @default(autoincrement())
+  id              String     @id @default(uuid())
   student_id      String     @unique
   firstname       String
   middlename      String?
@@ -21,10 +34,14 @@ model Student {
   password        String
   class           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   classId         String
+  role            Int        @default(6631)
   guardians       Guardian[]
   date_registered DateTime?
   profile_pic     Bytes      @unique
   Results         Results[]
+  auth            Auth?
+
+  @@unique([id, student_id], map: "student_auth_fk")
 }
 
 model Guardian {
@@ -34,11 +51,12 @@ model Guardian {
   secondary_contact String?
   date_created      DateTime
   student           Student  @relation(fields: [studentId], references: [id])
-  studentId         Int
+  studentId         String
 }
 
 model Staff {
-  id                String         @id
+  id                String         @id @default(uuid())
+  staff_id          String         @unique
   firstname         String
   middlename        String?
   lastname          String
@@ -50,11 +68,15 @@ model Staff {
   residence         String
   is_admin          Boolean        @default(false)
   is_active         Boolean        @default(true)
+  role              Int            @default(3921)
   subjects          StaffSubject[]
   date_registered   DateTime?      @default(now())
   topics            Topic[]
   // profile_pic       Bytes
   class             Class[]
+  Auth              Auth?
+
+  @@unique([staff_id, id], map: "staff_auth_fk")
 }
 
 model StaffSubject {
@@ -141,7 +163,7 @@ model Results {
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
   student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  studentId  Int
+  studentId  String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -150,10 +172,12 @@ model Admin {
   id       String @id @default(uuid())
   username String
   password String
+  role     Int    @default(9291)
 }
 
 model Sessions {
-  id     String @id @default(uuid())
+  id     String  @id @default(uuid())
   userId String
-  ip     String @db.Inet
+  ip     String  @db.Inet
+  valid  Boolean @default(true)
 }
