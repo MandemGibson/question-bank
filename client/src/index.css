@@ -31,11 +31,11 @@ code {
   border-color: white transparent white transparent;
   border-radius: 50%;
   align-self: center;
-  animation: spin 1.2s ease linear
+  animation: spin 1.2s linear infinite;
 }
 
 @keyframes spin {
   to {
-    rotate: (360deg);
+    transform: rotate(360deg);
   }
 }

@@ -10,12 +10,22 @@ function QuesetionDetails() {
   const [question, setQuestion] = useState(null);
 
   useEffect(() => {
-    const foundQuestion = questions.find((q) => q.id === Number(id));
+    const foundQuestion = questions.find((q) => q.id === id);
     setQuestion(foundQuestion);
   }, [questions, id]);
 
   if (!question) {
-    return <p>Loading...</p>;
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
+        height="100vh"
+      >
+        <p>Loading...</p>
+      </Box>
+    );
   }
 
   return (

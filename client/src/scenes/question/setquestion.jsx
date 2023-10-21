@@ -80,9 +80,10 @@ export function Modal({ onClose, onSubmit }) {
               }}
             />
             <input
+              type="date"
               required
               name="deadline"
-              placeholder="Deadline (eg. 15/10/2023)"
+              aria-label="Deadline"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               style={{
@@ -292,20 +293,30 @@ function AddQuestion() {
   const handlePostToDB = async (e, title, deadline, duration) => {
     e.preventDefault();
 
-    const data = questionList;
+    const data = {
+      questionTexts: questionList.map((q) => ({
+        question: q.question,
+        answerChoices: q.answerChoices.map((choice) => ({
+          choice: choice,
+          isCorrect: choice === q.correctAnswer 
+        })),
+      })),
+    };
 
     try {
       await axios.post("http://localhost:3005/api/questions", {
-        data: {
-          questions: data.question,
-          title,
-          deadline,
-          duration,
-        },
+        title: title,
+        classId: "e23a0727-a533-490c-9226-1f8cb75bbd14",
+        categoryId: "85c0ada3-321b-4d98-9e78-d33b89daa533",
+        timeLimit: Number(duration),
+        deadline: deadline,
+        data,
       });
     } catch (error) {
       console.error("An error has occured:", error);
     }
+
+    console.log(data)
   };
 
   return (

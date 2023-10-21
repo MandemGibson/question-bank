@@ -21,8 +21,8 @@ function OpenQuestion() {
   const [selectedChoice, setSelectedChoice] = useState();
 
   useEffect(() => {
-    const foundQuiz = questions.find((q) => q.id === Number(id));
-    setQuiz(foundQuiz);
+    const foundQuestion = questions.find((q) => q.id === id);
+    setQuiz(foundQuestion);
   }, [questions, id]);
 
   useEffect(() => {
@@ -79,7 +79,16 @@ function OpenQuestion() {
   };
 
   if (!quiz) {
-    return <Box className="spinner" />;
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        minHeight="100vh"
+      >
+        <Box position="relative" className="spinner" />
+      </Box>
+    );
   }
 
   return (
@@ -149,27 +158,27 @@ function OpenQuestion() {
         position="sticky"
         top="20px"
       >
-        <ol>
-          {quiz.questions?.map((question, index) => {
-            return (
-              <Box
-                fontFamily="Rubik"
-                fontWeight="600"
-                key={question.id}
-                sx={{
-                  display: index === currentIndex ? "block" : "none",
-                }}
-              >
-                <li>
+        {quiz.questions?.map((question, index) => {
+          return (
+            <ol>
+              <Box key={question.id}>
+                <li
+                  style={{
+                    fontFamily: "Rubik",
+                    fontWeight: "600",
+                    display: index === currentIndex ? "block" : "none",
+                  }}
+                >
+                  {index + 1}
+                  {". "}
                   {question.question}
-
                   <Box mt={1}>
                     {question.answerChoices?.map((choice) => {
                       return (
                         <Box key={choice.id} display="flex" alignItems="center">
                           <input
                             key={choice.id}
-                            name={`${choice} && ${choice.questionTextId}`}
+                            name={`${choice} && ${question.id}`}
                             // checked={selectedChoice === choice.choice}
                             type="radio"
                             value={choice.choice}
@@ -187,9 +196,9 @@ function OpenQuestion() {
                   </Box>
                 </li>
               </Box>
-            );
-          })}
-        </ol>
+            </ol>
+          );
+        })}
         <Box display="flex" justifyContent="space-between" p={2}>
           <Button
             variant="none"
@@ -261,7 +270,7 @@ function OpenQuestion() {
                   width: "7rem",
                   height: "2rem",
                 }}
-                onClick={handleNext}
+                // onClick={handleNext}
               >
                 <p style={{ margin: "0px" }}>Submit</p>
               </Button>
