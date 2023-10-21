@@ -6,7 +6,18 @@ async function getSessionById({ id, ip }) {
     return await prisma.sessions.findFirst({
         where: {
             id,
-            ip
+            ip,
+            valid: true
+        }
+    })
+}
+
+async function getSessionByUserId({ userId, ip }) {
+    return await prisma.sessions.findFirst({
+        where: {
+            userId,
+            ip,
+            valid: true
         }
     })
 }
@@ -23,4 +34,5 @@ async function createSession({ userId, ip }) {
 module.exports = {
     createSession,
     getSessionById,
+    getSessionByUserId,
 }

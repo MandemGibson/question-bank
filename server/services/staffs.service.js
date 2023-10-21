@@ -18,12 +18,17 @@ async function getStaffById(id) {
     })
 }
 
-async function createStaff(staffDetails) {
+async function createStaff({ staffDetails, password }) {
     const staff_id = await generateId(await getAllStaff(), 'staff')
     return await prisma.staff.create({
         data: {
             staff_id,
-            ...staffDetails
+            ...staffDetails,
+            Auth: {
+                create: {
+                    password
+                }
+            }
         },
     });
 }

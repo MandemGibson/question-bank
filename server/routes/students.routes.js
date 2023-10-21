@@ -4,4 +4,4 @@ const studentRouter = require("express").Router();
 
 studentRouter.get("/", getAllStudentsHandler);
 
-module.exports = { studentRouter };
+module.exports = studentRouter
