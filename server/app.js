@@ -5,10 +5,12 @@ const express = require("express");
 const createError = require("http-errors");
 
 const apiRouter = require("./routes/api.routes");
+const createAdmin = require("./util/createAdmin");
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
@@ -34,4 +36,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => console.log(`@ http://localhost:${PORT}`));
+app.listen(PORT, async () => {
+  console.log(`@ http://localhost:${PORT}`)
+  await createAdmin()
+});

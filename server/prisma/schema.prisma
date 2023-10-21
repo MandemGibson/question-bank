@@ -18,6 +18,7 @@ model Student {
   lastname        String
   dob             DateTime
   residence       String
+  password        String
   class           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   classId         String
   guardians       Guardian[]
@@ -45,6 +46,7 @@ model Staff {
   primary_contact   String         @unique
   secondary_contact String?
   dob               DateTime
+  password          String
   residence         String
   is_admin          Boolean        @default(false)
   is_active         Boolean        @default(true)
@@ -144,6 +146,14 @@ model Results {
   updatedAt  DateTime @updatedAt
 }
 
-model User {
-  id String @id @default(uuid())
+model Admin {
+  id       String @id @default(uuid())
+  username String
+  password String
+}
+
+model Sessions {
+  id     String @id @default(uuid())
+  userId String
+  ip     String @db.Inet
 }
