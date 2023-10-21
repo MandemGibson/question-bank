@@ -293,15 +293,13 @@ function AddQuestion() {
   const handlePostToDB = async (e, title, deadline, duration) => {
     e.preventDefault();
 
-    const data = {
-      questionTexts: questionList.map((q) => ({
-        question: q.question,
-        answerChoices: q.answerChoices.map((choice) => ({
-          choice: choice,
-          isCorrect: choice === q.correctAnswer 
-        })),
+    const questionTexts = questionList.map((q) => ({
+      question: q.question,
+      answerChoices: q.answerChoices.map((choice) => ({
+        choice: choice,
+        isCorrect: choice === q.correctAnswer,
       })),
-    };
+    }));
 
     try {
       await axios.post("http://localhost:3005/api/questions", {
@@ -310,13 +308,13 @@ function AddQuestion() {
         categoryId: "85c0ada3-321b-4d98-9e78-d33b89daa533",
         timeLimit: Number(duration),
         deadline: deadline,
-        data,
+        questionTexts: questionTexts,
       });
     } catch (error) {
       console.error("An error has occured:", error);
     }
 
-    console.log(data)
+    console.log(questionTexts);
   };
 
   return (

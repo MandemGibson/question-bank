@@ -1,7 +1,7 @@
 GET http://localhost:3005/api/questions
 
 ###
-DELETE http://localhost:3005/api/questions/176b9fd5-18b0-430a-bf5d-7493b32e1d2d
+DELETE http://localhost:3005/api/questions/33f49134-6334-40fe-90ed-2f8a45c90356
 ###
 POST http://localhost:3005/api/staffs
 Content-Type: application/json
