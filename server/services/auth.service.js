@@ -10,6 +10,26 @@ async function getAuth(userId) {
     })
 }
 
+async function loginUser({ userId, password }) {
+    let auth = await getAuth(userId)
+
+    if (!auth) auth = await loginAdmin({ username: userId, password })
+
+    if (auth.role) return auth
+
+    if (!auth) return undefined
+
+    const isEqual = await decryptPassword(password, auth.password)
+
+    if (!isEqual) return undefined
+
+    const user = await getStudentById(auth.userId) ?? await getStaffById(auth.userId)
+
+    if (!user) return undefined
+
+    return user
+}
+
 async function logoutUser(id) {
     return await prisma.sessions.update({
         where: {
@@ -23,5 +43,6 @@ async function logoutUser(id) {
 
 module.exports = {
     getAuth,
+    loginUser,
     logoutUser
 }
