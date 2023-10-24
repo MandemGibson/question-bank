@@ -11,23 +11,18 @@ async function getAuth(userId) {
 }
 
 async function loginUser({ userId, password }) {
-    let auth = await getAuth(userId)
-
-    if (!auth) auth = await loginAdmin({ username: userId, password })
-
-    if (auth.role) return auth
+    let auth = await getAuth(userId) ?? await loginAdmin({ username: userId, password })
 
     if (!auth) return undefined
+
+    if (auth.role) return auth
 
     const isEqual = await decryptPassword(password, auth.password)
 
     if (!isEqual) return undefined
 
-    const user = await getStudentById(auth.userId) ?? await getStaffById(auth.userId)
+    return await getStudentById(auth.userId) ?? await getStaffById(auth.userId) ?? undefined
 
-    if (!user) return undefined
-
-    return user
 }
 
 async function logoutUser(id) {
