@@ -15,5 +15,4 @@ apiRouter.use("/questions", questionRouter);
 apiRouter.use("/students", isAdmin, studentRouter);
 apiRouter.use("/auth", authRouter);
 
-
 module.exports = apiRouter;

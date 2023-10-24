@@ -1,4 +1,4 @@
-GET http://localhost:3005/api/questions
+GET http://localhost:3005/api/staffs
 
 ###
 DELETE http://localhost:3005/api/questions/33f49134-6334-40fe-90ed-2f8a45c90356
@@ -101,4 +101,13 @@ Content-Type: application/json
             ]
         }
     ]
+}
+
+###
+POST http://localhost:3005/api/auth/login
+Content-Type: application/json
+
+{
+    "userId": "STA1000",
+    "password": "emily"
 }

@@ -23,10 +23,14 @@ import ExamsTab from "./StudentSide/scenes/exams tab";
 import Grades from "./StudentSide/scenes/grades";
 import OpenQuestion from "./components/OpenQuestion";
 import { fetchStudents } from "./features/studentSlice";
+import AdminDashboard from "./AdminPage/scenes/dashboard";
+import AdminTopbar from "./AdminPage/scenes/global/AdminTopbar";
+import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
 
 const isLoggedIn = true;
-const isTeacher = true;
+const isTeacher = false;
 const isStudent = false;
+const isAdmin = true;
 
 function App() {
   const location = useLocation();
@@ -76,6 +80,21 @@ function App() {
               <Route exact path="/exams-tab/:id" element={<OpenQuestion />} />
               <Route exact path="/grades" element={<Grades />} />
               <Route exact path="/guide" element={<Guide />} />
+              <Route exact path="/feedback" element={<Feedback />} />
+            </Routes>
+          </main>
+        </>
+      ) : isLoggedIn && isAdmin ? (
+        <>
+          <AdminSidebar />
+          <main className="content">
+            <AdminTopbar />
+            <Routes>
+              <Route exact path="/" element={<AdminDashboard />} />
+              <Route exact path="/staff" element={<AdminDashboard />} />
+              <Route exact path="/students" element={<AdminDashboard />} />
+              <Route exact path="/statistics" element={<AdminDashboard />} />
+              <Route exact path="/guide" element={<AdminDashboard />} />
               <Route exact path="/feedback" element={<Feedback />} />
             </Routes>
           </main>

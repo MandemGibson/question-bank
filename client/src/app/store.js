@@ -3,6 +3,7 @@ import titleReducer from "../features/titleSlice";
 import questionReducer from "../features/questionSlice";
 import staffReducer from "../features/staffSlice";
 import studentReducer from "../features/studentSlice";
+import userReducer from "../features/userSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     question: questionReducer,
     staff: staffReducer,
     student: studentReducer,
+    user: userReducer,
   },
 });

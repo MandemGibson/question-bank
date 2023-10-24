@@ -11,6 +11,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+// import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const initialValues = {
   userId: "",
@@ -28,6 +30,7 @@ const userSchema = yup.object().shape({
 });
 
 function AuthPage() {
+  const [values, setValues] = useState(initialValues)
   const [showPassword, setShowPassword] = useState(false);
   const [showID, setShowID] = useState(false);
 
@@ -37,6 +40,26 @@ function AuthPage() {
 
   const handlePasswordClick = () => {
     setShowPassword(!showPassword);
+  };
+
+  const LoginToApp = async (e) => {
+    e.preventDefault();
+
+    const userData = {
+      userId: values.userId,
+      password: values.password
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3005/api/auth/login", userData)
+      const { user, sessionId } = response.data
+      
+      localStorage.setItem("sessionId", sessionId)
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionId}`
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (
@@ -151,6 +174,7 @@ function AuthPage() {
                   }}
                   variant="none"
                   type="submit"
+                  onClick={LoginToApp}
                 >
                   <p
                     style={{
