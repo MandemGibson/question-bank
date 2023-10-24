@@ -1,3 +1,4 @@
+const { loginAdmin } = require("./admin.service");
 const PrismaService = require("./prisma.service");
 
 const prisma = PrismaService
