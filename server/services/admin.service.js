@@ -4,19 +4,21 @@ const { createPassword, decryptPassword } = require("../util/password");
 const prisma = PrismaService
 
 async function getAdmins() {
-    return await prisma.admin.findMany()
+    return await prisma.admin.findMany({
+        select: {
+            password: false
+        }
+    })
 }
 
 async function getAdmin(filter) {
     return await prisma.admin.findFirst({
-        where: filter
+        where: filter,
     })
 }
 
 async function loginAdmin({ username, password }) {
     const admin = await getAdmin({ username })
-
-    console.log(username, password);
 
     if (!admin) return undefined
 
@@ -24,7 +26,11 @@ async function loginAdmin({ username, password }) {
 
     if (!validPassword) return undefined
 
-    return admin
+    return {
+        id: admin.id,
+        username: admin.username,
+        role: admin.role
+    }
 }
 
 async function createAdmin() {
