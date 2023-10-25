@@ -6,10 +6,10 @@ async function getAllStudents() {
     return await prisma.student.findMany();
 }
 
-async function getStudentById(studentId) {
+async function getStudentById(student_id) {
     return await prisma.student.findUnique({
         where: {
-            studentId
+            student_id
         }
     });
 }

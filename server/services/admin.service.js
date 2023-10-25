@@ -6,7 +6,9 @@ const prisma = PrismaService
 async function getAdmins() {
     return await prisma.admin.findMany({
         select: {
-            password: false
+            id: true,
+            username: true,
+            role: true
         }
     })
 }
@@ -49,6 +51,7 @@ async function createAdmin() {
 }
 
 module.exports = {
+    getAdmin,
     getAdmins,
     loginAdmin,
     createAdmin,
