@@ -27,6 +27,12 @@ import AdminDashboard from "./AdminPage/scenes/dashboard";
 import AdminTopbar from "./AdminPage/scenes/global/AdminTopbar";
 import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
 
+const ROLES = {
+  Admin: 9291,
+  Student: 6631,
+  Staff: 3921,
+};
+
 const isLoggedIn = false;
 const isTeacher = false;
 const isStudent = false;
