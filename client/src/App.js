@@ -27,10 +27,10 @@ import AdminDashboard from "./AdminPage/scenes/dashboard";
 import AdminTopbar from "./AdminPage/scenes/global/AdminTopbar";
 import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
 
-const isLoggedIn = true;
+const isLoggedIn = false;
 const isTeacher = false;
 const isStudent = false;
-const isAdmin = true;
+const isAdmin = false;
 
 function App() {
   const location = useLocation();

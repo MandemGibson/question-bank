@@ -13,23 +13,25 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // import { useDispatch } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const initialValues = {
   userId: "",
   password: "",
 };
 
-const numericRegExp = /^[0-9]*$/;
+// const numericRegExp = /^[0-9]*$/;
 
 const userSchema = yup.object().shape({
   userId: yup
     .string()
-    .matches(numericRegExp, "ID must contain only numbers")
+    // .matches(numericRegExp, "ID must contain only numbers")
     .required("required"),
   password: yup.string().required("required"),
 });
 
 function AuthPage() {
+  const navigate = useNavigate()
   const [values, setValues] = useState(initialValues)
   const [showPassword, setShowPassword] = useState(false);
   const [showID, setShowID] = useState(false);
@@ -52,11 +54,12 @@ function AuthPage() {
 
     try {
       const response = await axios.post("http://localhost:3005/api/auth/login", userData)
-      const { user, sessionId } = response.data
+      const { sessionId } = response.data
       
       localStorage.setItem("sessionId", sessionId)
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${sessionId}`
+      navigate("/")
     } catch (error) {
       console.error(error)
     }

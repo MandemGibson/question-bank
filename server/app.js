@@ -40,5 +40,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, "127.0.0.1", async () => {
   console.log(`@ http://localhost:${PORT}`);
-  await createAdmin();
+  const admin = await createAdmin();
+  console.log(admin ? `Created admin ${admin.id}` : 'Admin exists');
 });
