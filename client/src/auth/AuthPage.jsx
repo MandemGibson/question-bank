@@ -52,13 +52,15 @@ function AuthPage() {
         {
           headers: {
             Authorization: `Bearer ${sessionId}`,
+            // "Content-Type": "application/json"
           },
           withCredentials: true,
         }
       );
       const Id = response.data.sessionId;
 
-      console.log(response)
+      console.log(response);
+      console.log(Id);
 
       localStorage.setItem("sessionId", JSON.stringify(Id));
 

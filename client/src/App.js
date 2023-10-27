@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import Sidebar from "./scenes/global/Sidebar";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -13,8 +13,8 @@ import AddQuestion from "./scenes/question/setquestion";
 import AddQuiz from "./scenes/question/addquiz";
 import QuesetionDetails from "./components/QuestionDetails";
 import AuthPage from "./auth/AuthPage";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchQuestions } from "./features/questionSlice";
+import { useSelector } from "react-redux";
+// import { fetchQuestions } from "./features/questionSlice";
 import StudentDashBoard from "./StudentSide/scenes/dashboard";
 import StuSidebar from "./StudentSide/scenes/global/StuSidebar";
 import StuTopbar from "./StudentSide/scenes/global/StuTopbar";
@@ -22,7 +22,6 @@ import QuizTab from "./StudentSide/scenes/quiz tab";
 import ExamsTab from "./StudentSide/scenes/exams tab";
 import Grades from "./StudentSide/scenes/grades";
 import OpenQuestion from "./components/OpenQuestion";
-import { fetchStudents } from "./features/studentSlice";
 import AdminDashboard from "./AdminPage/scenes/dashboard";
 import AdminTopbar from "./AdminPage/scenes/global/AdminTopbar";
 import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
@@ -31,16 +30,11 @@ import { selectUser } from "./features/userSlice";
 function App() {
   const user = useSelector(selectUser);
   const location = useLocation();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchQuestions());
-    dispatch(fetchStudents());
-  }, [dispatch]);
 
   const isOpenQuiz = /^\/quiz-tab\/\d+|^\/exams-tab\/\d+/.test(
     location.pathname
   );
+
   return (
     <div className="app">
       {!user ? (

@@ -28,7 +28,6 @@ model Student {
   lastname        String
   dob             DateTime
   residence       String
-  password        String
   class           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   classId         String
   role            Int        @default(6631)

@@ -304,8 +304,8 @@ function AddQuestion() {
     try {
       await axios.post("http://localhost:3005/api/questions", {
         title: title,
-        classId: "e23a0727-a533-490c-9226-1f8cb75bbd14",
-        categoryId: "85c0ada3-321b-4d98-9e78-d33b89daa533",
+        classId: "30406c1f-aa95-4b84-81c0-43edfe947fe4",
+        categoryId: "d0d286dd-a221-4881-8cd4-d905179f3973",
         timeLimit: Number(duration),
         deadline: deadline,
         questionTexts: questionTexts,

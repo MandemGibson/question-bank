@@ -50,19 +50,19 @@ console.log(response)
       level: "Primary 2"
     },
     {
-      id: 1000,
+      id: 1001,
       name: "Philip Cudjoe",
       email: "test@test.io",
       level: "Primary 2"
     },
     {
-      id: 1000,
+      id: 1002,
       name: "Philip Cudjoe",
       email: "test@test.io",
       level: "Primary 2"
     },
     {
-      id: 1000,
+      id: 1003,
       name: "Philip Cudjoe",
       email: "test@test.io",
       level: "Primary 2"

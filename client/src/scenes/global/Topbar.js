@@ -1,22 +1,14 @@
 import { Avatar, Box } from "@mui/material";
-import React, { useEffect } from "react";
 import "../../cssModules/Topbar.css";
 import { connect } from "react-redux";
 import { selectTitle } from "../../features/titleSlice";
-import { selectStaff } from "../../features/staffSlice";
 import { useSelector } from "react-redux";
 import { ReactComponent as SearchIcon } from "../../svg/Search.svg";
 import { ReactComponent as NotificationIcon } from "../../svg/VectorBell.svg";
-import { useDispatch } from "react-redux";
-import { fetchStaffs } from "../../features/staffSlice";
+import { selectUser } from "../../features/userSlice";
 
 function Topbar() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchStaffs());
-  }, [dispatch]);
-  const staff = useSelector(selectStaff);
+  const user = useSelector(selectUser);
   const title = useSelector(selectTitle);
   return (
     <div className="topbar">
@@ -29,11 +21,10 @@ function Topbar() {
         <div className="bell--icon">
           <NotificationIcon />
         </div>
-        <Avatar src={staff?.profile_pic} sx={{ borderRadius: "10px" }} />
+        <Avatar src="" sx={{ borderRadius: "10px" }} />
         <Box display="flex" flexDirection="column" alignItems="normal" ml="5px">
           <p id="name" style={{ margin: "0px" }}>
-            {staff?.firstname}
-            {staff?.middlename} {staff?.lastname}
+            {user?.user.firstname} {user?.user.middlename} {user?.user.lastname}
           </p>
 
           <p id="position" style={{ margin: "0px" }}>

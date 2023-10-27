@@ -8,9 +8,9 @@ const studentRouter = require("./students.routes");
 const { isAdmin } = require("../middleware/role");
 const authRouter = require("./auth.routes");
 
-apiRouter.use("/staffs", isAdmin, staffRouter);
+apiRouter.use("/staffs", staffRouter);
 apiRouter.use("/questions", questionRouter);
-apiRouter.use("/students", isAdmin, studentRouter);
+apiRouter.use("/students", studentRouter);
 apiRouter.use("/auth", authRouter);
 
 module.exports = apiRouter;

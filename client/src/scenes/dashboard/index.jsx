@@ -20,7 +20,7 @@ function Dashboard() {
   const handleClick = () => {
     navigator("/questions");
   };
-  const num1 = 2;
+  const num1 = 0;
   const num2 = questions.length;
   return (
     <Box display="flex">
@@ -149,13 +149,13 @@ function Dashboard() {
           <Recent
             title="Posted Questions"
             subtitle={`${num1} of ${num2} completed`}
-            num1={2}
+            num1={num1}
             num2={num2}
           />
           <Recent
             title="Posted Questions"
             subtitle={`${num1} of ${num2} completed`}
-            num1={2}
+            num1={num1}
             num2={num2}
           />
         </Box>

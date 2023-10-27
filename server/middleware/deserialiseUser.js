@@ -4,29 +4,30 @@ const { getStaffById } = require("../services/staffs.service");
 const { getStudentById } = require("../services/students.service");
 
 async function deserialiseUser(req, res, next) {
-    try {
-        const sessionId = req.get("Authorization")?.replace("Bearer ", "");
-        const ip = req.ip;
+  try {
+    const sessionId = req.get("Authorization")?.replace("Bearer ", "");
+    const ip = req.ip;
 
-        if (!sessionId) return next();
+    if (!sessionId) return next();
 
-        const session = await getSessionById({ id: sessionId, ip });
+    const session = await getSessionById({ id: sessionId, ip });
 
-        if (!session) return next();
+    if (!session) return next();
 
-        const user =
-            (await getStaffById(session.userId)) ??
-            (await getStudentById(session.userId)) ??
-            (await getAdmin({ id: session.userId }));
+    const user =
+      (await getStaffById(session.userId)) ??
+      (await getStudentById(session.userId)) ??
+      (await getAdmin({ id: session.userId }));
+    console.log(user);
 
-        if (!user) return next();
+    if (!user) return next();
 
-        res.locals.user = user;
+    res.locals.user = user;
 
-        return next();
-    } catch (error) {
-        next(error);
-    }
+    return next();
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = deserialiseUser;
