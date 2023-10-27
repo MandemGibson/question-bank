@@ -6,11 +6,9 @@ const staffRouter = require("./staffs.routes");
 const questionRouter = require("./questions.routes");
 const studentRouter = require("./students.routes");
 const { isAdmin } = require("../middleware/role");
-const adminRouter = require("./admin.routes");
 const authRouter = require("./auth.routes");
 
-apiRouter.use("/staffs", staffRouter);
-apiRouter.use("/admin", isAdmin, adminRouter);
+apiRouter.use("/staffs", isAdmin, staffRouter);
 apiRouter.use("/questions", questionRouter);
 apiRouter.use("/students", isAdmin, studentRouter);
 apiRouter.use("/auth", authRouter);
