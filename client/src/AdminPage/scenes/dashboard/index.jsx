@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import React from "react";
 import AdminFlexBox from "../../../components/AdminFlexBox";
-import List from "../../../components/List";
+import DataTable from "react-data-table-component"
+// import List from "../../../components/List";
 
 function AdminDashboard() {
   return (
@@ -42,9 +43,7 @@ function AdminDashboard() {
               <p style={{ margin: "0" }}>Email</p>
               <p style={{ margin: "0" }}>Class</p>
               <p style={{ margin: "0" }}>Status</p> */}
-                          <table>
-                              <tr></tr>
-                          </table>
+                          <DataTable />
             </Box>
             {/* <List id="STA1000" name="Philip Cudjoe" email="themaingib@gmail.com" level="Primary 6"/> */}
           </Box>

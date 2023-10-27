@@ -1,58 +1,59 @@
 const PrismaService = require("./prisma.service");
 const { createPassword, decryptPassword } = require("../util/password");
 
-const prisma = PrismaService
+const prisma = PrismaService;
 
 async function getAdmins() {
-    return await prisma.admin.findMany({
-        select: {
-            id: true,
-            username: true,
-            role: true
-        }
-    })
+  return await prisma.admin.findMany({
+    select: {
+      id: true,
+      username: true,
+      role: true,
+    },
+  });
 }
 
 async function getAdmin(filter) {
-    return await prisma.admin.findFirst({
-        where: filter,
-    })
+  return await prisma.admin.findFirst({
+    where: filter,
+  });
 }
 
 async function loginAdmin({ username, password }) {
-    const admin = await getAdmin({ username })
+  const admin = await getAdmin({ username });
 
-    if (!admin) return undefined
+  console.log(username, password);
 
-    const validPassword = await decryptPassword(password, admin.password)
+  if (!admin) return undefined;
 
-    if (!validPassword) return undefined
+  const validPassword = await decryptPassword(password, admin.password);
 
-    return {
-        id: admin.id,
-        username: admin.username,
-        role: admin.role
-    }
+  if (!validPassword) return undefined;
+
+  return {
+    id: admin.id,
+    username: admin.username,
+    role: admin.role,
+  };
 }
 
 async function createAdmin() {
-    const admin = await getAdmins()
+  const admin = await getAdmins();
 
-    if (admin?.length !== 0) return
+  if (admin?.length !== 0) return;
 
-    const password = await createPassword('admin')
+  const password = await createPassword("admin");
 
-    return await prisma.admin.create({
-        data: {
-            username: 'admin',
-            password
-        }
-    })
+  return await prisma.admin.create({
+    data: {
+      username: "admin",
+      password,
+    },
+  });
 }
 
 module.exports = {
-    getAdmin,
-    getAdmins,
-    loginAdmin,
-    createAdmin,
-}
+  getAdmin,
+  loginAdmin,
+  createAdmin,
+};
