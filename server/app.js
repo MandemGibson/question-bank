@@ -7,6 +7,7 @@ const createError = require("http-errors");
 const apiRouter = require("./routes/api.routes");
 const { createAdmin } = require("./services/admin.service");
 const deserialiseUser = require("./middleware/deserialiseUser");
+const errorHandler = require("./middleware/errorHandler");
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,13 +31,7 @@ app.use((req, res, next) => {
 
 console.log(`listening on port ${process.env.PORT}`);
 
-app.use((err, req, res, next) => {
-  const status = err.status || 500;
-  res.status(status).json({
-    status: status,
-    message: err.message,
-  });
-});
+app.use(errorHandler);
 
 app.listen(PORT, "127.0.0.1", async () => {
   console.log(`@ http://localhost:${PORT}`);

@@ -1,5 +1,8 @@
+const { decryptPassword } = require("../util/password");
 const { loginAdmin } = require("./admin.service");
 const PrismaService = require("./prisma.service");
+const { getStaffById } = require("./staffs.service");
+const { getStudentById } = require("./students.service");
 
 const prisma = PrismaService
 

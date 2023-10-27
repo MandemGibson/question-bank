@@ -11,14 +11,15 @@ async function getStaffHandler(req, res, next) {
 
 async function createStaffHandler(req, res, next) {
     try {
-        const data = req.body;
-        data.dob = new Date(data.dob)
+        const staffDetails = req.body;
+        staffDetails.dob = new Date(staffDetails.dob)
 
-        const { password } = data
+        const { password } = staffDetails
+        staffDetails.password = undefined
         // if (data.profile_pic && data.profile_pic.data) {
         //     data.profile_pic = Buffer.from(data.profile_pic.data, "base64");
         // }
-        const staff = await createStaff({ data, password })
+        const staff = await createStaff({ staffDetails, password })
         res.status(201).json(staff);
     } catch (error) {
         next(error);
