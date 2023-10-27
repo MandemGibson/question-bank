@@ -13,7 +13,7 @@ import AddQuestion from "./scenes/question/setquestion";
 import AddQuiz from "./scenes/question/addquiz";
 import QuesetionDetails from "./components/QuestionDetails";
 import AuthPage from "./auth/AuthPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions } from "./features/questionSlice";
 import StudentDashBoard from "./StudentSide/scenes/dashboard";
 import StuSidebar from "./StudentSide/scenes/global/StuSidebar";
@@ -26,19 +26,10 @@ import { fetchStudents } from "./features/studentSlice";
 import AdminDashboard from "./AdminPage/scenes/dashboard";
 import AdminTopbar from "./AdminPage/scenes/global/AdminTopbar";
 import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
-
-const ROLES = {
-  Admin: 9291,
-  Student: 6631,
-  Staff: 3921,
-};
-
-const isLoggedIn = false;
-const isTeacher = false;
-const isStudent = false;
-const isAdmin = false;
+import { selectUser } from "./features/userSlice";
 
 function App() {
+  const user = useSelector(selectUser);
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -52,7 +43,9 @@ function App() {
   );
   return (
     <div className="app">
-      {isLoggedIn && isTeacher ? (
+      {!user ? (
+        <AuthPage />
+      ) : user?.user.role === 3921 ? (
         <>
           <Sidebar />
           <main className="content">
@@ -73,7 +66,7 @@ function App() {
             </Routes>
           </main>
         </>
-      ) : isLoggedIn && isStudent ? (
+      ) : user?.user.role === 6631 ? (
         <>
           {isOpenQuiz ? null : <StuSidebar />}
           <main className="content">
@@ -90,23 +83,23 @@ function App() {
             </Routes>
           </main>
         </>
-      ) : isLoggedIn && isAdmin ? (
-        <>
-          <AdminSidebar />
-          <main className="content">
-            <AdminTopbar />
-            <Routes>
-              <Route exact path="/" element={<AdminDashboard />} />
-              <Route exact path="/staff" element={<AdminDashboard />} />
-              <Route exact path="/students" element={<AdminDashboard />} />
-              <Route exact path="/statistics" element={<AdminDashboard />} />
-              <Route exact path="/guide" element={<AdminDashboard />} />
-              <Route exact path="/feedback" element={<Feedback />} />
-            </Routes>
-          </main>
-        </>
       ) : (
-        <AuthPage />
+        user?.user.role === 9291 && (
+          <>
+            <AdminSidebar />
+            <main className="content">
+              <AdminTopbar />
+              <Routes>
+                <Route exact path="/" element={<AdminDashboard />} />
+                <Route exact path="/staff" element={<AdminDashboard />} />
+                <Route exact path="/students" element={<AdminDashboard />} />
+                <Route exact path="/statistics" element={<AdminDashboard />} />
+                <Route exact path="/guide" element={<AdminDashboard />} />
+                <Route exact path="/feedback" element={<Feedback />} />
+              </Routes>
+            </main>
+          </>
+        )
       )}
     </div>
   );

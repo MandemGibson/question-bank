@@ -11,9 +11,9 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { login } from "../features/userSlice";
 
 const initialValues = {
   userId: "",
@@ -31,8 +31,7 @@ const userSchema = yup.object().shape({
 });
 
 function AuthPage() {
-  const navigate = useNavigate()
-  const [values, setValues] = useState(initialValues)
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showID, setShowID] = useState(false);
 
@@ -44,24 +43,28 @@ function AuthPage() {
     setShowPassword(!showPassword);
   };
 
-  const LoginToApp = async (e) => {
-    e.preventDefault();
-
-    const userData = {
-      userId: values.userId,
-      password: values.password
-    }
-
+  const LoginToApp = async (values) => {
     try {
-      const response = await axios.post("http://localhost:3005/api/auth/login", userData)
-      const { sessionId } = response.data
-      
-      localStorage.setItem("sessionId", sessionId)
+      const sessionId = localStorage.getItem("sessionId");
+      const response = await axios.post(
+        "http://localhost:3005/api/auth/login",
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+          withCredentials: true,
+        }
+      );
+      const Id = response.data.sessionId;
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionId}`
-      navigate("/")
+      console.log(response)
+
+      localStorage.setItem("sessionId", JSON.stringify(Id));
+
+      dispatch(login(response.data));
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -92,7 +95,14 @@ function AuthPage() {
           }}
           width="30%"
         >
-          <Formik initialValues={initialValues} validationSchema={userSchema}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={userSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              LoginToApp(values);
+              setSubmitting(false);
+            }}
+          >
             {({
               values,
               errors,
@@ -100,6 +110,7 @@ function AuthPage() {
               handleBlur,
               handleChange,
               handleSubmit,
+              isSubmitting,
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box textAlign="center">
@@ -177,7 +188,7 @@ function AuthPage() {
                   }}
                   variant="none"
                   type="submit"
-                  onClick={LoginToApp}
+                  disabled={isSubmitting}
                 >
                   <p
                     style={{

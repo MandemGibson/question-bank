@@ -1,10 +1,73 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import AdminFlexBox from "../../../components/AdminFlexBox";
-import DataTable from "react-data-table-component"
-// import List from "../../../components/List";
+import DataTable from "react-data-table-component";
+import { useSelector } from "react-redux";
+import { selectStudents } from "../../../features/studentSlice";
+import { selectStaff } from "../../../features/staffSlice"
+import axios from "axios";
+
+const column = [
+  {
+    name: "ID",
+    selector: row => row.id
+  },
+  {
+    name: "Name",
+    selector: row => row.name
+  },
+  {
+    name: "Email",
+    selector: row => row.email
+  },
+  {
+    name: "Class",
+    selector: row => row.level
+  },
+]
 
 function AdminDashboard() {
+  const students = useSelector(selectStudents)
+  const staffs = useSelector(selectStaff)
+
+  useEffect(() => {
+    const fetchStaff = async () => {
+      try {
+        const response = axios.get("http://localhost:3005/api/staffs")
+console.log(response)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+   fetchStaff()
+  },[])
+
+  const data = [
+    {
+      id: 1000,
+      name: "Philip Cudjoe",
+      email: "test@test.io",
+      level: "Primary 2"
+    },
+    {
+      id: 1000,
+      name: "Philip Cudjoe",
+      email: "test@test.io",
+      level: "Primary 2"
+    },
+    {
+      id: 1000,
+      name: "Philip Cudjoe",
+      email: "test@test.io",
+      level: "Primary 2"
+    },
+    {
+      id: 1000,
+      name: "Philip Cudjoe",
+      email: "test@test.io",
+      level: "Primary 2"
+    },
+  ]
   return (
     <Box display="flex" flexDirection="column" mx="30px" my="20px">
       <Box display="flex" justifyContent="space-between">
@@ -34,18 +97,12 @@ function AdminDashboard() {
             </p>
             <Box
               display="flex"
-            //   justifyContent="space-between"
+              //   justifyContent="space-between"
               mx="20px"
               mt="10px"
             >
-              {/* <p style={{ margin: "0" }}>ID</p>
-              <p style={{ margin: "0" }}>Name</p>
-              <p style={{ margin: "0" }}>Email</p>
-              <p style={{ margin: "0" }}>Class</p>
-              <p style={{ margin: "0" }}>Status</p> */}
-                          <DataTable />
+              <DataTable columns={column} data={data} />
             </Box>
-            {/* <List id="STA1000" name="Philip Cudjoe" email="themaingib@gmail.com" level="Primary 6"/> */}
           </Box>
           <Box
             bgcolor="white"

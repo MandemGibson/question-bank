@@ -4,7 +4,6 @@ GET http://localhost:3005/api/staffs
 DELETE http://localhost:3005/api/questions/33f49134-6334-40fe-90ed-2f8a45c90356
 ###
 POST http://localhost:3005/api/staffs
-Content-Type: application/json
 
 {
     "firstname": "Emily",
@@ -13,7 +12,11 @@ Content-Type: application/json
     "email": "emily@test.io",
     "primary_contact": "020030300",
     "dob": "1990/06/25",
-    "residence": "Mpraeso"
+    "residence": "Mpraeso",
+    "Auth":{
+        
+        "password": "emily"
+    }
 }
 
 ###
@@ -23,9 +26,9 @@ Content-Type: application/json
 {
     "title": "English",
     "timeLimit": 30,
-    "categoryId": "85c0ada3-321b-4d98-9e78-d33b89daa533",
+    "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
     "deadline": "2023/10/29",
-    "classId": "e23a0727-a533-490c-9226-1f8cb75bbd14",
+    "classId": "30406c1f-aa95-4b84-81c0-43edfe947fe4",
     "questionTexts":[
         {
             "question":"Ha_ _iness",
@@ -108,6 +111,6 @@ POST http://localhost:3005/api/auth/login
 Content-Type: application/json
 
 {
-    "userId": "STA1000",
-    "password": "emily"
+    "userId": "admin",
+    "password": "admin"
 }

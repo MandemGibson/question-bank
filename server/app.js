@@ -12,10 +12,23 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+const allowedOrigins = ["http://localhost:3000"];
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+  cors({
+    origin: function(origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 app.use(deserialiseUser);
 
 app.get("/", async (req, res, next) => {
@@ -41,5 +54,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, "127.0.0.1", async () => {
   console.log(`@ http://localhost:${PORT}`);
   const admin = await createAdmin();
-  console.log(admin ? `Created admin ${admin.id}` : 'Admin exists');
+  console.log(admin ? `Created admin ${admin.id}` : "Admin exists");
 });

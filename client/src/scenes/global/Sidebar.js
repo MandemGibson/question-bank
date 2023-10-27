@@ -11,8 +11,12 @@ import { ReactComponent as statisticsIcon } from "../../svg/Many Line Graph.svg"
 import { ReactComponent as usersGuideIcon } from "../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../svg/Vector.svg";
 import { useSidebar } from "../../SidebarContext";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/userSlice";
 
 function Sidebar() {
+  const dispatch = useDispatch();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const [selectedItem, setSelectedItem] = useState(() => {
     const localValue = localStorage.getItem("SIDEBARITEMS");
@@ -29,6 +33,18 @@ function Sidebar() {
 
   const handleItemClick = (title) => {
     setSelectedItem(title);
+  };
+
+  const LogoutOutOfApp = async () => {
+    try {
+      const response = await axios.patch(
+        "http://localhost:3005/api/auth/logout"
+      );
+      console.log(response);
+      dispatch(logout(response));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -125,6 +141,7 @@ function Sidebar() {
             fontWeight: "700",
             bgcolor: "#83EAF8",
           }}
+          onClick={LogoutOutOfApp}
         >
           Log out
         </Button>
