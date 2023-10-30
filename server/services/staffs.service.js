@@ -6,23 +6,21 @@ const prisma = PrismaService;
 
 async function getAllStaff() {
   return await prisma.staff.findMany({
-    // select: { password: false },
     include: {
-      // password: false,
-      class: true,
-    },
+      level: true
+    }
   });
 }
 
 async function getStaffById(staff_id) {
   return await prisma.staff.findUnique({
     where: {
-      staff_id,
-    },
+      staff_id
+    }
   });
 }
 
-async function createStaff({ staffDetails, password }) {
+async function createStaff({ staffDetails, password, level, subjects }) {
   const staff_id = await generateId(await getAllStaff(), "staff");
   const encryptedPassword = await createPassword(password);
 
@@ -32,27 +30,37 @@ async function createStaff({ staffDetails, password }) {
       ...staffDetails,
       Auth: {
         create: {
-          password: encryptedPassword,
-        },
+          password: encryptedPassword
+        }
       },
-    },
+      Class: {
+        createMany: {
+          data: level
+        }
+      },
+      StaffSubject: {
+        createMany: {
+          data: subjects
+        }
+      }
+    }
   });
 }
 
 async function updateStaff({ id, staffDetails }) {
   return await prisma.staff.update({
     where: {
-      id,
+      id
     },
-    data: staffDetails,
+    data: staffDetails
   });
 }
 
 async function deleteStaff(id) {
   return await prisma.staff.delete({
     where: {
-      id,
-    },
+      id
+    }
   });
 }
 
@@ -61,5 +69,5 @@ module.exports = {
   createStaff,
   updateStaff,
   deleteStaff,
-  getStaffById,
+  getStaffById
 };

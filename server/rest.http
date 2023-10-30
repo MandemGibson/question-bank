@@ -7,14 +7,29 @@ POST http://localhost:3005/api/staffs
 Content-Type: application/json
 
 {
-    "firstname": "John",
-    "middlename": "Doe",
-    "lastname": "Smith",
-    "email": "john@test.io",
-    "primary_contact": "020030300",
+    "firstname": "Jeph",
+    "lastname": "Mane",
+    "email": "jeff@test.io",
+    "primary_contact": "020030301",
     "dob": "1990/06/25",
     "residence": "Mpraeso",
-    "password": "emily"
+    "password": "emily",
+    "level": [
+        {
+            "name": "JHS 2"
+        },
+        {
+            "name": "Primary 2"
+        }
+    ],
+    "subjects":[
+        {
+            "name": "English Language"
+        },
+        {
+            "name": "Mathematics"
+        }
+    ]
 }
 
 ###

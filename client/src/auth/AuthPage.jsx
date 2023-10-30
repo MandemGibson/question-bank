@@ -52,7 +52,6 @@ function AuthPage() {
         {
           headers: {
             Authorization: `Bearer ${sessionId}`,
-            // "Content-Type": "application/json"
           },
           withCredentials: true,
         }

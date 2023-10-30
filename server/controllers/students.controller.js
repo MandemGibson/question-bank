@@ -20,6 +20,10 @@ async function createStudentHandler(req, res, next) {
     const { password } = studentDetails;
     studentDetails.password = undefined;
 
+    // if (data.profile_pic && data.profile_pic.data) {
+    //     data.profile_pic = Buffer.from(data.profile_pic.data, "base64");
+    // }
+
     const students = await createStudent({ studentDetails, password });
     res.json(students);
   } catch (error) {

@@ -61,7 +61,7 @@ function ExamsTab() {
           {questions && questions.length !== 0 ? (
             questions.map((question) => {
               return (
-                question.categoryId === "85c0ada3-321b-4d98-9e78-d33b89daa533" && (
+                question.categoryId === "d0d286dd-a221-4881-8cd4-d905179f3973" && (
                   <QuizQuest
                     key={question.id}
                     title={question.title}

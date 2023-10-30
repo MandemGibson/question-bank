@@ -1,123 +1,225 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AdminFlexBox from "../../../components/AdminFlexBox";
 import DataTable from "react-data-table-component";
-import { useSelector } from "react-redux";
-import { selectStudents } from "../../../features/studentSlice";
-import { selectStaff } from "../../../features/staffSlice"
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStudents, selectStudents } from "../../../features/studentSlice";
+import { fetchStaffs, selectStaff } from "../../../features/staffSlice";
+import {
+  fetchQuestions,
+  selectQuestion,
+} from "../../../features/questionSlice";
+import Calendar from "react-calendar";
+import "../../../cssModules/Calendar.css";
 
-const column = [
+const staffColumn = [
   {
     name: "ID",
-    selector: row => row.id
+    selector: (row) => row.id,
   },
   {
     name: "Name",
-    selector: row => row.name
+    selector: (row) => row.name,
   },
   {
     name: "Email",
-    selector: row => row.email
+    selector: (row) => row.email,
+  },
+  {
+    name: "Class(es)",
+    selector: (row) => row.level,
+  },
+  {
+    name: "Status",
+    selector: () => {
+      return (
+        <Box
+          borderRadius="0.3125rem"
+          backgroundColor="rgba(143, 219, 117, 0.40)"
+          color="#4CDA35"
+          fontWeight="600"
+          height="1.625rem"
+          width="4.1875rem"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <p style={{ margin: "0px" }}>Active</p>
+        </Box>
+      );
+    },
+  },
+];
+
+const studentColumn = [
+  {
+    name: "ID",
+    selector: (row) => row.id,
+  },
+  {
+    name: "Name",
+    selector: (row) => row.name,
   },
   {
     name: "Class",
-    selector: row => row.level
+    selector: (row) => row.level,
   },
-]
+  {
+    name: "Status",
+    selector: () => {
+      return (
+        <Box
+          borderRadius="0.3125rem"
+          backgroundColor="rgba(143, 219, 117, 0.40)"
+          color="#4CDA35"
+          fontWeight="600"
+          height="1.625rem"
+          width="4.1875rem"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <p style={{ margin: "0px" }}>Active</p>
+        </Box>
+      );
+    },
+  },
+];
 
 function AdminDashboard() {
-  const students = useSelector(selectStudents)
-  const staffs = useSelector(selectStaff)
+  const dispatch = useDispatch();
+  const students = useSelector(selectStudents);
+  const staffs = useSelector(selectStaff);
+  const questions = useSelector(selectQuestion);
+  const [date, setDate] = useState(new Date());
+
+  const onChange = (date) => {
+    setDate(date);
+  };
 
   useEffect(() => {
-    const fetchStaff = async () => {
-      try {
-        const response = axios.get("http://localhost:3005/api/staffs")
-console.log(response)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-   fetchStaff()
-  },[])
+    dispatch(fetchStaffs());
+    dispatch(fetchStudents());
+    dispatch(fetchQuestions());
+  }, [dispatch]);
 
-  const data = [
-    {
-      id: 1000,
-      name: "Philip Cudjoe",
-      email: "test@test.io",
-      level: "Primary 2"
+  const staffData = staffs.map((staff) => ({
+    id: staff.staff_id,
+    name: `${staff.firstname} ${staff.middlename || ""} ${staff.lastname}`,
+    email: staff.email,
+    level: staff.class.map((level) => {
+      return level.name + ", ";
+    }),
+  }));
+
+  const studentData = students.map((student) => ({
+    id: student.student_id,
+    name: `${student.firstname} ${student.middlename || ""} ${
+      student.lastname
+    }`,
+    level: student.class.name,
+  }));
+
+  const customStyles = {
+    head: {
+      style: {
+        fontSize: "1rem",
+        fontWeight: "600",
+        color: "#201D1D",
+      },
     },
-    {
-      id: 1001,
-      name: "Philip Cudjoe",
-      email: "test@test.io",
-      level: "Primary 2"
-    },
-    {
-      id: 1002,
-      name: "Philip Cudjoe",
-      email: "test@test.io",
-      level: "Primary 2"
-    },
-    {
-      id: 1003,
-      name: "Philip Cudjoe",
-      email: "test@test.io",
-      level: "Primary 2"
-    },
-  ]
+  };
+
   return (
     <Box display="flex" flexDirection="column" mx="30px" my="20px">
-      <Box display="flex" justifyContent="space-between">
-        <AdminFlexBox header="Total Staff" count="30" />
-        <AdminFlexBox header="Total Staff" count="30" />
-        <AdminFlexBox header="Total Staff" count="30" />
-        <AdminFlexBox header="Total Staff" count="30" />
+      <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+        <AdminFlexBox header="Total Staff" count={staffs.length} />
+        <AdminFlexBox header="Total Students" count={students.length} />
+        <AdminFlexBox header="Total Questions" count={questions.length} />
+        <AdminFlexBox header="Total Online" count="39" />
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Box display="flex" flexDirection="column" flexGrow={0} flexShrink={1}>
+        <Box display="flex" flexDirection="column">
           <Box
             bgcolor="white"
-            width="45rem"
-            height="20rem"
+            flex="1" //width="40rem"
+            minHeight="20rem"
+            height="min-content"
             borderRadius="0.625rem"
             mt="20px"
           >
-            <p
-              style={{
-                margin: "10px 0 0 10px",
-                fontSize: "1.25rem",
-                fontWeight: "600",
-                color: "#6b6a6a",
-              }}
-            >
-              Staff Lists
-            </p>
-            <Box
-              display="flex"
-              //   justifyContent="space-between"
-              mx="20px"
-              mt="10px"
-            >
-              <DataTable columns={column} data={data} />
+            <Box display="flex" mx="10px" flexDirection="column">
+              <DataTable
+                title={
+                  <p
+                    style={{
+                      margin: "0px",
+                      fontSize: "1.25rem",
+                      fontWeight: "600",
+                      color: "#6b6a6a",
+                    }}
+                  >
+                    Staff Lists
+                  </p>
+                }
+                columns={staffColumn}
+                data={staffData}
+                responsive
+                pagination
+                fixedHeader
+                highlightOnHover
+                customStyles={customStyles}
+              />
             </Box>
           </Box>
           <Box
             bgcolor="white"
-            width="45rem"
-            height="20rem"
+            flex="1 1" // width="45rem"
+            minHeight="20rem"
+            height="min-content"
             borderRadius="0.625rem"
             mt="20px"
-          ></Box>
+          >
+            <Box display="flex" mx="20px" mt="10px" flexDirection="column">
+              <DataTable
+                title={
+                  <p
+                    style={{
+                      margin: "0px",
+                      fontSize: "1.25rem",
+                      fontWeight: "600",
+                      color: "#6b6a6a",
+                    }}
+                  >
+                    Students Lists
+                  </p>
+                }
+                columns={studentColumn}
+                data={studentData}
+                responsive
+                pagination
+                fixedHeader
+                highlightOnHover
+                customStyles={customStyles}
+              />
+            </Box>
+          </Box>
         </Box>
         <Box
           bgcolor="white"
-          width="19rem"
+          // minWidth="19rem"
+          // width="min-content"
           mt="20px"
           borderRadius="0.625rem"
-        ></Box>
+          display="flex"
+          flexDirection="column"
+          // position="relative"
+        >
+          <div style={{ padding: "10px", width: "100%" }}>
+            {date.toDateString()}
+            <Calendar value={date} onChange={onChange} calendarType="hebrew" />
+          </div>
+        </Box>
       </Box>
     </Box>
   );

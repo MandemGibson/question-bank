@@ -61,7 +61,7 @@ function QuizTab() {
           {questions && questions.length !== 0 ? (
             questions.map((question) => {
               return (
-                question.categoryId === 1 && (
+                question.categoryId === "dc519019-c204-4e12-9a25-1df6b5604cf9" && (
                   <QuizQuest
                     key={question.id}
                     title={question.title}

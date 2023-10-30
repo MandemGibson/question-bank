@@ -28,12 +28,12 @@ model Student {
   lastname        String
   dob             DateTime
   residence       String
-  class           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  level           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   classId         String
   role            Int        @default(6631)
   guardians       Guardian[]
   date_registered DateTime?
-  profile_pic     Bytes      @unique
+  // profile_pic     Bytes?     @unique
   Results         Results[]
   auth            Auth?
 
@@ -68,7 +68,7 @@ model Staff {
   date_registered   DateTime?      @default(now())
   topics            Topic[]
   // profile_pic       Bytes
-  class             Class[]
+  level             Class[]
   Auth              Auth?
 
   @@unique([staff_id, id], map: "staff_auth_fk")
@@ -87,7 +87,7 @@ model StaffSubject {
   academicYearId   String
   term             Term         @relation(fields: [termId], references: [id])
   termId           String
-  class            Class[]
+  level            Class[]
 }
 
 model AcademicYear {
@@ -115,7 +115,7 @@ model Topic {
   id         String     @id @default(uuid())
   staff      Staff?     @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   staffId    String?
-  class      Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  level      Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   classId    String
   title      String
   questions  Question[]

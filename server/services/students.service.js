@@ -5,7 +5,9 @@ const PrismaService = require("./prisma.service");
 const prisma = PrismaService;
 
 async function getAllStudents() {
-  return await prisma.student.findMany();
+  return await prisma.student.findMany({
+    include: { class: true },
+  });
 }
 
 async function getStudentById(student_id) {

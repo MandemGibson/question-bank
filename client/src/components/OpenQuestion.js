@@ -160,8 +160,8 @@ function OpenQuestion() {
       >
         {quiz.questions?.map((question, index) => {
           return (
-            <ol>
-              <Box key={question.id}>
+            <ol key={question.id}>
+              <Box>
                 <li
                   style={{
                     fontFamily: "Rubik",
