@@ -6,15 +6,15 @@ const prisma = PrismaService;
 
 async function getAllStudents() {
   return await prisma.student.findMany({
-    include: { class: true },
+    include: { level: true }
   });
 }
 
 async function getStudentById(student_id) {
   return await prisma.student.findUnique({
     where: {
-      student_id,
-    },
+      student_id
+    }
   });
 }
 
@@ -27,15 +27,15 @@ async function createStudent({ studentDetails, password }) {
       ...studentDetails,
       auth: {
         create: {
-          password: encryptedPassword,
-        },
-      },
-    },
+          password: encryptedPassword
+        }
+      }
+    }
   });
 }
 
 module.exports = {
   getAllStudents,
   getStudentById,
-  createStudent,
+  createStudent
 };

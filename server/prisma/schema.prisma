@@ -75,19 +75,15 @@ model Staff {
 }
 
 model StaffSubject {
-  id               String       @id @default(uuid())
-  staff_id         String
-  name             String
-  code             String
-  academic_year_id Int
-  term_id          Int
-  class_id         Int
-  staff            Staff[]
-  academic_year    AcademicYear @relation(fields: [academicYearId], references: [id])
-  academicYearId   String
-  term             Term         @relation(fields: [termId], references: [id])
-  termId           String
-  level            Class[]
+  id             String        @id @default(uuid())
+  name           String
+  code           String?
+  staff          Staff[]
+  academic_year  AcademicYear? @relation(fields: [academicYearId], references: [id])
+  academicYearId String?
+  term           Term?         @relation(fields: [termId], references: [id])
+  termId         String?
+  level          Class[]
 }
 
 model AcademicYear {

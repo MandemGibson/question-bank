@@ -20,7 +20,7 @@ async function getStaffById(staff_id) {
   });
 }
 
-async function createStaff({ staffDetails, password, level, subjects }) {
+async function createStaff({ staffDetails, password, levelName, subjectName }) {
   const staff_id = await generateId(await getAllStaff(), "staff");
   const encryptedPassword = await createPassword(password);
 
@@ -33,15 +33,11 @@ async function createStaff({ staffDetails, password, level, subjects }) {
           password: encryptedPassword
         }
       },
-      Class: {
-        createMany: {
-          data: level
-        }
+      level: {
+        createMany: levelName
       },
-      StaffSubject: {
-        createMany: {
-          data: subjects
-        }
+      subjects: {
+        createMany: subjectName
       }
     }
   });

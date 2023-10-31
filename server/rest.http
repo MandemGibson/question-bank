@@ -14,7 +14,7 @@ Content-Type: application/json
     "dob": "1990/06/25",
     "residence": "Mpraeso",
     "password": "emily",
-    "level": [
+    "levelName": [
         {
             "name": "JHS 2"
         },
@@ -22,12 +22,12 @@ Content-Type: application/json
             "name": "Primary 2"
         }
     ],
-    "subjects":[
+    "subjectName":[
         {
-            "name": "English Language"
+            "subjectName": "English Language"
         },
         {
-            "name": "Mathematics"
+            "subjectName": "Mathematics"
         }
     ]
 }

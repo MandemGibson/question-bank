@@ -8,6 +8,8 @@ const apiRouter = require("./routes/api.routes");
 const { createAdmin } = require("./services/admin.service");
 const deserialiseUser = require("./middleware/deserialiseUser");
 const errorHandler = require("./middleware/errorHandler");
+const { createClass } = require("./services/class.service");
+const { createSubjects } = require("./services/subjects.service");
 
 const PORT = process.env.PORT || 3000;
 
@@ -27,7 +29,7 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true,
+    credentials: true
   })
 );
 app.use(deserialiseUser);
@@ -49,5 +51,9 @@ app.use(errorHandler);
 app.listen(PORT, "127.0.0.1", async () => {
   console.log(`@ http://localhost:${PORT}`);
   const admin = await createAdmin();
+  const level = await createClass();
+  const subject = await createSubjects();
   console.log(admin ? `Created admin ${admin.id}` : "Admin exists");
+  console.log(level);
+  console.log(subject);
 });

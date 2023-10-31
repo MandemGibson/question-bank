@@ -107,7 +107,7 @@ function AdminDashboard() {
     id: staff.staff_id,
     name: `${staff.firstname} ${staff.middlename || ""} ${staff.lastname}`,
     email: staff.email,
-    level: staff.class.map((level) => {
+    level: staff.level.map((level) => {
       return level.name + ", ";
     }),
   }));
@@ -117,7 +117,7 @@ function AdminDashboard() {
     name: `${student.firstname} ${student.middlename || ""} ${
       student.lastname
     }`,
-    level: student.class.name,
+    level: student.level.name,
   }));
 
   const customStyles = {
