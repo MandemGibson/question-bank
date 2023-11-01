@@ -12,7 +12,11 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import React from "react";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
+import { selectClass } from "../../../features/classSlice";
+import axios from "axios";
+import e from "express";
 
 const initialValues = {
   firstname: "",
@@ -63,24 +67,22 @@ const TextFieldStyle = {
   height: "2rem",
 };
 
-const classNames = [
-  "Creché",
-  "KG 1",
-  "KG 2",
-  "Primary 1",
-  "Primary 2",
-  "Primary 3",
-  "Primary 4",
-  "Primary 5",
-  "Primary 6",
-  "JHS 1",
-  "JHS 2",
-  "JHS 3",
-];
-
 const subjectNames = ["RME", "English", "BDT", "Integrated Science"];
 
 function AddStaff() {
+  const levels = useSelector(selectClass)
+
+  const handleCreateStaff = async(values) => {
+    e.preventDefault()
+
+    try {
+      const response = await axios.post("http://localhost:3005/api/levels", values)
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <Box display="flex" flexDirection="column" m={2}>
       <Box bgcolor="white" width="100%">
@@ -103,7 +105,10 @@ function AddStaff() {
             },
           }}
         >
-          <Formik initialValues={initialValues} validationSchema={userSchema}>
+          <Formik initialValues={initialValues} validationSchema={userSchema} onSubmit={(values, { setSubmitting }) => {
+              handleCreateStaff(values);
+              setSubmitting(false);
+            }}>
             {({
               values,
               errors,
@@ -321,11 +326,11 @@ function AddStaff() {
                           },
                         }}
                       >
-                        {classNames.map((name) => {
+                        {levels?.map((level) => {
                           return (
-                            <MenuItem key={name} value={name}>
-                              <Checkbox checked={values.class.includes(name)} />
-                              <ListItemText primary={name} />
+                            <MenuItem key={level.id} value={level.name}>
+                              <Checkbox checked={values.class.includes(level.name)} />
+                              <ListItemText primary={level.name} />
                             </MenuItem>
                           );
                         })}
@@ -390,6 +395,7 @@ function AddStaff() {
                     alignSelf: "center",
                     margin:"0.5rem 0 0.5rem 0"
                   }}
+                  disabled={isSubmitting}
                 >
                   <p
                     style={{

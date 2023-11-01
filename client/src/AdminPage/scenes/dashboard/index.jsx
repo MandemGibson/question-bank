@@ -9,6 +9,7 @@ import {
   fetchQuestions,
   selectQuestion,
 } from "../../../features/questionSlice";
+import { fetchClass } from "../../../features/classSlice";
 import Calendar from "react-calendar";
 import "../../../cssModules/Calendar.css";
 
@@ -98,6 +99,7 @@ function AdminDashboard() {
   };
 
   useEffect(() => {
+    dispatch(fetchClass());
     dispatch(fetchStaffs());
     dispatch(fetchStudents());
     dispatch(fetchQuestions());

@@ -7,14 +7,14 @@ POST http://localhost:3005/api/staffs
 Content-Type: application/json
 
 {
-    "firstname": "George",
-    "lastname": "Gucci",
-    "email": "george@test.io",
-    "primary_contact": "020030302",
+    "firstname": "Emily",
+    "lastname": "Smith",
+    "email": "emily@test.io",
+    "primary_contact": "0207373003",
     "dob": "1990/06/25",
     "residence": "Mpraeso",
     "password": "emily",
-    "level": ["Primary 1", "Primary 2"]
+    "level": ["JHS 1", "JHS 2", "JHS 3"]
 }
 
 ###
