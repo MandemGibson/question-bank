@@ -68,7 +68,7 @@ model Staff {
   date_registered   DateTime?      @default(now())
   topics            Topic[]
   // profile_pic       Bytes
-  level             Class[]
+  level             Class[]        @relation("StaffClasses")
   Auth              Auth?
 
   @@unique([staff_id, id], map: "staff_auth_fk")
@@ -76,7 +76,7 @@ model Staff {
 
 model StaffSubject {
   id             String        @id @default(uuid())
-  name           String
+  name           String        @unique
   code           String?
   staff          Staff[]
   academic_year  AcademicYear? @relation(fields: [academicYearId], references: [id])
@@ -100,11 +100,11 @@ model Term {
 
 model Class {
   id           String         @id @default(uuid())
-  name         String
+  name         String         @unique
   Student      Student[]
   staffSubject StaffSubject[]
   topics       Topic[]
-  staff        Staff[]
+  staff        Staff[]        @relation("StaffClasses")
 }
 
 model Topic {

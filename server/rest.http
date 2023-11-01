@@ -1,35 +1,20 @@
 GET http://localhost:3005/api/staffs
 
 ###
-DELETE http://localhost:3005/api/staffs/fc2fef11-bb8d-41b7-9507-b32895fa26a0
+DELETE http://localhost:3005/api/staffs/118940ec-9674-4e53-bef8-20fa21b9f683
 ###
 POST http://localhost:3005/api/staffs
 Content-Type: application/json
 
 {
-    "firstname": "Jeph",
-    "lastname": "Mane",
-    "email": "jeff@test.io",
-    "primary_contact": "020030301",
+    "firstname": "George",
+    "lastname": "Gucci",
+    "email": "george@test.io",
+    "primary_contact": "020030302",
     "dob": "1990/06/25",
     "residence": "Mpraeso",
     "password": "emily",
-    "levelName": [
-        {
-            "name": "JHS 2"
-        },
-        {
-            "name": "Primary 2"
-        }
-    ],
-    "subjectName":[
-        {
-            "subjectName": "English Language"
-        },
-        {
-            "subjectName": "Mathematics"
-        }
-    ]
+    "level": ["Primary 1", "Primary 2"]
 }
 
 ###
@@ -137,6 +122,9 @@ Content-Type: application/json
     "lastname": "Karim",
     "dob": "2002/12/19",
     "residence": "Kumasi",
-    "classId": "30406c1f-aa95-4b84-81c0-43edfe947fe4",
+    "classId": "20b8cff0-a47d-4c94-bca5-1104472aaddd",
     "password": "biggy"
 }
+
+###
+GET http://localhost:3005/api/levels

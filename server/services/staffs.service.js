@@ -20,24 +20,38 @@ async function getStaffById(staff_id) {
   });
 }
 
-async function createStaff({ staffDetails, password, levelName, subjectName }) {
+async function createStaff({ staffDetails, password, subjectName }) {
   const staff_id = await generateId(await getAllStaff(), "staff");
   const encryptedPassword = await createPassword(password);
+
+  const { level } = staffDetails;
+
+  const existingClass = await prisma.class.findMany({
+    where: {
+      name: { in: level }
+    }
+  });
+
+  // const classData = existingClass.map(classRecords => ({
+  //   id: classRecords.id
+  // }));
+  const classData = existingClass
+    ? existingClass.map(classRecords => {
+        return { id: classRecords.id, name: classRecords.name || undefined };
+      })
+    : [];
 
   return await prisma.staff.create({
     data: {
       staff_id,
       ...staffDetails,
+      level: {
+        connect: classData
+      },
       Auth: {
         create: {
           password: encryptedPassword
         }
-      },
-      level: {
-        createMany: levelName
-      },
-      subjects: {
-        createMany: subjectName
       }
     }
   });

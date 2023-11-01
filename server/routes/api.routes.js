@@ -7,10 +7,12 @@ const questionRouter = require("./questions.routes");
 const studentRouter = require("./students.routes");
 const { isAdmin } = require("../middleware/role");
 const authRouter = require("./auth.routes");
+const classRouter = require("./class.routes");
 
 apiRouter.use("/staffs", staffRouter);
 apiRouter.use("/questions", questionRouter);
 apiRouter.use("/students", studentRouter);
 apiRouter.use("/auth", authRouter);
+apiRouter.use("/levels", classRouter);
 
 module.exports = apiRouter;
