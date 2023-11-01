@@ -16,7 +16,6 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { selectClass } from "../../../features/classSlice";
 import axios from "axios";
-import e from "express";
 
 const initialValues = {
   firstname: "",
@@ -28,7 +27,7 @@ const initialValues = {
   dob: "",
   residence: "",
   password: "",
-  class: [],
+  level: [],
   subjects: [],
 };
 
@@ -72,11 +71,12 @@ const subjectNames = ["RME", "English", "BDT", "Integrated Science"];
 function AddStaff() {
   const levels = useSelector(selectClass)
 
-  const handleCreateStaff = async(values) => {
-    e.preventDefault()
+  const handleCreateStaff = async( values) => {
 
     try {
-      const response = await axios.post("http://localhost:3005/api/levels", values)
+      const response = await axios.post("http://localhost:3005/api/staffs", values, {
+        withCredentials: true
+      })
       console.log(response)
     } catch (error) {
       console.error(error)
@@ -310,10 +310,10 @@ function AddStaff() {
                         labelId="assign-class"
                         id="demo-multiple-checkbox"
                         multiple
-                        value={values.class}
+                        value={values.level}
                         onChange={(event) => {
                           const selectedClasses = event.target.value;
-                          setFieldValue("class", selectedClasses);
+                          setFieldValue("level", selectedClasses);
                         }}
                         input={<OutlinedInput label="Assign Class(es)" />}
                         renderValue={(selected) => selected.join(", ")}
@@ -329,7 +329,7 @@ function AddStaff() {
                         {levels?.map((level) => {
                           return (
                             <MenuItem key={level.id} value={level.name}>
-                              <Checkbox checked={values.class.includes(level.name)} />
+                              <Checkbox checked={values.level.includes(level.name)} />
                               <ListItemText primary={level.name} />
                             </MenuItem>
                           );
