@@ -1,10 +1,19 @@
 import { MoreVert } from "@mui/icons-material";
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
-function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
+function QuestionSet({
+  image,
+  title,
+  subtitle,
+  duration,
+  days,
+  onClick,
+  questionId,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (e) => {
@@ -18,6 +27,20 @@ function QuestionSet({ image, title, subtitle, duration, days, onClick }) {
 
   const handleOptionClick = (option, e) => {
     e.stopPropagation();
+
+    if (option === "Delete") {
+      async function DeleteQuestion() {
+        try {
+          const response = await axios.delete(
+            `http://localhost:3005/api/questions/${questionId}`
+          );
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      DeleteQuestion();
+    }
     handleClose();
   };
 

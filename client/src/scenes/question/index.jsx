@@ -110,6 +110,7 @@ function Questions() {
                 questions.map((question) => (
                   <QuestionSet
                     key={question.id}
+                    questionId={question.id}
                     title={question.title}
                     subtitle="JHS 2"
                     duration={question.timeLimit}

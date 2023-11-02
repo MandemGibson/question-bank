@@ -1,4 +1,4 @@
-GET http://localhost:3005/api/staffs
+GET http://localhost:3005/api/questions
 
 ###
 DELETE http://localhost:3005/api/staffs/118940ec-9674-4e53-bef8-20fa21b9f683
@@ -26,7 +26,7 @@ Content-Type: application/json
     "timeLimit": 30,
     "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
     "deadline": "2023/10/29",
-    "classId": "30406c1f-aa95-4b84-81c0-43edfe947fe4",
+    "level": "KG 1",
     "questionTexts":[
         {
             "question":"Ha_ _iness",

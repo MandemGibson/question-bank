@@ -15,6 +15,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { selectClass } from "../../../features/classSlice";
+import { selectSubject } from "../../../features/subjectSlice";
 import axios from "axios";
 
 const initialValues = {
@@ -66,22 +67,24 @@ const TextFieldStyle = {
   height: "2rem",
 };
 
-const subjectNames = ["RME", "English", "BDT", "Integrated Science"];
-
 function AddStaff() {
-  const levels = useSelector(selectClass)
+  const levels = useSelector(selectClass);
+  const subjects = useSelector(selectSubject);
 
-  const handleCreateStaff = async( values) => {
-
+  const handleCreateStaff = async (values) => {
     try {
-      const response = await axios.post("http://localhost:3005/api/staffs", values, {
-        withCredentials: true
-      })
-      console.log(response)
+      const response = await axios.post(
+        "http://localhost:3005/api/staffs",
+        values,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   return (
     <Box display="flex" flexDirection="column" m={2}>
@@ -105,10 +108,14 @@ function AddStaff() {
             },
           }}
         >
-          <Formik initialValues={initialValues} validationSchema={userSchema} onSubmit={(values, { setSubmitting }) => {
+          <Formik
+            initialValues={initialValues}
+            validationSchema={userSchema}
+            onSubmit={(values, { setSubmitting }) => {
               handleCreateStaff(values);
               setSubmitting(false);
-            }}>
+            }}
+          >
             {({
               values,
               errors,
@@ -329,7 +336,9 @@ function AddStaff() {
                         {levels?.map((level) => {
                           return (
                             <MenuItem key={level.id} value={level.name}>
-                              <Checkbox checked={values.level.includes(level.name)} />
+                              <Checkbox
+                                checked={values.level.includes(level.name)}
+                              />
                               <ListItemText primary={level.name} />
                             </MenuItem>
                           );
@@ -369,13 +378,13 @@ function AddStaff() {
                           },
                         }}
                       >
-                        {subjectNames.map((name) => {
+                        {subjects.map((subject) => {
                           return (
-                            <MenuItem key={name} value={name}>
+                            <MenuItem key={subject.id} value={subject.name}>
                               <Checkbox
-                                checked={values.subjects.includes(name)}
+                                checked={values.subjects.includes(subject.name)}
                               />
-                              <ListItemText primary={name} />
+                              <ListItemText primary={subject.name} />
                             </MenuItem>
                           );
                         })}
@@ -393,7 +402,7 @@ function AddStaff() {
                     borderRadius: "0.625rem",
                     width: "50%",
                     alignSelf: "center",
-                    margin:"0.5rem 0 0.5rem 0"
+                    margin: "0.5rem 0 0.5rem 0",
                   }}
                   disabled={isSubmitting}
                 >

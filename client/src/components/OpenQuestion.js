@@ -20,6 +20,8 @@ function OpenQuestion() {
   const [hour, setHour] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState();
 
+  console.log(selectedChoice);
+
   useEffect(() => {
     const foundQuestion = questions.find((q) => q.id === id);
     setQuiz(foundQuestion);

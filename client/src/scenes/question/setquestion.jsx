@@ -5,16 +5,18 @@ import { ReactComponent as HomeOutlined } from "../../svg/HomeOutlined.svg";
 import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
-// import { useSelector } from "react-redux";
-// import { selectStaff } from "../../features/staffSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 export function Modal({ onClose, onSubmit }) {
+  const user = useSelector(selectUser);
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
   const [duration, setDuration] = useState("");
-  // const staff = useSelector(selectStaff);
+  const [levelId, setLevelId] = useState("");
+
   return (
     <Box
       display="flex"
@@ -40,7 +42,19 @@ export function Modal({ onClose, onSubmit }) {
       >
         <form
           style={{ display: "flex", flexDirection: "column" }}
-          onSubmit={(e) => onSubmit(e, title, deadline, duration)}
+          onSubmit={(e) =>
+            onSubmit(
+              e,
+              title,
+              deadline,
+              duration,
+              levelId,
+              setTitle,
+              setDeadline,
+              setDuration,
+              setLevelId
+            )
+          }
         >
           <IconButton
             sx={{ position: "absolute", right: 0, mr: "5px", mt: "5px" }}
@@ -113,7 +127,7 @@ export function Modal({ onClose, onSubmit }) {
               }}
             />
             <select
-              name="class"
+              name="levelId"
               style={{
                 border: "1px solid rgb(192,192,192)",
                 outline: "none",
@@ -123,11 +137,17 @@ export function Modal({ onClose, onSubmit }) {
                 fontSize: "15px",
                 fontFamily: "Rubik",
               }}
+              value={levelId}
+              onChange={(e) => setLevelId(e.target.value)}
             >
               <option style={{ fontWeight: "bold" }}>
                 Which class should see this questions
               </option>
-              <option></option>
+              {user?.user.level.map((staffClass) => (
+                <option key={staffClass.id} value={staffClass.id}>
+                  {staffClass.name}
+                </option>
+              ))}
             </select>
             <input
               type="submit"
@@ -290,7 +310,17 @@ function AddQuestion() {
     setOpenModal(!openModal);
   };
 
-  const handlePostToDB = async (e, title, deadline, duration) => {
+  const handlePostToDB = async (
+    e,
+    title,
+    deadline,
+    duration,
+    levelId,
+    setTitle,
+    setDeadline,
+    setDuration,
+    setLevelId
+  ) => {
     e.preventDefault();
 
     const questionTexts = questionList.map((q) => ({
@@ -304,7 +334,7 @@ function AddQuestion() {
     try {
       await axios.post("http://localhost:3005/api/questions", {
         title: title,
-        classId: "30406c1f-aa95-4b84-81c0-43edfe947fe4",
+        classId: levelId,
         categoryId: "d0d286dd-a221-4881-8cd4-d905179f3973",
         timeLimit: Number(duration),
         deadline: deadline,
@@ -314,7 +344,14 @@ function AddQuestion() {
       console.error("An error has occured:", error);
     }
 
-    console.log(questionTexts);
+    setTitle("");
+    setDeadline("");
+    setDuration("");
+    setLevelId("");
+
+
+
+    setOpenModal(false)
   };
 
   return (
@@ -638,7 +675,7 @@ function AddQuestion() {
                       <li>{choice}</li>
                       <input
                         type="checkbox"
-                        name={`${choice}&&${choice.i}`}
+                        name={q.question}
                         value={choice}
                         checked={selectedAnswer === choice}
                         onChange={(e) => {
@@ -646,11 +683,13 @@ function AddQuestion() {
                         }}
                         style={{ marginLeft: "10px" }}
                       />
+                      {selectedAnswer}
                     </Box>
                   ))}
                   <Box display="flex" flexDirection="column" mt="15px">
-                    {q.result !== null && (
+                    
                       <Box>
+                        
                         {q.result ? (
                           <span style={{ color: "green" }}>Correct!</span>
                         ) : (
@@ -662,7 +701,7 @@ function AddQuestion() {
                           </span>
                         )}
                       </Box>
-                    )}
+                    
                     <Box>
                       <Button
                         variant="contained"

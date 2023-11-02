@@ -32,7 +32,8 @@ function QuesetionDetails() {
     <Box
       mx="150px"
       my="20px"
-      height="100vh"
+      minHeight="100vh"
+      height="min-content"
       bgcolor="#fff"
       borderRadius="0.625rem"
       p="20px"

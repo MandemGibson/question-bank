@@ -6,37 +6,50 @@ async function getQuestions() {
   return await prisma.topic.findMany({
     include: {
       questions: {
-        include: { answerChoices: true },
+        include: { answerChoices: true }
       },
-      category: true,
-    },
+      category: true
+    }
   });
 }
 
 async function getQuestionById(id) {
   return await prisma.topic.findUnique({
     where: {
-      id,
+      id
     },
     include: {
       questions: {
         include: {
-          answerChoices: true,
-        },
-      },
-    },
+          answerChoices: true
+        }
+      }
+    }
   });
 }
 
 async function createTopic({ data, questionTexts }) {
+  // const { level } = data;
+
+  // const existingClass = await prisma.class.findMany({
+  //   where: {
+  //     name: { in: level }
+  //   }
+  // });
+
+  // const classData = existingClass.map(classRecord => ({
+  //   id: classRecord.id,
+  //   name: classRecord.name
+  // }));
+
   const { id } = await prisma.topic.create({
-    data: data,
+    data: data
   });
 
   for (const { question, answerChoices } of questionTexts) {
     await createQuestion({
       questionData: { topicId: id, question },
-      answerChoices,
+      answerChoices
     });
   }
 
@@ -49,18 +62,18 @@ async function createQuestion({ questionData, answerChoices }) {
       ...questionData,
       answerChoices: {
         createMany: {
-          data: answerChoices,
-        },
-      },
-    },
+          data: answerChoices
+        }
+      }
+    }
   });
 }
 
 async function deleteQuestionById(id) {
   return await prisma.topic.delete({
     where: {
-      id,
-    },
+      id
+    }
   });
 }
 
@@ -68,22 +81,22 @@ async function updateQuestionById({ id, question, answerChoices }) {
   for (const answerChoice of answerChoices) {
     await prisma.answerChoice.update({
       where: {
-        id: answerChoice.id,
+        id: answerChoice.id
       },
-      data: answerChoice,
+      data: answerChoice
     });
   }
 
   return await prisma.question.update({
     where: {
-      id,
+      id
     },
     data: {
-      question,
+      question
     },
     include: {
-      answerChoices: true,
-    },
+      answerChoices: true
+    }
   });
 }
 
@@ -93,5 +106,5 @@ module.exports = {
   createQuestion,
   getQuestionById,
   deleteQuestionById,
-  updateQuestionById,
+  updateQuestionById
 };

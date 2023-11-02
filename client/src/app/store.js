@@ -5,6 +5,7 @@ import staffReducer from "../features/staffSlice";
 import studentReducer from "../features/studentSlice";
 import userReducer from "../features/userSlice";
 import classReducer from "../features/classSlice";
+import subjectReducer from "../features/subjectSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     student: studentReducer,
     user: userReducer,
     level: classReducer,
+    subjects: subjectReducer,
   },
 });

@@ -1,10 +1,10 @@
 async function isAdmin(req, res, next) {
-  console.log("isAdmin middleware started"); // Add this
+  console.log("isAdmin middleware started");
   if (!res.locals.user || res.locals.user.role !== 9291) {
-    console.log("User is not an admin"); // Add this
+    console.log("User is not an admin");
     return res.sendStatus(403);
   }
-  console.log("User is an admin"); // Add this
+  console.log("User is an admin");
   return next();
 }
 
@@ -39,5 +39,5 @@ module.exports = {
   isAdmin,
   isStaff,
   loggedIn,
-  isStudent,
+  isStudent
 };

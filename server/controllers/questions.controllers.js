@@ -3,7 +3,7 @@ const {
   getQuestionById,
   deleteQuestionById,
   updateQuestionById,
-  createTopic,
+  createTopic
 } = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
@@ -28,20 +28,20 @@ async function getQuestionByIdHandler(req, res, next) {
 async function createQuestionsHandler(req, res, next) {
   try {
     const {
-      classId,
       title,
       timeLimit,
       deadline,
       categoryId,
       questionTexts,
+      classId
     } = req.body;
 
     const topicData = {
-      classId: classId,
       title: title,
       timeLimit: timeLimit,
       deadline: new Date(deadline),
       categoryId: categoryId,
+      classId: classId
     };
 
     const topic = await createTopic({ data: topicData, questionTexts });
@@ -70,7 +70,7 @@ async function updateQuestionHandler(req, res, next) {
     const updatedQuestion = await updateQuestionById({
       id,
       question,
-      answerChoices,
+      answerChoices
     });
     res.json(updatedQuestion);
   } catch (error) {
@@ -83,5 +83,5 @@ module.exports = {
   getQuestionByIdHandler,
   createQuestionsHandler,
   deleteQuestionsHandler,
-  updateQuestionHandler,
+  updateQuestionHandler
 };
