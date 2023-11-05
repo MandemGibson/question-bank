@@ -14,8 +14,10 @@ import { useSidebar } from "../../SidebarContext";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/userSlice";
+import { useNavigate } from "react-router";
 
 function Sidebar() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const [selectedItem, setSelectedItem] = useState(() => {
@@ -36,15 +38,16 @@ function Sidebar() {
   };
 
   const LogoutOutOfApp = async () => {
-    try {
-      const result = await axios.post("http://localhost:3005/api/auth/logout");
-      console.log(result.data);
-      return result.data;
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const result = await axios.post("http://localhost:3005/api/auth/logout");
+    //   console.log(result.data);
+    //   return result.data;
+    // } catch (error) {
+    //   console.error(error);
+    // }
     localStorage.clear();
     dispatch(logout());
+    navigate("/");
   };
 
   return (

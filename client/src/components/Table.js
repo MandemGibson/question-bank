@@ -14,8 +14,11 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import "../cssModules/Table.css";
+import { selectStudents, fetchStudents } from "../features/studentSlice";
+import { selectUser } from "../features/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-function createData(name, level, subject, scores, grades, price) {
+function createData(name, level, subject, scores, grades) {
   switch (true) {
     case scores >= 70:
       grades = "A";
@@ -41,7 +44,6 @@ function createData(name, level, subject, scores, grades, price) {
     subject,
     scores,
     grades,
-    price,
     history: [
       {
         date: "2023-09-22",
@@ -62,7 +64,7 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <React.Fragment>
+    <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
           <IconButton
@@ -150,7 +152,7 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </>
   );
 }
 
@@ -172,15 +174,43 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData("Philip Gibson Cudjoe", "Jhs 2", "English", 90, "", 3.99),
-  createData("Prince Acheampong", "Jhs 3", "English", 81, "", 4.99),
-  createData("Georgina Cobbinah", "Jhs 2", "English", 67, "", 3.79),
-  createData("Deseret Mensah", "Jhs 1", "English", 94, "", 2.5),
-  createData("Joel Brempong", "Jhs 3", "English", 50, "", 1.5),
-];
-
 export default function CollapsibleTable() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const students = useSelector(selectStudents);
+
+  React.useEffect(() => {
+    dispatch(fetchStudents());
+    console.log(user);
+  }, [dispatch, user]);
+
+  const studentsOfStaff = students?.filter((student) => {
+    return user?.user.level.includes(student.level);
+  });
+
+  const student = studentsOfStaff.map((stu) => {
+    return {
+      name: `${stu.firstname} ${stu.middlename || null} ${stu.lastname}`,
+      level: stu.level.name,
+    };
+  });
+
+  const rows = [
+    createData(student.name, student.level, "English", 90),
+    // createData("Prince Acheampong", "Jhs 3", "English", 81, "", 4.99),
+    // createData("Georgina Cobbinah", "Jhs 2", "English", 67, "", 3.79),
+    // createData("Deseret Mensah", "Jhs 1", "English", 94, "", 2.5),
+    // createData("Joel Brempong", "Jhs 3", "English", 50, "", 1.5),
+  ];
+  // const rows = studentsOfStaff.map((student) => {
+  //   return createData(
+  //     `${student.firstname} ${student.middlename || ""} ${student.lastname}`,
+  //     student.level,
+  //     "English", // Assuming subject is always "English" based on your data
+  //     90 // Replace with the correct score for each student
+  //   );
+  // });
+
   return (
     <TableContainer component={Paper}>
       <Box>

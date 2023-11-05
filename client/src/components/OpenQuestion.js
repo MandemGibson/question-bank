@@ -18,14 +18,15 @@ function OpenQuestion() {
   const [seconds, setSeconds] = useState(0);
   const [minute, setMinute] = useState(0);
   const [hour, setHour] = useState(0);
-  const [selectedChoice, setSelectedChoice] = useState();
-
-  console.log(selectedChoice);
+  const [selectedChoices, setSelectedChoices] = useState(
+    Array(quiz?.questions.length).fill("")
+  );
 
   useEffect(() => {
     const foundQuestion = questions.find((q) => q.id === id);
     setQuiz(foundQuestion);
-  }, [questions, id]);
+    console.log(quiz);
+  }, [questions, id, quiz]);
 
   useEffect(() => {
     if (quiz) {
@@ -40,8 +41,6 @@ function OpenQuestion() {
       setMinute(remainingMinutes);
       setSeconds(remainingSeconds);
     }
-
-    console.log(quiz);
   }, [quiz]);
 
   useEffect(() => {
@@ -77,7 +76,9 @@ function OpenQuestion() {
   };
 
   const handleClear = () => {
-    setSelectedChoice();
+    const newSelectedChoices = [...selectedChoices];
+    newSelectedChoices[currentIndex] = "";
+    setSelectedChoices(newSelectedChoices);
   };
 
   if (!quiz) {
@@ -181,11 +182,13 @@ function OpenQuestion() {
                           <input
                             key={choice.id}
                             name={`${choice} && ${question.id}`}
-                            // checked={selectedChoice === choice.choice}
+                            checked={selectedChoices[index] === choice.choice}
                             type="radio"
                             value={choice.choice}
-                            onChange={(e) => {
-                              setSelectedChoice(e.target.value);
+                            onChange={() => {
+                              const newSelectedChoices = [...selectedChoices];
+                              newSelectedChoices[index] = choice.choice;
+                              setSelectedChoices(newSelectedChoices);
                             }}
                             style={{ marginBottom: "5px" }}
                           />

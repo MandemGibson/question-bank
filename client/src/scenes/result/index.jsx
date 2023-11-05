@@ -3,11 +3,14 @@ import React, { useEffect, useState } from "react";
 import "../../cssModules/Results.css";
 import Performance from "../../components/Performance";
 import CollapsibleTable from "../../components/Table";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Results() {
   const [width, setWidth] = useState(window.innerWidth);
+  const user = useSelector(selectUser);
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -24,46 +27,44 @@ function Results() {
   return (
     <Box display="flex" flexDirection="column" padding="20px">
       <Box display="flex" justifyContent="right">
-        
         <select
-              style={{
-                border: "none",
-                backgroundColor: "#fff",
-                borderRadius: "0.45rem",
-                color: "#6b6a6a",
-                minWidth: "min-content",
-                fontFamily: "Allerta",
-                padding: "10px",
-              outline: "none",
+          style={{
+            border: "none",
+            backgroundColor: "#fff",
+            borderRadius: "0.45rem",
+            color: "#6b6a6a",
+            minWidth: "min-content",
+            fontFamily: "Allerta",
+            padding: "10px",
+            outline: "none",
             width: "8rem",
-                marginRight:"15px"
-              }}
-            >
-              <option>Today</option>
-              <option>Last Week</option>
-              <option>Last Month</option>
-              <option>Last Year</option>
-            </select>
-      
-        
+            marginRight: "15px",
+          }}
+        >
+          <option>Today</option>
+          <option>Last Week</option>
+          <option>Last Month</option>
+          <option>Last Year</option>
+        </select>
+
         <select
-              style={{
-                border: "none",
-                backgroundColor: "#fff",
-                borderRadius: "0.45rem",
-                color: "#6b6a6a",
-                minWidth: "min-content",
-                fontFamily: "Allerta",
-                padding: "10px",
-              outline: "none",
-                width:"8rem"
-              }}
-            >
-              <option>Combined</option>
-              <option>Jhs 1</option>
-              <option>Jhs 2</option>
-            </select>
-        
+          style={{
+            border: "none",
+            backgroundColor: "#fff",
+            borderRadius: "0.45rem",
+            color: "#6b6a6a",
+            minWidth: "min-content",
+            fontFamily: "Allerta",
+            padding: "10px",
+            outline: "none",
+            width: "8rem",
+          }}
+        >
+          <option>Combined</option>
+          {user.user.level.map((level) => {
+            return <option key={level.id}>{level.name}</option>;
+          })}
+        </select>
       </Box>
       <Box className="flexBoxes" display="flex" mt="40px">
         <Box

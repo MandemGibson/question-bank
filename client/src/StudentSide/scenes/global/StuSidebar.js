@@ -11,8 +11,13 @@ import { ReactComponent as gradesIcon } from "../../../svg/grades.svg";
 import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
 import { useSidebar } from "../../../SidebarContext";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { logout } from "../../../features/userSlice";
 
 function StuSidebar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const [selectedItem, setSelectedItem] = useState(() => {
     const localValue = localStorage.getItem("SIDEBARITEMS");
@@ -29,6 +34,19 @@ function StuSidebar() {
 
   const handleItemClick = (title) => {
     setSelectedItem(title);
+  };
+
+  const LogoutOutOfApp = async () => {
+    // try {
+    //   const result = await axios.post("http://localhost:3005/api/auth/logout");
+    //   console.log(result.data);
+    //   return result.data;
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    localStorage.clear();
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -125,6 +143,7 @@ function StuSidebar() {
             fontWeight: "700",
             bgcolor: "#83EAF8",
           }}
+          onClick={LogoutOutOfApp}
         >
           Log out
         </Button>

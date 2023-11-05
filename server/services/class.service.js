@@ -3,7 +3,12 @@ const PrismaService = require("./prisma.service");
 const prisma = PrismaService;
 
 async function getClass() {
-  return await prisma.class.findMany({});
+  return await prisma.class.findMany({
+    include: {
+      staff: true,
+      Student: true
+    }
+  });
 }
 
 async function createClass() {

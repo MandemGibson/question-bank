@@ -18,9 +18,7 @@ async function getStaffById(staff_id) {
     where: {
       staff_id
     },
-    include: {
-      level: true
-    }
+    include: { level: true }
   });
 }
 

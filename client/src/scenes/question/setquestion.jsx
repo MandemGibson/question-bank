@@ -349,9 +349,7 @@ function AddQuestion() {
     setDuration("");
     setLevelId("");
 
-
-
-    setOpenModal(false)
+    setOpenModal(false);
   };
 
   return (
@@ -675,7 +673,7 @@ function AddQuestion() {
                       <li>{choice}</li>
                       <input
                         type="checkbox"
-                        name={q.question}
+                        name={choice}
                         value={choice}
                         checked={selectedAnswer === choice}
                         onChange={(e) => {
@@ -683,25 +681,15 @@ function AddQuestion() {
                         }}
                         style={{ marginLeft: "10px" }}
                       />
-                      {selectedAnswer}
                     </Box>
                   ))}
                   <Box display="flex" flexDirection="column" mt="15px">
-                    
-                      <Box>
-                        
-                        {q.result ? (
-                          <span style={{ color: "green" }}>Correct!</span>
-                        ) : (
-                          <span style={{ color: "red" }}>
-                            Incorrect. The correct answer is{" "}
-                            <span style={{ color: "#000", fontWeight: "600" }}>
-                              {q.correctAnswer}
-                            </span>
-                          </span>
-                        )}
-                      </Box>
-                    
+                    <Box>
+                      {q.result && (
+                        <span style={{ color: "green" }}>Correct!</span>
+                      ) }
+                    </Box>
+
                     <Box>
                       <Button
                         variant="contained"
