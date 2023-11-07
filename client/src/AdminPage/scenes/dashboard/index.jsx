@@ -88,19 +88,43 @@ const studentColumn = [
   },
 ];
 
+const dateAndTimestyle = {
+  borderRadius: "0.625rem",
+  height: "2rem",
+  color: "white",
+  background:
+    "linear-gradient(100deg, #2F95CE 31.05%, #00B1C9 65.41%, #1494A6 95.41%)",
+  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+  fontFamily: "Rubik",
+  fontWeight: "bold",
+  margin: "10px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width:"10rem"
+};
+
 function AdminDashboard() {
   const dispatch = useDispatch();
   const students = useSelector(selectStudents);
   const staffs = useSelector(selectStaff);
   const questions = useSelector(selectQuestion);
   const [date, setDate] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
   const onChange = (date) => {
     setDate(date);
   };
 
+  const updateTime = () => {
+    let time = new Date().toLocaleTimeString()
+    setCurrentTime(time)
+  }
+
+  setInterval(updateTime,1000)
+
   useEffect(() => {
-    dispatch(fetchSubject())
+    dispatch(fetchSubject());
     dispatch(fetchClass());
     dispatch(fetchStaffs());
     dispatch(fetchStudents());
@@ -146,8 +170,9 @@ function AdminDashboard() {
         <Box display="flex" flexDirection="column">
           <Box
             bgcolor="white"
-            flex="1" 
-            // width="4rem"
+            // flex="0.2"
+            mr="10px"
+            width="40rem"
             minHeight="20rem"
             height="min-content"
             borderRadius="0.625rem"
@@ -179,7 +204,8 @@ function AdminDashboard() {
           </Box>
           <Box
             bgcolor="white"
-            flex="1 1" // width="45rem"
+            // flex="1 1"
+            width="40rem"
             minHeight="20rem"
             height="min-content"
             borderRadius="0.625rem"
@@ -220,10 +246,13 @@ function AdminDashboard() {
           flexDirection="column"
           // position="relative"
         >
-          <div style={{ padding: "10px", width: "100%" }}>
-            {date.toDateString()}
+          <Box display="flex" justifyContent="space-between">
+            <Box sx={dateAndTimestyle}>{date.toDateString()}</Box>
+            <Box sx={dateAndTimestyle}>{currentTime}</Box>
+          </Box>
+          <Box style={{ padding: "10px", width: "100%" }}>
             <Calendar value={date} onChange={onChange} calendarType="hebrew" />
-          </div>
+          </Box>
         </Box>
       </Box>
     </Box>
