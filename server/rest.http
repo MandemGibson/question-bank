@@ -114,16 +114,14 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3005/api/students
+PATCH http://localhost:3005/api/students/73e4dc8c-549e-495c-9122-4cafc3221a02
 Content-Type: application/json
 
 {
-    "firstname": "Abdul",
-    "lastname": "Karim",
-    "dob": "2002/12/19",
-    "residence": "Kumasi",
-    "classId": "20b8cff0-a47d-4c94-bca5-1104472aaddd",
-    "password": "biggy"
+    "firstname": "John",
+    "middlename": "Ohene",
+    "lastname": "Sam",
+    "dob": "2000/12/15"
 }
 
 ###

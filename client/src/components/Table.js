@@ -181,35 +181,39 @@ export default function CollapsibleTable() {
 
   React.useEffect(() => {
     dispatch(fetchStudents());
-    console.log(user);
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   const studentsOfStaff = students?.filter((student) => {
-    return user?.user.level.includes(student.level);
+    return user.user.level.includes(student.level);
   });
 
-  const student = studentsOfStaff.map((stu) => {
-    return {
-      name: `${stu.firstname} ${stu.middlename || null} ${stu.lastname}`,
-      level: stu.level.name,
-    };
-  });
+  console.log(user?.user.level);
+  students.map((student) => console.log(student.level));
+  console.log("studentsOfStaff:", studentsOfStaff);
 
-  const rows = [
-    createData(student.name, student.level, "English", 90),
-    // createData("Prince Acheampong", "Jhs 3", "English", 81, "", 4.99),
-    // createData("Georgina Cobbinah", "Jhs 2", "English", 67, "", 3.79),
-    // createData("Deseret Mensah", "Jhs 1", "English", 94, "", 2.5),
-    // createData("Joel Brempong", "Jhs 3", "English", 50, "", 1.5),
-  ];
-  // const rows = studentsOfStaff.map((student) => {
-  //   return createData(
-  //     `${student.firstname} ${student.middlename || ""} ${student.lastname}`,
-  //     student.level,
-  //     "English", // Assuming subject is always "English" based on your data
-  //     90 // Replace with the correct score for each student
-  //   );
+  // const student = studentsOfStaff.map((stu) => {
+  //   return {
+  //     name: `${stu.firstname} ${stu.middlename || null} ${stu.lastname}`,
+  //     level: stu.level.name,
+  //   };
   // });
+
+  // const rows = [
+  //   createData(student.name, student.level, "English", 90),
+  // createData("Prince Acheampong", "Jhs 3", "English", 81, "", 4.99),
+  // createData("Georgina Cobbinah", "Jhs 2", "English", 67, "", 3.79),
+  // createData("Deseret Mensah", "Jhs 1", "English", 94, "", 2.5),
+  // createData("Joel Brempong", "Jhs 3", "English", 50, "", 1.5),
+  // ];
+  let rows = [];
+  rows = studentsOfStaff?.map((student) => {
+    return createData(
+      `${student.firstname} ${student.middlename || ""} ${student.lastname}`,
+      student.level.name,
+      "English",
+      90
+    );
+  });
 
   return (
     <TableContainer component={Paper}>

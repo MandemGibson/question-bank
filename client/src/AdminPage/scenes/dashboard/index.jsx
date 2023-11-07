@@ -146,7 +146,8 @@ function AdminDashboard() {
         <Box display="flex" flexDirection="column">
           <Box
             bgcolor="white"
-            flex="1" //width="40rem"
+            flex="1" 
+            // width="4rem"
             minHeight="20rem"
             height="min-content"
             borderRadius="0.625rem"
