@@ -151,7 +151,7 @@ function Results() {
           boxShadow={boxShadow}
         >
           <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
-            Empty for now
+            Below Average
           </p>
         </Box>
         <Box

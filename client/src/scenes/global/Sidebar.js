@@ -11,7 +11,6 @@ import { ReactComponent as statisticsIcon } from "../../svg/Many Line Graph.svg"
 import { ReactComponent as usersGuideIcon } from "../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../svg/Vector.svg";
 import { useSidebar } from "../../SidebarContext";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/userSlice";
 import { useNavigate } from "react-router";
@@ -38,13 +37,6 @@ function Sidebar() {
   };
 
   const LogoutOutOfApp = async () => {
-    // try {
-    //   const result = await axios.post("http://localhost:3005/api/auth/logout");
-    //   console.log(result.data);
-    //   return result.data;
-    // } catch (error) {
-    //   console.error(error);
-    // }
     localStorage.clear();
     dispatch(logout());
     navigate("/");
@@ -159,6 +151,7 @@ function Sidebar() {
             m: "1.5rem 1.5rem 2rem 0.3rem",
             bgcolor: "#83eaf8",
           }}
+          onClick={LogoutOutOfApp}
         >
           <Logout />
         </Button>

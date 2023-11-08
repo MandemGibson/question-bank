@@ -169,7 +169,6 @@ Row.propTypes = {
       })
     ).isRequired,
     name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
     grades: PropTypes.string.isRequired,
   }).isRequired,
 };
@@ -183,8 +182,10 @@ export default function CollapsibleTable() {
     dispatch(fetchStudents());
   }, [dispatch]);
 
+  const staffLevel = user?.user.level;
+
   const studentsOfStaff = students?.filter((student) => {
-    return user.user.level.includes(student.level);
+    return staffLevel.includes(student.level);
   });
 
   console.log(user?.user.level);
@@ -199,14 +200,13 @@ export default function CollapsibleTable() {
   // });
 
   // const rows = [
-  //   createData(student.name, student.level, "English", 90),
-  // createData("Prince Acheampong", "Jhs 3", "English", 81, "", 4.99),
-  // createData("Georgina Cobbinah", "Jhs 2", "English", 67, "", 3.79),
-  // createData("Deseret Mensah", "Jhs 1", "English", 94, "", 2.5),
-  // createData("Joel Brempong", "Jhs 3", "English", 50, "", 1.5),
+  //   createData("Prince Acheampong", "Jhs 3", "English", 81),
+  //   createData("Georgina Cobbinah", "Jhs 2", "English", 67),
+  //   createData("Deseret Mensah", "Jhs 1", "English", 94),
+  //   createData("Joel Brempong", "Jhs 3", "English", 50),
   // ];
-  let rows = [];
-  rows = studentsOfStaff?.map((student) => {
+
+  const rows = studentsOfStaff?.map((student) => {
     return createData(
       `${student.firstname} ${student.middlename || ""} ${student.lastname}`,
       student.level.name,

@@ -18,6 +18,7 @@ function OpenQuestion() {
   const [seconds, setSeconds] = useState(0);
   const [minute, setMinute] = useState(0);
   const [hour, setHour] = useState(0);
+  const [score, setScore] = useState(0);
   const [selectedChoices, setSelectedChoices] = useState(
     Array(quiz?.questions.length).fill("")
   );
@@ -69,6 +70,7 @@ function OpenQuestion() {
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) => prevIndex + 1);
+    console.log(selectedChoices);
   };
 
   const handlePrev = () => {
@@ -79,6 +81,24 @@ function OpenQuestion() {
     const newSelectedChoices = [...selectedChoices];
     newSelectedChoices[currentIndex] = "";
     setSelectedChoices(newSelectedChoices);
+  };
+
+  const calculateResult = () => {
+    let result = 0;
+
+    if (quiz) {
+      quiz.questions.forEach((question, index) => {
+        if (
+          selectedChoices[index] ===
+          question.answerChoices.find((choice) => choice.isCorrect).choice
+        ) {
+          result += 1;
+        }
+      });
+
+      setScore(result);
+    }
+    console.log(score);
   };
 
   if (!quiz) {
@@ -275,7 +295,7 @@ function OpenQuestion() {
                   width: "7rem",
                   height: "2rem",
                 }}
-                // onClick={handleNext}
+                onClick={calculateResult}
               >
                 <p style={{ margin: "0px" }}>Submit</p>
               </Button>

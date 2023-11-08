@@ -27,6 +27,7 @@ import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
 import { login, selectUser } from "./features/userSlice";
 import AddStaff from "./AdminPage/scenes/stafflist";
 import AddStudent from "./AdminPage/scenes/studentlist";
+import AdminStatistics from "./AdminPage/scenes/statistics";
 
 function App() {
   const user = useSelector(selectUser);
@@ -97,7 +98,7 @@ function App() {
                 <Route exact path="/" element={<AdminDashboard />} />
                 <Route exact path="/staff" element={<AddStaff />} />
                 <Route exact path="/students" element={<AddStudent />} />
-                <Route exact path="/statistics" element={<AdminDashboard />} />
+                <Route exact path="/statistics" element={<AdminStatistics />} />
                 <Route exact path="/guide" element={<AdminDashboard />} />
                 <Route exact path="/feedback" element={<Feedback />} />
               </Routes>

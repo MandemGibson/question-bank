@@ -125,4 +125,14 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3005/api/levels
+GET http://localhost:3005/api/students
+
+###
+POST http://localhost:3005/api/results
+Content-Type: application/json
+
+{
+    "result": 90,
+    "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
+    "studentId": "5f7be12b-29a1-43cb-af69-281b72c4c2b6"
+}

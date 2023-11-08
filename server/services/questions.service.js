@@ -29,19 +29,6 @@ async function getQuestionById(id) {
 }
 
 async function createTopic({ data, questionTexts }) {
-  // const { level } = data;
-
-  // const existingClass = await prisma.class.findMany({
-  //   where: {
-  //     name: { in: level }
-  //   }
-  // });
-
-  // const classData = existingClass.map(classRecord => ({
-  //   id: classRecord.id,
-  //   name: classRecord.name
-  // }));
-
   const { id } = await prisma.topic.create({
     data: data
   });

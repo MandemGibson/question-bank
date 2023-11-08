@@ -40,8 +40,8 @@ function Dashboard() {
               transition: "all 0.3s",
               "&:hover": {
                 transform: "scale(1.1)",
-                transition:"all 0.3s"
-              }
+                transition: "all 0.3s",
+              },
             }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
@@ -68,8 +68,8 @@ function Dashboard() {
               transition: "all 0.3s",
               "&:hover": {
                 transform: "scale(1.1)",
-                transition:"all 0.3s"
-              }
+                transition: "all 0.3s",
+              },
             }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
@@ -96,8 +96,8 @@ function Dashboard() {
               transition: "all 0.3s",
               "&:hover": {
                 transform: "scale(1.1)",
-                transition:"all 0.3s"
-              }
+                transition: "all 0.3s",
+              },
             }}
           >
             <p style={{ color: "white", alignSelf: "end", marginLeft: "15px" }}>
@@ -112,7 +112,17 @@ function Dashboard() {
             />
           </Box>
         </Box>
-        <Box></Box>
+        <Box
+          bgcolor="white"
+          textAlign="center"
+          height="min-content"
+          minHeight="75%"
+          // mb="20px"
+          boxShadow={boxShadow}
+          borderRadius="0.625rem"
+        >
+          
+        </Box>
       </Box>
       <Box display="flex" flexDirection="column">
         <Box

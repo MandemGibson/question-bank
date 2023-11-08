@@ -9,6 +9,7 @@ const { isAdmin } = require("../middleware/role");
 const authRouter = require("./auth.routes");
 const classRouter = require("./class.routes");
 const subjectRouter = require("./subjects.routes");
+const resultRouter = require("./results.routes");
 
 apiRouter.use("/staffs", staffRouter);
 apiRouter.use("/questions", questionRouter);
@@ -16,5 +17,6 @@ apiRouter.use("/students", studentRouter);
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/levels", classRouter);
 apiRouter.use("/subjects", subjectRouter);
+apiRouter.use("/results", resultRouter);
 
 module.exports = apiRouter;

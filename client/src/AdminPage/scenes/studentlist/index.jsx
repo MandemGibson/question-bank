@@ -15,41 +15,23 @@ import {
   import { useSelector } from "react-redux";
   import * as yup from "yup";
   import { selectClass } from "../../../features/classSlice";
-  import { selectSubject } from "../../../features/subjectSlice";
   import axios from "axios";
   
   const initialValues = {
     firstname: "",
     middlename: "",
     lastname: "",
-    email: "",
-    primary_contact: "",
-    secondary_contact: "",
     dob: "",
     residence: "",
     password: "",
     level: [],
-    subjects: [],
   };
   
-  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const CONTACT_REGEX = /^\d{10}$/;
   const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   
   const userSchema = yup.object().shape({
     firstname: yup.string().required("required"),
     lastname: yup.string().required("required"),
-    email: yup
-      .string()
-      .matches(EMAIL_REGEX, "Enter a valid email")
-      .required("required"),
-    primary_contact: yup
-      .string()
-      .matches(CONTACT_REGEX, "Phone number not valid")
-      .required("required"),
-    secondary_contact: yup
-      .string()
-      .matches(CONTACT_REGEX, "Phone number is not valid"),
     dob: yup.date().required("required"),
     residence: yup.string().required("required"),
     password: yup
@@ -69,9 +51,8 @@ import {
   
   function AddStudent() {
     const levels = useSelector(selectClass);
-    const subjects = useSelector(selectSubject);
   
-    const handleCreateStaff = async (values) => {
+    const handleCreateStudent = async (values) => {
       try {
         const response = await axios.post(
           "http://localhost:3005/api/students",
@@ -112,7 +93,7 @@ import {
               initialValues={initialValues}
               validationSchema={userSchema}
               onSubmit={(values, { setSubmitting }) => {
-                handleCreateStaff(values);
+                handleCreateStudent(values);
                 setSubmitting(false);
               }}
             >
@@ -180,60 +161,6 @@ import {
                         onBlur={handleBlur}
                         error={!!touched.lastname && !!errors.lastname}
                         helperText={touched.lastname && errors.lastname}
-                        sx={TextFieldStyle}
-                      />
-                      <TextField
-                        fullWidth
-                        type="email"
-                        name="email"
-                        label={
-                          <p style={{ margin: "0" }}>
-                            email<span style={{ color: "#ff0000" }}>*</span>
-                          </p>
-                        }
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={!!touched.email && !!errors.email}
-                        helperText={touched.email && errors.email}
-                        sx={TextFieldStyle}
-                      />
-                      <TextField
-                        fullWidth
-                        type="text"
-                        name="primary_contact"
-                        label={
-                          <p style={{ margin: "0" }}>
-                            primary contact
-                            <span style={{ color: "#ff0000" }}>*</span>
-                          </p>
-                        }
-                        value={values.primary_contact}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={
-                          !!touched.primary_contact && !!errors.primary_contact
-                        }
-                        helperText={
-                          touched.primary_contact && errors.primary_contact
-                        }
-                        sx={TextFieldStyle}
-                      />
-                      <TextField
-                        fullWidth
-                        type="text"
-                        name="secondary_contact"
-                        label="secondary_contact"
-                        value={values.secondary_contact}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={
-                          !!touched.secondary_contact &&
-                          !!errors.secondary_contact
-                        }
-                        helperText={
-                          touched.secondary_contact && errors.secondary_contact
-                        }
                         sx={TextFieldStyle}
                       />
                       <InputLabel>
@@ -310,7 +237,7 @@ import {
                               fontStyle: "italic",
                             }}
                           >
-                            Assign Class(es)
+                            Assign Class
                           </p>
                         </InputLabel>
                         <Select
@@ -322,7 +249,7 @@ import {
                             const selectedClasses = event.target.value;
                             setFieldValue("level", selectedClasses);
                           }}
-                          input={<OutlinedInput label="Assign Class(es)" />}
+                          input={<OutlinedInput label="Assign Class" />}
                           renderValue={(selected) => selected.join(", ")}
                           MenuProps={{
                             PaperProps: {
@@ -340,51 +267,6 @@ import {
                                   checked={values.level.includes(level.name)}
                                 />
                                 <ListItemText primary={level.name} />
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-  
-                      <FormControl sx={{ width: 300 }}>
-                        <InputLabel id="assign-subject">
-                          <p
-                            style={{
-                              margin: "0",
-                              fontFamily: "Amaranth",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            Assign Subject(s)
-                          </p>
-                        </InputLabel>
-                        <Select
-                          labelId="assign-subject"
-                          id="demo-multiple-checkbox"
-                          multiple
-                          value={values.subjects}
-                          onChange={(event) => {
-                            const selectedClasses = event.target.value;
-                            setFieldValue("subjects", selectedClasses);
-                          }}
-                          input={<OutlinedInput label="Assign Subject(s)" />}
-                          renderValue={(selected) => selected.join(", ")}
-                          MenuProps={{
-                            PaperProps: {
-                              style: {
-                                maxHeight: 48 * 4.5 + 8,
-                                width: 150,
-                              },
-                            },
-                          }}
-                        >
-                          {subjects.map((subject) => {
-                            return (
-                              <MenuItem key={subject.id} value={subject.name}>
-                                <Checkbox
-                                  checked={values.subjects.includes(subject.name)}
-                                />
-                                <ListItemText primary={subject.name} />
                               </MenuItem>
                             );
                           })}
@@ -413,7 +295,7 @@ import {
                         fontWeight: "bold",
                       }}
                     >
-                      Create Staff
+                      Create Student
                     </p>
                   </Button>
                 </form>

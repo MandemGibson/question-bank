@@ -42,7 +42,10 @@ model Student {
 
 model Guardian {
   id                String   @id @default(uuid())
-  student_id        String
+  firstname         String
+  middlename        String?
+  lastname          String
+  occupation        String
   primary_contact   String
   secondary_contact String?
   date_created      DateTime

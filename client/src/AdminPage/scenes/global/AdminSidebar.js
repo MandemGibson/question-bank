@@ -11,8 +11,13 @@ import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.s
 import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
 import { useSidebar } from "../../../SidebarContext";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { logout } from "../../../features/userSlice";
 
 function AdminSidebar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isCollapsed, setIsCollapsed } = useSidebar();
   const [selectedItem, setSelectedItem] = useState(() => {
     const localValue = localStorage.getItem("SIDEBARITEMS");
@@ -29,6 +34,12 @@ function AdminSidebar() {
 
   const handleItemClick = (title) => {
     setSelectedItem(title);
+  };
+
+  const LogoutOutOfApp = async () => {
+    localStorage.clear();
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -125,6 +136,7 @@ function AdminSidebar() {
             fontWeight: "700",
             bgcolor: "#83EAF8",
           }}
+          onClick={LogoutOutOfApp}
         >
           Log out
         </Button>
@@ -139,6 +151,7 @@ function AdminSidebar() {
             m: "1.5rem 1.5rem 2rem 0.3rem",
             bgcolor: "#83eaf8",
           }}
+          onClick={LogoutOutOfApp}
         >
           <Logout />
         </Button>
