@@ -1,20 +1,78 @@
 import { Box } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "../../cssModules/Results.css";
 import Performance from "../../components/Performance";
 import CollapsibleTable from "../../components/Table";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
+import { fetchResult, selectResults } from "../../features/resultSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Results() {
+  const results = useSelector(selectResults)
+  const dispatch = useDispatch();
   const [width, setWidth] = useState(window.innerWidth);
   const user = useSelector(selectUser);
+  const [studentsOfStaff, setStudentsOfStaff] = useState([]);
+  const [averagePercentage, setAveragePercentage] = useState(0)
+  const [grade, setGrade] = useState("N/A")
+
+  const staffLevels = useMemo(() => {
+    return user?.user.level.map((level) => level.name) || [];
+  }, [user]);
+
+  useEffect(() => {
+    const filteredStudents = results.filter((student) => {
+      const studentLevelName = student.student.level.name;
+      return staffLevels.includes(studentLevelName);
+    });
+
+    
+   const studentRecord =  filteredStudents.filter((val, index)=> filteredStudents.indexOf(val) === index)
+
+    setStudentsOfStaff(studentRecord);
+  }, [results, staffLevels]);
+
+  console.log("Student of staff:",studentsOfStaff);
+
+  
+  useEffect(() => {
+    const calculateAverageAndGrade = () => {
+      const sum = studentsOfStaff.reduce((acc, result) => acc + result.result, 0);
+      
+      const average = sum / studentsOfStaff.length;
+      
+      let grade;
+      if (average >= 70) {
+        grade = "A";
+      } else if (average >= 60) {
+        grade = "B";
+      } else if (average >= 50) {
+        grade = "C";
+      } else if (average >= 40) {
+        grade = "D";
+      } else {
+        grade = "F";
+      }
+    
+      setAveragePercentage(average);
+      setGrade(grade);
+    };
+
+    calculateAverageAndGrade();
+  }, [studentsOfStaff]);
+  
+  
+  
 
   const handleResize = () => {
     setWidth(window.innerWidth);
   };
+
+  useEffect(() => {
+    dispatch(fetchResult());
+  }, [dispatch]);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -23,6 +81,7 @@ function Results() {
       window.removeEventListener("resize", handleResize);
     };
   });
+
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -79,24 +138,14 @@ function Results() {
             <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
               Best performing students
             </p>
-            <Performance
-              name="Philip Cudjoe Gibson"
-              subtitle="Average time on a question"
-              level="Jhs 2"
-              duration="30 sec"
-            />
-            <Performance
-              name="Philip Cudjoe Gibson"
-              subtitle="Average time on a question"
-              level="Jhs 2"
-              duration="30 sec"
-            />
-            <Performance
-              name="Philip Cudjoe Gibson"
-              subtitle="Average time on a question"
-              level="Jhs 2"
-              duration="30 sec"
-            />
+            {
+              studentsOfStaff.filter((val)=> val.result >= 70).map((student) => {
+                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
+                  student.student.lastname
+                }`} level={student.student.level.name} />
+              })
+            }
+            
           </Box>
         </Box>
 
@@ -119,7 +168,7 @@ function Results() {
               fontFamily: "Rubik",
             }}
           >
-            62.7%
+            {averagePercentage + "%"}
           </p>
           <p
             style={{
@@ -138,7 +187,7 @@ function Results() {
                 color: "#00B1C9",
               }}
             >
-              B
+              {grade}
             </span>
           </p>
         </Box>
@@ -153,6 +202,13 @@ function Results() {
           <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
             Below Average
           </p>
+          {
+              studentsOfStaff.filter((val)=> val.result < 50).map((student) => {
+                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
+                  student.student.lastname
+                }`} level={student.student.level.name} />
+              })
+            }
         </Box>
         <Box
           className="worst__stu"
@@ -165,18 +221,13 @@ function Results() {
           <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
             Worst performing students
           </p>
-          <Performance
-            name="Philip Cudjoe Gibson"
-            subtitle="Average time on a question"
-            level="Jhs 2"
-            duration="30 sec"
-          />
-          <Performance
-            name="Philip Cudjoe Gibson"
-            subtitle="Average time on a question"
-            level="Jhs 2"
-            duration="30 sec"
-          />
+          {
+              studentsOfStaff.filter((val)=> val.result <= 40).map((student) => {
+                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
+                  student.student.lastname
+                }`} level={student.student.level.name} />
+              })
+            }
         </Box>
       </Box>
 

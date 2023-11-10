@@ -6,6 +6,7 @@ import studentReducer from "../features/studentSlice";
 import userReducer from "../features/userSlice";
 import classReducer from "../features/classSlice";
 import subjectReducer from "../features/subjectSlice";
+import resultReducer from "../features/resultSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     user: userReducer,
     level: classReducer,
     subjects: subjectReducer,
+    results: resultReducer,
   },
 });

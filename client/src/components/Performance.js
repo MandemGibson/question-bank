@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
-function Performance({ name, level, duration, subtitle }) {
+function Performance({ name, level }) {
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleResize = () => {
@@ -37,15 +37,6 @@ function Performance({ name, level, duration, subtitle }) {
           >
             {name}
           </p>
-          <p
-            style={{
-              margin: "0px",
-              color: "#201D1D",
-              fontSize: width <= 1067 ? "0.5rem" : "11px",
-            }}
-          >
-            {subtitle}
-          </p>
         </Box>
         <Box display="flex" flexDirection="column">
           <p
@@ -56,15 +47,6 @@ function Performance({ name, level, duration, subtitle }) {
             }}
           >
             {level}
-          </p>
-          <p
-            style={{
-              margin: "0px",
-              color: "#201D1D",
-              fontSize: width <= 1067 ? "0.5rem" : "11px",
-            }}
-          >
-            {duration}
           </p>
         </Box>
       </Box>

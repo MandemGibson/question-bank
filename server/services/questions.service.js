@@ -8,7 +8,8 @@ async function getQuestions() {
       questions: {
         include: { answerChoices: true }
       },
-      category: true
+      category: true,
+      level: true
     }
   });
 }

@@ -6,7 +6,7 @@ const prisma = PrismaService;
 
 async function getAllStudents() {
   return await prisma.student.findMany({
-    include: { level: true }
+    include: { level: true, Results: true }
   });
 }
 
@@ -15,7 +15,7 @@ async function getStudentById(student_id) {
     where: {
       student_id
     },
-    include: { level: true, Results: true }
+    include: { level: true }
   });
 }
 
@@ -30,12 +30,6 @@ async function createStudent({ studentDetails, password }) {
       name: { in: level }
     }
   });
-
-  // const classData = existingClass
-  //   ? existingClass.map(classRecords => {
-  //       return { id: classRecords.id, name: classRecords.name || undefined };
-  //     })
-  //   : [];
 
   return await prisma.student.create({
     data: {

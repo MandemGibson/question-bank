@@ -103,26 +103,26 @@ function Questions() {
 
       <Box>
         <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
-            {questions ? (
-              questions.length === 0 ? (
-                <p>No questions available</p>
-              ) : (
-                questions.map((question) => (
-                  <QuestionSet
-                    key={question.id}
-                    questionId={question.id}
-                    title={question.title}
-                    subtitle="JHS 2"
-                    duration={question.timeLimit}
-                    days={question.createdAt}
-                    image={ola}
-                    onClick={() => handleQuestionClick(question.id)}
-                  />
-                ))
-              )
-            ) : (
-              <p>Loading...</p>
-            )}
+        {questions ? (
+          questions.length === 0 ? (
+            <p>No questions available</p>
+          ) : (
+            questions.map((question) => (
+              <QuestionSet
+                key={question.id}
+                questionId={question.id}
+                title={question.title}
+                subtitle={question.level.name}
+                duration={question.timeLimit}
+                days={question.createdAt.split("T")[0]}
+                image={ola}
+                onClick={() => handleQuestionClick(question.id)}
+              />
+            ))
+          )
+        ) : (
+          <p>Loading...</p>
+        )}
       </Box>
     </Box>
   );

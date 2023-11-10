@@ -2,14 +2,18 @@ import { Box, Button, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectQuestion } from "../features/questionSlice";
-import { useParams } from "react-router";
+import { selectUser } from "../features/userSlice";
+import { useNavigate, useParams } from "react-router";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import FlagIcon from "@mui/icons-material/Flag";
 import "../index.css";
+import axios from "axios";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function OpenQuestion() {
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const { id } = useParams();
   const questions = useSelector(selectQuestion);
   const [quiz, setQuiz] = useState(null);
@@ -83,7 +87,13 @@ function OpenQuestion() {
     setSelectedChoices(newSelectedChoices);
   };
 
-  const calculateResult = () => {
+  const calculateResult = () => {};
+
+  useEffect(() => {
+    console.log(score);
+  }, [score]);
+
+  const handleSubmit = async () => {
     let result = 0;
 
     if (quiz) {
@@ -95,10 +105,24 @@ function OpenQuestion() {
           result += 1;
         }
       });
-
-      setScore(result);
     }
-    console.log(score);
+    setScore((result / quiz.questions.length) * 100);
+
+    try {
+      await axios.post("http://localhost:3005/api/results", {
+        result: (result / quiz.questions.length) * 100,
+        categoryId: quiz.categoryId,
+        studentId: user?.user.id,
+        title: quiz.title,
+      });
+    } catch (error) {
+      console.error("Error making requesting: ", error);
+    }
+    if (quiz.categoryId === "d0d286dd-a221-4881-8cd4-d905179f3973") {
+      navigate("/exams-tab");
+    } else {
+      navigate("/quiz-tab");
+    }
   };
 
   if (!quiz) {
@@ -209,6 +233,7 @@ function OpenQuestion() {
                               const newSelectedChoices = [...selectedChoices];
                               newSelectedChoices[index] = choice.choice;
                               setSelectedChoices(newSelectedChoices);
+                              calculateResult();
                             }}
                             style={{ marginBottom: "5px" }}
                           />
@@ -295,7 +320,7 @@ function OpenQuestion() {
                   width: "7rem",
                   height: "2rem",
                 }}
-                onClick={calculateResult}
+                onClick={handleSubmit}
               >
                 <p style={{ margin: "0px" }}>Submit</p>
               </Button>

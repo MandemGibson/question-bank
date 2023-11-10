@@ -14,25 +14,42 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import "../cssModules/Table.css";
-import { selectStudents, fetchStudents } from "../features/studentSlice";
 import { selectUser } from "../features/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectResults } from "../features/resultSlice";
 
-function createData(name, level, subject, scores, grades) {
+function createData(name, level, subject, scores, grades, type, date) {
   switch (true) {
-    case scores >= 70:
+    case scores >= 95:
+      grades = "A+";
+      break;
+    case scores >= 90:
       grades = "A";
       break;
-    case scores >= 60:
+    case scores >= 85:
+      grades = "B+";
+      break;
+    case scores >= 80:
       grades = "B";
       break;
-    case scores >= 50:
-      grades = "C";
+    case scores >= 75:
+      grades = "C+";
       break;
-    case scores >= 40:
+    case scores >= 70:
+      grades = "C-";
+      break;
+    case scores >= 65:
+      grades = "D+";
+      break;
+    case scores >= 60:
       grades = "D";
       break;
-
+    case scores >= 55:
+      grades = "E";
+      break;
+    case scores >= 50:
+      grades = "F";
+      break;
     default:
       grades = "F";
       break;
@@ -44,18 +61,8 @@ function createData(name, level, subject, scores, grades) {
     subject,
     scores,
     grades,
-    history: [
-      {
-        date: "2023-09-22",
-        type: "Quiz",
-        subject: subject,
-      },
-      {
-        date: "2023-09-21",
-        type: "Examination",
-        subject: subject,
-      },
-    ],
+    type,
+    date,
   };
 }
 
@@ -123,8 +130,8 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
+                  {row.history.map((historyRow, index) => (
+                    <TableRow key={index}>
                       <TableCell
                         component="th"
                         scope="row"
@@ -139,10 +146,10 @@ function Row(props) {
                         {historyRow.subject}
                       </TableCell>
                       <TableCell align="right" className="table-body">
-                        {row.scores}
+                        {historyRow.scores}
                       </TableCell>
                       <TableCell align="right" className="table-body">
-                        {row.grades}
+                        {historyRow.grades}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -163,57 +170,67 @@ Row.propTypes = {
     subject: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
-        subject: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
         date: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
+        subject: PropTypes.string.isRequired,
+        scores: PropTypes.number.isRequired,
+        grades: PropTypes.string.isRequired,
       })
     ).isRequired,
     name: PropTypes.string.isRequired,
-    grades: PropTypes.string.isRequired,
   }).isRequired,
 };
 
 export default function CollapsibleTable() {
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const students = useSelector(selectStudents);
+
+  const results = useSelector(selectResults);
+  const [studentsOfStaff, setStudentsOfStaff] = React.useState([]);
+
+  const staffLevels = React.useMemo(() => {
+    return user?.user.level.map((level) => level.name) || [];
+  }, [user]);
 
   React.useEffect(() => {
-    dispatch(fetchStudents());
-  }, [dispatch]);
+    const filteredStudents = results.filter((student) => {
+      const studentLevelName = student.student.level.name;
+      return staffLevels.includes(studentLevelName);
+    });
 
-  const staffLevel = user?.user.level;
+    const studentRecord = filteredStudents?.map((student) => {
+      return createData(
+        `${student.student.firstname} ${student.student.middlename || ""} ${
+          student.student.lastname
+        }`,
+        student.student.level.name,
+        student.title,
+        student.result,
+        "",
+        student.category.name,
+        student.createdAt.split("T")[0]
+      );
+    });
 
-  const studentsOfStaff = students?.filter((student) => {
-    return staffLevel.includes(student.level);
-  });
+    const groupedRecord = studentRecord.reduce((accumulator, record) => {
+      const index = accumulator.findIndex((r) => r.name === record.name);
 
-  console.log(user?.user.level);
-  students.map((student) => console.log(student.level));
-  console.log("studentsOfStaff:", studentsOfStaff);
+      if (index === -1) {
+        accumulator.push({
+          ...record,
+          history: [],
+        });
+      } else {
+        accumulator[index].history.push(record);
 
-  // const student = studentsOfStaff.map((stu) => {
-  //   return {
-  //     name: `${stu.firstname} ${stu.middlename || null} ${stu.lastname}`,
-  //     level: stu.level.name,
-  //   };
-  // });
+        accumulator[index].history.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      }
+      return accumulator;
+    }, []);
 
-  // const rows = [
-  //   createData("Prince Acheampong", "Jhs 3", "English", 81),
-  //   createData("Georgina Cobbinah", "Jhs 2", "English", 67),
-  //   createData("Deseret Mensah", "Jhs 1", "English", 94),
-  //   createData("Joel Brempong", "Jhs 3", "English", 50),
-  // ];
-
-  const rows = studentsOfStaff?.map((student) => {
-    return createData(
-      `${student.firstname} ${student.middlename || ""} ${student.lastname}`,
-      student.level.name,
-      "English",
-      90
-    );
-  });
+    setStudentsOfStaff(groupedRecord);
+  }, [results, staffLevels]);
 
   return (
     <TableContainer component={Paper}>
@@ -249,8 +266,8 @@ export default function CollapsibleTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <Row key={row.name} row={row} />
+            {studentsOfStaff.map((row, index) => (
+              <Row key={index} row={row} />
             ))}
           </TableBody>
         </Table>
