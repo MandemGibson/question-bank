@@ -172,6 +172,7 @@ export function Modal({ onClose, onSubmit }) {
 }
 
 function AddQuestion() {
+  const user = useSelector(selectUser)
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab2");
   const [question, setQuestion] = useState(() => {
@@ -339,6 +340,7 @@ function AddQuestion() {
         timeLimit: Number(duration),
         deadline: deadline,
         questionTexts: questionTexts,
+        staffId: user.user.id
       });
     } catch (error) {
       console.error("An error has occured:", error);
@@ -350,6 +352,7 @@ function AddQuestion() {
     setLevelId("");
 
     setOpenModal(false);
+    setQuestionList([])
   };
 
   return (
@@ -390,7 +393,7 @@ function AddQuestion() {
             }}
             onClick={handleAddExam}
           >
-            <p style={{ margin: "0px", fontFamily: "Rubik" }}>Add question</p>
+            <p style={{ margin: "0px", fontFamily: "Rubik" }}>Add exam</p>
           </Button>
 
           <Button
@@ -407,7 +410,7 @@ function AddQuestion() {
           </Button>
         </Box>
       </Box>
-      <h3 style={{ margin: "0px", marginTop: "0px" }}>Set New Questions</h3>
+      <h3 style={{ margin: "0px", marginTop: "0px" }}>Set New Exams Questions</h3>
       <Box
         display="flex"
         flexDirection="column"

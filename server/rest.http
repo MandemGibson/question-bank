@@ -1,7 +1,7 @@
 GET http://localhost:3005/api/questions
 
 ###
-DELETE http://localhost:3005/api/staffs/118940ec-9674-4e53-bef8-20fa21b9f683
+DELETE http://localhost:3005/api/questions/4ab5d7f3-79c2-47ce-ba07-fc1487252514
 ###
 POST http://localhost:3005/api/staffs
 Content-Type: application/json
@@ -24,9 +24,10 @@ Content-Type: application/json
 {
     "title": "English",
     "timeLimit": 30,
+    "staffId": "33b4f81e-a0c7-4d72-ba7a-a1071fd087d2",
     "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
     "deadline": "2023/10/29",
-    "level": "KG 1",
+    "classId": "451c027e-bbbb-448b-9bcc-e4af1a4ffeda",
     "questionTexts":[
         {
             "question":"Ha_ _iness",

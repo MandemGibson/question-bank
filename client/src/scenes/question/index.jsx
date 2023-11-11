@@ -7,8 +7,10 @@ import { ReactComponent as HomeFilled } from "../../svg/HomeFilled.svg";
 import { useNavigate } from "react-router-dom";
 import { fetchQuestions, selectQuestion } from "../../features/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 function Questions() {
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const questions = useSelector(selectQuestion);
   const navigate = useNavigate();
@@ -37,6 +39,10 @@ function Questions() {
   const handleQuestionClick = (questionId) => {
     navigate(`/questions/${questionId}`);
   };
+
+  const filteredQuestions = questions.filter(
+    (question) => question.staffId === user.user.id
+  );
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -76,7 +82,7 @@ function Questions() {
             }}
             onClick={handleAddExam}
           >
-            <p style={{ margin: "0px", fontFamily: "Rubik" }}>Add question</p>
+            <p style={{ margin: "0px", fontFamily: "Rubik" }}>Add exam</p>
           </Button>
 
           <Button
@@ -98,30 +104,34 @@ function Questions() {
       <p
         style={{ margin: "30px", fontStyle: "italic", fontFamily: "Amaranth" }}
       >
-        No Completed Questions.
+        No completed questions.
       </p>
 
       <Box>
         <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
-        {questions ? (
-          questions.length === 0 ? (
-            <p>No questions available</p>
-          ) : (
-            questions.map((question) => (
-              <QuestionSet
-                key={question.id}
-                questionId={question.id}
-                title={question.title}
-                subtitle={question.level.name}
-                duration={question.timeLimit}
-                days={question.createdAt.split("T")[0]}
-                image={ola}
-                onClick={() => handleQuestionClick(question.id)}
-              />
-            ))
-          )
+        {filteredQuestions.length === 0 ? (
+          <p
+            style={{
+              margin: "30px",
+              fontStyle: "italic",
+              fontFamily: "Amaranth",
+            }}
+          >
+            No new question posted
+          </p>
         ) : (
-          <p>Loading...</p>
+          filteredQuestions.map((question) => (
+            <QuestionSet
+              key={question.id}
+              questionId={question.id}
+              title={question.title}
+              subtitle={question.level.name}
+              duration={question.timeLimit}
+              days={question.createdAt.split("T")[0]}
+              image={ola}
+              onClick={() => handleQuestionClick(question.id)}
+            />
+          ))
         )}
       </Box>
     </Box>
