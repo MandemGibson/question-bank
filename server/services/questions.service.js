@@ -9,7 +9,8 @@ async function getQuestions() {
         include: { answerChoices: true }
       },
       category: true,
-      level: true
+      level: true,
+      staff: true
     }
   });
 }

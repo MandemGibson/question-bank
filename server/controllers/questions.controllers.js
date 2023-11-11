@@ -33,7 +33,8 @@ async function createQuestionsHandler(req, res, next) {
       deadline,
       categoryId,
       questionTexts,
-      classId
+      classId,
+      staffId
     } = req.body;
 
     const topicData = {
@@ -41,7 +42,8 @@ async function createQuestionsHandler(req, res, next) {
       timeLimit: timeLimit,
       deadline: new Date(deadline),
       categoryId: categoryId,
-      classId: classId
+      classId: classId,
+      staffId: staffId
     };
 
     const topic = await createTopic({ data: topicData, questionTexts });

@@ -15,6 +15,11 @@ export const fetchQuestions = createAsyncThunk(
   }
 );
 
+export const removeQuestion = (questionId) => ({
+  type: "questions/removeQuestion",
+  payload: { questionId },
+});
+
 const initialState = {
   questions: [],
 };
@@ -25,6 +30,13 @@ const questionSlice = createSlice({
   reducers: {
     newQuestions: (state, action) => {
       state.questions = action.payload;
+    },
+
+    removeQuestion: (state, action) => {
+      const updatedQuestion = state.questions.filter(
+        (question) => question.id !== action.payload.questionId
+      );
+      state.questions = updatedQuestion;
     },
   },
 
