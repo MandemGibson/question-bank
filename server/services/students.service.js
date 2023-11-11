@@ -15,7 +15,7 @@ async function getStudentById(student_id) {
     where: {
       student_id
     },
-    include: { level: true }
+    include: { level: true, Results: true }
   });
 }
 
