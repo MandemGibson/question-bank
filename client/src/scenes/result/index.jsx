@@ -10,13 +10,13 @@ import { fetchResult, selectResults } from "../../features/resultSlice";
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Results() {
-  const results = useSelector(selectResults)
+  const results = useSelector(selectResults);
   const dispatch = useDispatch();
   const [width, setWidth] = useState(window.innerWidth);
   const user = useSelector(selectUser);
   const [studentsOfStaff, setStudentsOfStaff] = useState([]);
-  const [averagePercentage, setAveragePercentage] = useState(0)
-  const [grade, setGrade] = useState("N/A")
+  const [averagePercentage, setAveragePercentage] = useState(0);
+  const [grade, setGrade] = useState("N/A");
 
   const staffLevels = useMemo(() => {
     return user?.user.level.map((level) => level.name) || [];
@@ -28,21 +28,36 @@ function Results() {
       return staffLevels.includes(studentLevelName);
     });
 
-    
-   const studentRecord =  filteredStudents.filter((val, index)=> filteredStudents.indexOf(val) === index)
+    const studentRecord = [];
+    filteredStudents.forEach((student) => {
+      const existingIndex = studentRecord.findIndex(
+        (s) => s.student.id === student.student.id
+      );
+
+      if (existingIndex === -1) {
+        studentRecord.push(student);
+      } else {
+        const existingStudent = studentRecord[existingIndex];
+
+        if (new Date(student.createdAt) > new Date(existingStudent.createdAt))
+          studentRecord[existingIndex] = student;
+      }
+    });
 
     setStudentsOfStaff(studentRecord);
   }, [results, staffLevels]);
 
-  console.log("Student of staff:",studentsOfStaff);
+  console.log("Student of staff:", studentsOfStaff);
 
-  
   useEffect(() => {
     const calculateAverageAndGrade = () => {
-      const sum = studentsOfStaff.reduce((acc, result) => acc + result.result, 0);
-      
+      const sum = studentsOfStaff.reduce(
+        (acc, result) => acc + result.result,
+        0
+      );
+
       const average = sum / studentsOfStaff.length;
-      
+
       let grade;
       if (average >= 70) {
         grade = "A";
@@ -55,16 +70,13 @@ function Results() {
       } else {
         grade = "F";
       }
-    
+
       setAveragePercentage(average);
       setGrade(grade);
     };
 
     calculateAverageAndGrade();
   }, [studentsOfStaff]);
-  
-  
-  
 
   const handleResize = () => {
     setWidth(window.innerWidth);
@@ -81,7 +93,6 @@ function Results() {
       window.removeEventListener("resize", handleResize);
     };
   });
-
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
@@ -138,14 +149,17 @@ function Results() {
             <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
               Best performing students
             </p>
-            {
-              studentsOfStaff.filter((val)=> val.result >= 70).map((student) => {
-                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
-                  student.student.lastname
-                }`} level={student.student.level.name} />
-              })
-            }
-            
+            {studentsOfStaff
+              .filter((val) => val.result >= 70)
+              .map((student) => {
+                return (
+                  <Performance
+                    name={`${student.student.firstname} ${student.student
+                      .middlename || ""} ${student.student.lastname}`}
+                    level={student.student.level.name}
+                  />
+                );
+              })}
           </Box>
         </Box>
 
@@ -168,7 +182,7 @@ function Results() {
               fontFamily: "Rubik",
             }}
           >
-            {averagePercentage + "%"}
+            {Math.round(averagePercentage) + "%"}
           </p>
           <p
             style={{
@@ -202,13 +216,17 @@ function Results() {
           <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
             Below Average
           </p>
-          {
-              studentsOfStaff.filter((val)=> val.result < 50).map((student) => {
-                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
-                  student.student.lastname
-                }`} level={student.student.level.name} />
-              })
-            }
+          {studentsOfStaff
+            .filter((val) => val.result < 50)
+            .map((student) => {
+              return (
+                <Performance
+                  name={`${student.student.firstname} ${student.student
+                    .middlename || ""} ${student.student.lastname}`}
+                  level={student.student.level.name}
+                />
+              );
+            })}
         </Box>
         <Box
           className="worst__stu"
@@ -221,13 +239,17 @@ function Results() {
           <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
             Worst performing students
           </p>
-          {
-              studentsOfStaff.filter((val)=> val.result <= 40).map((student) => {
-                return <Performance name={`${student.student.firstname} ${student.student.middlename || ""} ${
-                  student.student.lastname
-                }`} level={student.student.level.name} />
-              })
-            }
+          {studentsOfStaff
+            .filter((val) => val.result <= 40)
+            .map((student) => {
+              return (
+                <Performance
+                  name={`${student.student.firstname} ${student.student
+                    .middlename || ""} ${student.student.lastname}`}
+                  level={student.student.level.name}
+                />
+              );
+            })}
         </Box>
       </Box>
 

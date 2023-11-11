@@ -5,8 +5,8 @@ import ola from "../../../images/ola.jpg";
 import { Button, IconButton } from "@mui/material";
 import SidebarItems from "../../../components/SidebarItems";
 import { ReactComponent as dashboardIcon } from "../../../svg/dashboard.svg";
-import { ReactComponent as questionsIcon } from "../../../svg/questions.svg";
-import { ReactComponent as resultsIcon } from "../../../svg/Component 6.svg";
+import { ReactComponent as staffIcon } from "../../../svg/staff.svg";
+import { ReactComponent as studentIcon } from "../../../svg/student.svg";
 import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.svg";
 import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
@@ -86,14 +86,14 @@ function AdminSidebar() {
           to="/"
         />
         <SidebarItems
-          Icon={questionsIcon}
+          Icon={staffIcon}
           title="Staff"
           selected={selectedItem === "Staff"}
           setSelected={handleItemClick}
           to="/staff"
         />
         <SidebarItems
-          Icon={resultsIcon}
+          Icon={studentIcon}
           title="Students"
           selected={selectedItem === "Students"}
           setSelected={handleItemClick}

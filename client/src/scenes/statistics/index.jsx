@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
-import React from "react";
+import { Box, IconButton } from "@mui/material";
+import React, { useMemo } from "react";
+import { MoreVert } from "@mui/icons-material";
 import CircularProgressBar from "../../components/CircularProgress";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Line, Bar } from "react-chartjs-2";
@@ -11,8 +12,11 @@ import {
   LinearScale,
   PointElement,
   Tooltip,
-  Filler
+  Filler,
 } from "chart.js";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { selectResults } from "../../features/resultSlice";
 
 ChartJS.register(
   LineElement,
@@ -25,30 +29,84 @@ ChartJS.register(
 );
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
-const value = 85;
 
 function Statistics() {
+  const user = useSelector(selectUser);
+  const result = useSelector(selectResults);
+
+  const value = 0;
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const staffLevels = useMemo(() => {
+    return user?.user.level.map((level) => level.name) || [];
+  }, [user]);
+
+  const filteredResult = result.filter((student) => {
+    const studentLevelName = student.student.level.name;
+    return staffLevels.includes(studentLevelName);
+  });
+
+  const labels = [];
+  const data = [];
+
+  filteredResult.forEach((res) => {
+    const date = new Date(res.createdAt);
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    const time = date
+      .toLocaleTimeString("en-US", { hour12: true })
+      .split(" ")[0];
+    const label = `${month} ${year} ${time}`;
+    labels.push(label);
+
+    const studentsOnDate = filteredResult.filter(
+      (student) =>
+        new Date(student.createdAt).toDateString() === date.toDateString()
+    );
+
+    const sumOnDate = studentsOnDate.reduce(
+      (acc, result) => acc + result.result,
+      0
+    );
+    const averageOnDate = sumOnDate / studentsOnDate.length;
+
+    data.push(averageOnDate);
+  });
+
+  const filteredStudents = filteredResult.reduce((acc, res) => {
+    const index = acc.findIndex((st) => st.student.id === res.student.id);
+
+    if (index === -1) {
+      acc.push(res);
+    }
+    return acc;
+  }, []);
+  console.log(filteredStudents);
+
+  labels.sort((a, b) => new Date(a) - new Date(b));
+  data.sort((a, b) => new Date(a) - new Date(b));
+
   const LineChartData = {
-    labels: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
+    labels: labels,
     datasets: [
       {
         label: "Class Performance",
-        data: [10, 20, 39, 35, 40, 45, 50, 49, 51, 60, 55, 58],
-        backgroundColor: 
-         (context) => {
+        data: data,
+        backgroundColor: (context) => {
           const bgColor = ["rgba(131,234,248,1)", "rgba(217,217,217,0)"];
           if (!context.chart.chartArea) {
             return;
@@ -89,7 +147,7 @@ function Statistics() {
         max: 100,
         ticks: {
           stepSize: 10,
-          callback: (value)=> value + "%"
+          callback: (value) => value + "%",
         },
       },
     },
@@ -100,12 +158,14 @@ function Statistics() {
     },
   };
 
+  const recordedGrade = [];
+
   const BarChartData = {
     labels: ["A+", "A", "B+", "B", "C+", "C-", "D+", "D", "E", "F"],
     datasets: [
       {
-        data: [10, 12, 18, 15, 30, 5, 8, 2, 0],
-        backgroundColor:"#00B1C9"
+        data: recordedGrade,
+        backgroundColor: "#00B1C9",
       },
     ],
   };
@@ -138,8 +198,9 @@ function Statistics() {
               }}
             >
               <option>My class</option>
-              <option>My class</option>
-              <option>My class</option>
+              {user.user.level.map((level) => {
+                return <option key={level.id}>{level.name}</option>;
+              })}
             </select>
           </Box>
           <Box
@@ -175,7 +236,9 @@ function Statistics() {
               </Box>
             </Box>
             <Box>
-              <p style={{ margin: "0px", color: "#6b6a6a" }}>Total: 58</p>
+              <p style={{ margin: "0px", color: "#6b6a6a" }}>
+                Total: {filteredStudents.length}
+              </p>
             </Box>
           </Box>
         </Box>
@@ -205,8 +268,9 @@ function Statistics() {
               }}
             >
               <option>My class</option>
-              <option>My class</option>
-              <option>My class</option>
+              {user.user.level.map((level) => {
+                return <option key={level.id}>{level.name}</option>;
+              })}
             </select>
           </Box>
           <Box>
@@ -224,7 +288,15 @@ function Statistics() {
           display="flex"
           flexDirection="column"
         >
-          <p style={{ margin: "0px", color: "#6b6a6a" }}>Flagged Questions</p>
+          <Box display="flex" justifyContent="space-between">
+            <p style={{ margin: "0px", color: "#6b6a6a" }}>Flagged Questions</p>
+            <IconButton>
+              <MoreVert style={{ color: "#6b6a6a" }} />
+            </IconButton>
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center" minHeight="60%">
+            <p style={{margin: 0, color:"#83eaf8"}}>No question flagged yet</p>
+          </Box>
         </Box>
       </Box>
       <Box

@@ -8,11 +8,12 @@
 .sidebar--items:hover {
     cursor: pointer;
     border-radius: 5px;
-    background-color: #83eaf8;
+    background-color: whitesmoke;
     margin-right: 10px;
 }
 
-.sidebar--items-active {
+.sidebar--items-active,
+.sidebar--items-active:hover {
     cursor: pointer;
     border-radius: 5px;
     background-color: #83eaf8;

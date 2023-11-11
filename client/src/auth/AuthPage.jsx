@@ -56,7 +56,7 @@ function AuthPage() {
           withCredentials: true,
         }
       );
-      const Id = response.data.sessionId;
+      const Id = response.data;
 
       console.log(response);
       console.log(Id);
