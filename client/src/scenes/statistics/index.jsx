@@ -17,6 +17,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectResults } from "../../features/resultSlice";
+import { selectStudents } from "../../features/studentSlice";
 
 ChartJS.register(
   LineElement,
@@ -33,6 +34,7 @@ const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 function Statistics() {
   const user = useSelector(selectUser);
   const result = useSelector(selectResults);
+  const students = useSelector(selectStudents)
 
   const value = 0;
 
@@ -87,14 +89,10 @@ function Statistics() {
     data.push(averageOnDate);
   });
 
-  const filteredStudents = filteredResult.reduce((acc, res) => {
-    const index = acc.findIndex((st) => st.student.id === res.student.id);
-
-    if (index === -1) {
-      acc.push(res);
-    }
-    return acc;
-  }, []);
+  const filteredStudents = students.filter((student) => {
+    const studentLevelName = student.level.name;
+    return staffLevels.includes(studentLevelName);
+  });
   console.log(filteredStudents);
 
   labels.sort((a, b) => new Date(a) - new Date(b));

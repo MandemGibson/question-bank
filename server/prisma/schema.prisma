@@ -111,24 +111,26 @@ model Class {
 }
 
 model Topic {
-  id         String     @id @default(uuid())
-  staff      Staff?     @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  staffId    String?
-  level      Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  classId    String
-  title      String
-  questions  Question[]
-  timeLimit  Int        @default(0)
-  deadline   DateTime
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId String
+  id          String     @id @default(uuid())
+  staff       Staff?     @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  staffId     String?
+  isCompleted Boolean    @default(false)
+  level       Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  classId     String
+  title       String
+  questions   Question[]
+  timeLimit   Int        @default(0)
+  deadline    DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId  String
 }
 
 model Question {
   id            String         @id @default(uuid())
   question      String
+  isFlagged     Boolean        @default(false)
   answerChoices AnswerChoice[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt

@@ -24,10 +24,10 @@ Content-Type: application/json
 {
     "title": "English",
     "timeLimit": 30,
-    "staffId": "33b4f81e-a0c7-4d72-ba7a-a1071fd087d2",
-    "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
+    "staffId": "03b10c13-70b7-4653-9a75-d71c3892e610",
+    "categoryId": "f24df200-8f37-40e5-836b-21cbb7f42636",
     "deadline": "2023/10/29",
-    "classId": "451c027e-bbbb-448b-9bcc-e4af1a4ffeda",
+    "classId": "db8f8a50-3f5b-4e1b-98b4-310ae051afda",
     "questionTexts":[
         {
             "question":"Ha_ _iness",

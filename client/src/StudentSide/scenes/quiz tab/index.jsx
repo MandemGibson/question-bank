@@ -7,12 +7,22 @@ import {
   selectQuestion,
 } from "../../../features/questionSlice";
 import { useNavigate } from "react-router";
+import { selectUser } from "../../../features/userSlice";
+import Carousel from "../../../components/Carousel";
+import motivation from "../../../images/motivation.jpg";
+import motivation1 from "../../../images/motivation1.jpg";
+import motivation2 from "../../../images/motivation2.png";
+import motivation3 from "../../../images/motivation3.png";
+import motivation4 from "../../../images/motivation4.jpg";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
+
+const images = [motivation, motivation1, motivation2, motivation3, motivation4];
 
 function QuizTab() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector(selectUser)
   const questions = useSelector(selectQuestion);
   const [openQuiz, setOpenQuiz] = useState(false);
 
@@ -25,15 +35,20 @@ function QuizTab() {
 
     navigate(`/quiz-tab/${questionId}`);
   };
+
+  const filteredQuestions = questions.filter((question) => question.level.name === user.user.level.name)
+
   return (
     <Box display="flex" flexDirection="column" m="20px">
       <Box
         width="100%"
         bgcolor="white"
-        height="8rem"
+        height="10rem"
         borderRadius="0.625rem"
         boxShadow={boxShadow}
-      ></Box>
+      >
+        <Carousel images={images}/>
+      </Box>
       <Box
         display="flex"
         flexDirection="column"
@@ -58,10 +73,10 @@ function QuizTab() {
             <p style={{ margin: "0px 5.2em 0px 0px" }}>Deadline</p>
             <p style={{ margin: "0px" }}>Duration</p>
           </Box>
-          {questions && questions.length !== 0 ? (
-            questions.map((question) => {
+          { filteredQuestions.length !== 0 ? (
+            filteredQuestions.map((question) => {
               return (
-                question.categoryId === "dc519019-c204-4e12-9a25-1df6b5604cf9" && (
+                question.categoryId === "c021b0c7-6ed2-47d0-beed-748f5061ed0b" && (
                   <QuizQuest
                     key={question.id}
                     title={question.title}
