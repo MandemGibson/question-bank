@@ -44,6 +44,10 @@ function Questions() {
     (question) => question.staffId === user.user.id
   );
 
+  const newQuestions = filteredQuestions.filter((question)=> question.isCompleted === false)
+
+  const completedQuestions = filteredQuestions.filter((question)=> question.isCompleted ===true)
+
   return (
     <Box display="flex" flexDirection="column" padding="20px">
       <Box
@@ -101,15 +105,7 @@ function Questions() {
       </Box>
 
       <h3 style={{ margin: "0px" }}>Completed Questions</h3>
-      <p
-        style={{ margin: "30px", fontStyle: "italic", fontFamily: "Amaranth" }}
-      >
-        No completed questions.
-      </p>
-
-      <Box>
-        <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
-        {filteredQuestions.length === 0 ? (
+      {completedQuestions.length === 0 ? (
           <p
             style={{
               margin: "30px",
@@ -120,7 +116,34 @@ function Questions() {
             No new question posted
           </p>
         ) : (
-          filteredQuestions.map((question) => (
+          completedQuestions.map((question) => (
+            <QuestionSet
+              key={question.id}
+              questionId={question.id}
+              title={question.title}
+              subtitle={question.level.name}
+              duration={question.timeLimit}
+              days={question.createdAt.split("T")[0]}
+              image={ola}
+              onClick={() => handleQuestionClick(question.id)}
+            />
+          ))
+        )}
+
+      <Box>
+        <h3 style={{ margin: "0px", marginTop: "20px" }}>New Questions</h3>
+        {newQuestions.length === 0 ? (
+          <p
+            style={{
+              margin: "30px",
+              fontStyle: "italic",
+              fontFamily: "Amaranth",
+            }}
+          >
+            No new question posted
+          </p>
+        ) : (
+          newQuestions.map((question) => (
             <QuestionSet
               key={question.id}
               questionId={question.id}

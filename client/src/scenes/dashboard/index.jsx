@@ -10,18 +10,27 @@ import AttendanceSheet from "../../components/AttendanceSheet";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectQuestion } from "../../features/questionSlice";
+import { selectUser } from "../../features/userSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Dashboard() {
   const questions = useSelector(selectQuestion);
   const navigator = useNavigate();
+  const user = useSelector(selectUser)
 
   const handleClick = () => {
     navigator("/questions");
   };
-  const num1 = 0;
-  const num2 = questions.length;
+
+  const filteredQuestions = questions.filter(
+    (question) => question.staffId === user.user.id
+  );
+
+  const completedQuestions = filteredQuestions.filter((question)=> question.isCompleted===true)
+
+  const num1 = completedQuestions.length;
+  const num2 = filteredQuestions.length;
   return (
     <Box display="flex">
       <Box m="10px 20px 10px 20px">
@@ -162,12 +171,6 @@ function Dashboard() {
             num1={num1}
             num2={num2}
           />
-          <Recent
-            title="Posted Questions"
-            subtitle={`${num1} of ${num2} completed`}
-            num1={num1}
-            num2={num2}
-          />
         </Box>
         <Box
           display="flex"
@@ -186,7 +189,7 @@ function Dashboard() {
             marginBottom="10px"
           >
             <p style={{ margin: "0px", fontFamily: "Amaranth" }}>
-              Students taking your exams now
+              Your best students
             </p>
           </Box>
           <Box display="flex" justifyContent="space-between" mb="10px">

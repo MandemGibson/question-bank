@@ -8,7 +8,6 @@ import {
 } from "../../../features/questionSlice";
 import { useNavigate } from "react-router";
 import { selectUser } from "../../../features/userSlice";
-// import HeroSlider, { Slide } from "hero-slider";
 import motivation from "../../../images/motivation.jpg";
 import motivation1 from "../../../images/motivation1.jpg";
 import motivation2 from "../../../images/motivation2.png";
@@ -49,26 +48,8 @@ function ExamsTab() {
         height="10rem"
         borderRadius="0.625rem"
         boxShadow={boxShadow}
-        // sx={{ objectFit: "contain" }}
       >
-        {/* <img src={motivation} alt="Motivational Quotes" height="100%" width="100%"/> */}
-        {/* <HeroSlider
-          height="100%"
-          width="100%"
-          settings={{debug: true}}
-        >
-          {images.map((image, index) => {
-            return (
-              <Slide
-                key={index}
-                background={{
-                  backgroundImageSrc: image,
-                }}
-              />
-            );
-          })}
-        </HeroSlider> */}
-        <Carousel images={images}/>
+        <Carousel images={images} />
       </Box>
       <Box
         display="flex"
@@ -80,7 +61,7 @@ function ExamsTab() {
         height="min-content"
         minHeight="20rem"
       >
-        <Box p={2}>
+        <Box p={2} display="flex" flexDirection="column">
           <Box
             display="flex"
             mb="20px"
@@ -94,24 +75,44 @@ function ExamsTab() {
             <p style={{ margin: "0px 5.2em 0px 0px" }}>Deadline</p>
             <p style={{ margin: "0px" }}>Duration</p>
           </Box>
-          {filteredQuestions.length !== 0 ? (
+          {filteredQuestions.length !== 0 &&
             filteredQuestions.map((question) => {
-              return (
-                question.categoryId ===
-                  "f24df200-8f37-40e5-836b-21cbb7f42636" && (
-                  <QuizQuest
-                    key={question.id}
-                    title={question.title}
-                    deadline={question.createdAt.split("T")[0]}
-                    duration={question.timeLimit}
-                    onClick={() => handleAttempt(question.id)}
-                  />
-                )
+              return question.categoryId ===
+                "f24df200-8f37-40e5-836b-21cbb7f42636" ? (
+                <QuizQuest
+                  key={question.id}
+                  title={question.title}
+                  buttonText={
+                    question.isCompleted === true ? "Done" : "Attempt Exams"
+                  }
+                  color={question.isCompleted === true ? "gray" : "#83eaf8"}
+                  disabled={question.isCompleted}
+                  deadline={question.createdAt.split("T")[0]}
+                  duration={question.timeLimit}
+                  onClick={() => handleAttempt(question.id)}
+                />
+              ) : (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  minHeight="100%"
+                  flexDirection="column"
+                  fontFamily="Rubik"
+                  fontWeight="600"
+                  fontSize="1.5rem"
+                  color="#6b6a6a"
+                >
+                  <p
+                    style={{
+                      margin: "0px",
+                    }}
+                  >
+                    No new exam posted
+                  </p>
+                </Box>
               );
-            })
-          ) : (
-            <p>No new exam posted</p>
-          )}
+            })}
         </Box>
       </Box>
     </Box>

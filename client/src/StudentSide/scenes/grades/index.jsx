@@ -55,11 +55,12 @@ function Grades() {
   user.user.Results.forEach((res) => {
     const date = new Date(res.createdAt);
     const month = months[date.getMonth()];
+    const day = date.getUTCDate()
     const year = date.getFullYear();
     const time = date
       .toLocaleTimeString("en-US", { hour12: true })
       .split(" ")[0];
-    const label = `${month} ${year} ${time}`;
+    const label = `${day} ${month} ${year} ${time}`;
     labels.push(label);
 
     data.push(res.result);

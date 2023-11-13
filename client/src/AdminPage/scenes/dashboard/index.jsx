@@ -164,7 +164,7 @@ function AdminDashboard() {
         <AdminFlexBox header="Total Staff" count={staffs.length} />
         <AdminFlexBox header="Total Students" count={students.length} />
         <AdminFlexBox header="Total Questions" count={questions.length} />
-        <AdminFlexBox header="Total Online" count="39" />
+        <AdminFlexBox header="Total Online" count="0" />
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" flexDirection="column">

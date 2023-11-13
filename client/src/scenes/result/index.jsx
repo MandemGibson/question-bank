@@ -154,6 +154,7 @@ function Results() {
               .map((student) => {
                 return (
                   <Performance
+                    key={student.id}
                     name={`${student.student.firstname} ${student.student
                       .middlename || ""} ${student.student.lastname}`}
                     level={student.student.level.name}
@@ -221,6 +222,7 @@ function Results() {
             .map((student) => {
               return (
                 <Performance
+                  key={student.id}
                   name={`${student.student.firstname} ${student.student
                     .middlename || ""} ${student.student.lastname}`}
                   level={student.student.level.name}
@@ -244,6 +246,7 @@ function Results() {
             .map((student) => {
               return (
                 <Performance
+                  key={student.id}
                   name={`${student.student.firstname} ${student.student
                     .middlename || ""} ${student.student.lastname}`}
                   level={student.student.level.name}

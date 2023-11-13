@@ -1,5 +1,5 @@
 import { Box, IconButton } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { MoreVert } from "@mui/icons-material";
 import CircularProgressBar from "../../components/CircularProgress";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -14,10 +14,10 @@ import {
   Tooltip,
   Filler,
 } from "chart.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 import { selectResults } from "../../features/resultSlice";
-import { selectStudents } from "../../features/studentSlice";
+import { fetchStudents, selectStudents } from "../../features/studentSlice";
 
 ChartJS.register(
   LineElement,
@@ -35,6 +35,11 @@ function Statistics() {
   const user = useSelector(selectUser);
   const result = useSelector(selectResults);
   const students = useSelector(selectStudents)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchStudents())
+  },[dispatch])
 
   const value = 0;
 
@@ -89,11 +94,12 @@ function Statistics() {
     data.push(averageOnDate);
   });
 
-  const filteredStudents = students.filter((student) => {
+  const filteredStudents = students?.filter((student) => {
     const studentLevelName = student.level.name;
     return staffLevels.includes(studentLevelName);
   });
-  console.log(filteredStudents);
+  console.log("Students", filteredStudents);
+  console.log(students);
 
   labels.sort((a, b) => new Date(a) - new Date(b));
   data.sort((a, b) => new Date(a) - new Date(b));

@@ -22,7 +22,7 @@ const images = [motivation, motivation1, motivation2, motivation3, motivation4];
 function QuizTab() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const questions = useSelector(selectQuestion);
   const [openQuiz, setOpenQuiz] = useState(false);
 
@@ -36,7 +36,9 @@ function QuizTab() {
     navigate(`/quiz-tab/${questionId}`);
   };
 
-  const filteredQuestions = questions.filter((question) => question.level.name === user.user.level.name)
+  const filteredQuestions = questions.filter(
+    (question) => question.level.name === user.user.level.name
+  );
 
   return (
     <Box display="flex" flexDirection="column" m="20px">
@@ -47,7 +49,7 @@ function QuizTab() {
         borderRadius="0.625rem"
         boxShadow={boxShadow}
       >
-        <Carousel images={images}/>
+        <Carousel images={images} />
       </Box>
       <Box
         display="flex"
@@ -59,9 +61,9 @@ function QuizTab() {
         height="min-content"
         minHeight="20rem"
       >
-        <Box p={2}>
+        <Box p={2} display="flex" flexDirection="column">
           <Box
-            display="flex"
+            display= "flex"
             mb="20px"
             fontFamily="Rubik"
             fontSize="15px"
@@ -73,23 +75,45 @@ function QuizTab() {
             <p style={{ margin: "0px 5.2em 0px 0px" }}>Deadline</p>
             <p style={{ margin: "0px" }}>Duration</p>
           </Box>
-          { filteredQuestions.length !== 0 ? (
+
+          {filteredQuestions.length !== 0 &&
             filteredQuestions.map((question) => {
-              return (
-                question.categoryId === "c021b0c7-6ed2-47d0-beed-748f5061ed0b" && (
-                  <QuizQuest
-                    key={question.id}
-                    title={question.title}
-                    deadline={question.createdAt.split("T")[0]}
-                    duration={question.timeLimit}
-                    onClick={() => handleAttempt(question.id)}
-                  />
-                )
+              return question.categoryId ===
+                "c021b0c7-6ed2-47d0-beed-748f5061ed0b" ? (
+                <QuizQuest
+                  key={question.id}
+                  title={question.title}
+                  deadline={question.createdAt.split("T")[0]}
+                  duration={question.timeLimit}
+                  color={question.isCompleted === true ? "gray" : "#83eaf8"}
+                  disabled={question.isCompleted}
+                  buttonText={
+                    question.isCompleted === true ? "Done" : "Attempt Quiz"
+                  }
+                  onClick={() => handleAttempt(question.id)}
+                />
+              ) : (
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  height="100%"
+                  flexDirection="column"
+                  fontFamily="Rubik"
+                  fontWeight="600"
+                  fontSize="1.5rem"
+                  color="#6b6a6a"
+                >
+                  <p
+                    style={{
+                      margin: "0px",
+                    }}
+                  >
+                    No new quiz posted
+                  </p>
+                </Box>
               );
-            })
-          ) : (
-            <p>No new quiz posted</p>
-          )}
+            })}
         </Box>
       </Box>
     </Box>

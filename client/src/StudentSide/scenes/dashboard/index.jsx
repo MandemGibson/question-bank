@@ -20,7 +20,11 @@ function StudentDashBoard() {
     dispatch(fetchQuestions())
   },[dispatch])
 
-  const AccessedCourses = questions?.map((question, index) => ({
+  const filteredQuestions = questions.filter(
+    (question) => question.level.name === user.user.level.name && question.isCompleted === true
+  );
+
+  const AccessedCourses = filteredQuestions?.map((question, index) => ({
     id: index,
     title: question.title,
     subtitle: "First semester",

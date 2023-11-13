@@ -1,12 +1,15 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
-import { useLocation } from "react-router";
 
-function QuizQuest({ title, deadline, duration, onClick }) {
-  const location = useLocation();
-
-  const isExamsTab = /^\/exams-tab/.test(location.pathname);
-
+function QuizQuest({
+  title,
+  deadline,
+  duration,
+  onClick,
+  buttonText,
+  disabled,
+  color,
+}) {
   return (
     <Box
       display="flex"
@@ -53,19 +56,16 @@ function QuizQuest({ title, deadline, duration, onClick }) {
         style={{
           textTransform: "capitalize",
           borderRadius: "0.625rem",
-          backgroundColor: "#83eaf8",
+          backgroundColor: color,
           color: "#fff",
           fontFamily: "Rubik",
           fontWeight: "bold",
           width: "15rem",
         }}
+        disabled={disabled}
         onClick={onClick}
       >
-        {isExamsTab ? (
-          <p style={{ margin: "0px" }}>Attempt Exams</p>
-        ) : (
-          <p style={{ margin: "0px" }}>Attempt Quiz</p>
-        )}
+        <p style={{ margin: "0px" }}>{buttonText}</p>
       </Button>
     </Box>
   );
