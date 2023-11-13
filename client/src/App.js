@@ -42,7 +42,7 @@ function App() {
     console.log(session);
   }, [dispatch, user]);
 
-  const isOpenQuiz = /^\/quiz-tab\/\d+|^\/exams-tab\/\d+/.test(
+  const isOpenQuiz = /^\/quiz-tab\/[a-f0-9-]+|^\/exams-tab\/[a-f0-9-]+/.test(
     location.pathname
   );
 

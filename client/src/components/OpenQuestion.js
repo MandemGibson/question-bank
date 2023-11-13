@@ -17,7 +17,9 @@ function OpenQuestion() {
   const { id } = useParams();
   const questions = useSelector(selectQuestion);
   const [quiz, setQuiz] = useState(null);
-  const [flagged, setFlagged] = useState(false);
+  const [flagged, setFlagged] = useState(
+    Array(quiz?.questions.length).fill(false)
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [minute, setMinute] = useState(0);
@@ -87,7 +89,7 @@ function OpenQuestion() {
     setSelectedChoices(newSelectedChoices);
   };
 
-  const calculateResult = () => {};
+  // const calculateResult = () => {};
 
   useEffect(() => {
     console.log(score);
@@ -118,10 +120,48 @@ function OpenQuestion() {
     } catch (error) {
       console.error("Error making requesting: ", error);
     }
-    if (quiz.categoryId === "d0d286dd-a221-4881-8cd4-d905179f3973") {
+    if (quiz.categoryId === "f24df200-8f37-40e5-836b-21cbb7f42636") {
       navigate("/exams-tab");
     } else {
       navigate("/quiz-tab");
+    }
+
+    const questionId = quiz.questions[currentIndex].id;
+
+    const data = {
+      topicId: id,
+      isCompleted: true,
+    };
+
+    try {
+      await axios.patch(
+        `http://localhost:3005/api/questions/${questionId}`,
+        data
+      );
+    } catch (error) {
+      console.error("Error updating question", error);
+    }
+  };
+
+  const handleFlagged = async (index) => {
+    const newFlagged = [...flagged];
+    newFlagged[index] = !newFlagged[index];
+    setFlagged(newFlagged);
+
+    const questionId = quiz.questions[index].id;
+
+    const data = {
+      topicId: id,
+      isFlagged: newFlagged[index],
+    };
+
+    try {
+      await axios.patch(
+        `http://localhost:3005/api/questions/${questionId}`,
+        data
+      );
+    } catch (error) {
+      console.error("Error updating question", error);
     }
   };
 
@@ -169,11 +209,20 @@ function OpenQuestion() {
           >
             Flag it
           </p>
-          <Box my="10px" style={{ color: "#6b6a6a" }}>
-            <IconButton onClick={() => setFlagged(!flagged)}>
-              {!flagged ? <FlagOutlinedIcon /> : <FlagIcon />}
-            </IconButton>
-          </Box>
+          {quiz?.questions?.map((question, index) => {
+            return (
+              <Box
+                key={question.id}
+                my="10px"
+                style={{ color: "#6b6a6a" }}
+                display={index === currentIndex ? "block" : "none"}
+              >
+                <IconButton onClick={() => handleFlagged(index)}>
+                  {!flagged[index] ? <FlagOutlinedIcon /> : <FlagIcon />}
+                </IconButton>
+              </Box>
+            );
+          })}
           <p
             style={{
               margin: "0px",
@@ -233,7 +282,6 @@ function OpenQuestion() {
                               const newSelectedChoices = [...selectedChoices];
                               newSelectedChoices[index] = choice.choice;
                               setSelectedChoices(newSelectedChoices);
-                              calculateResult();
                             }}
                             style={{ marginBottom: "5px" }}
                           />

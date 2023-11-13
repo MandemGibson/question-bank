@@ -33,8 +33,8 @@ const boxStyle = {
 function Grades() {
   const user = useSelector(selectUser);
   const [grade, setGrade] = useState("");
-  const [average, setAverage] = useState(0)
-  const [remarks, setRemarks] = useState("")
+  const [average, setAverage] = useState(0);
+  const [remarks, setRemarks] = useState("");
 
   const months = [
     "Jan",
@@ -62,9 +62,6 @@ function Grades() {
     const label = `${month} ${year} ${time}`;
     labels.push(label);
 
-    
-
-
     data.push(res.result);
   });
 
@@ -78,7 +75,7 @@ function Grades() {
 
       let grades;
       let remarks;
-      
+
       switch (true) {
         case average >= 95:
           grades = "A+";
@@ -137,9 +134,8 @@ function Grades() {
           break;
       }
 
-      
-setRemarks(remarks)
       setAverage(average);
+      setRemarks(remarks);
       setGrade(grades);
     };
 
@@ -206,9 +202,7 @@ setRemarks(remarks)
   };
 
   const [text] = useTypewriter({
-    words: [
-      remarks,
-    ],
+    words: [remarks],
     loop: {},
   });
 
@@ -221,7 +215,7 @@ setRemarks(remarks)
           </p>
           <Box textAlign="center" width="100%">
             <p style={{ margin: "0px", fontSize: "8rem", color: "#1494A6" }}>
-               {Math.round(average) + "%"}
+              {Math.round(average) + "%"}
             </p>
           </Box>
         </Box>

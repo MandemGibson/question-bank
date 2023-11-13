@@ -67,12 +67,21 @@ async function deleteQuestionsHandler(req, res, next) {
 async function updateQuestionHandler(req, res, next) {
   try {
     const { id } = req.params;
-    const { question, answerChoices } = req.body;
+    const {
+      question,
+      answerChoices,
+      isFlagged,
+      isCompleted,
+      topicId
+    } = req.body;
 
     const updatedQuestion = await updateQuestionById({
       id,
       question,
-      answerChoices
+      answerChoices,
+      isFlagged,
+      isCompleted,
+      topicId
     });
     res.json(updatedQuestion);
   } catch (error) {

@@ -6,7 +6,8 @@ async function getQuestions() {
   return await prisma.topic.findMany({
     include: {
       questions: {
-        include: { answerChoices: true }
+        include: { answerChoices: true },
+        orderBy: { createdAt: "asc" }
       },
       category: true,
       level: true,
@@ -66,25 +67,46 @@ async function deleteQuestionById(id) {
   });
 }
 
-async function updateQuestionById({ id, question, answerChoices }) {
-  for (const answerChoice of answerChoices) {
-    await prisma.answerChoice.update({
-      where: {
-        id: answerChoice.id
-      },
-      data: answerChoice
-    });
+async function updateQuestionById({
+  id,
+  question,
+  answerChoices,
+  isFlagged,
+  isCompleted,
+  topicId
+}) {
+  if (answerChoices) {
+    for (const answerChoice of answerChoices) {
+      await prisma.answerChoice.update({
+        where: {
+          id: answerChoice.id
+        },
+        data: answerChoice
+      });
+    }
+  } else {
+    console.log("No answer choices");
   }
 
-  return await prisma.question.update({
+  await prisma.question.update({
     where: {
       id
     },
     data: {
-      question
+      question,
+      isFlagged
     },
     include: {
       answerChoices: true
+    }
+  });
+
+  await prisma.topic.update({
+    where: {
+      id: topicId
+    },
+    data: {
+      isCompleted
     }
   });
 }

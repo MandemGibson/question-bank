@@ -137,3 +137,13 @@ Content-Type: application/json
     "categoryId": "d0d286dd-a221-4881-8cd4-d905179f3973",
     "studentId": "5f7be12b-29a1-43cb-af69-281b72c4c2b6"
 }
+
+###
+PATCH http://localhost:3005/api/questions/12c93c5d-92cd-4274-9f9c-7b0680ab3d90
+Content-Type: application/json
+
+{
+    "topicId": "ae36b763-6a88-499d-84f9-faf43825f182",
+    "isFlagged": false,
+    "isCompleted": false
+}
