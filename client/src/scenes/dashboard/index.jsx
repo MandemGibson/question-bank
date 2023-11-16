@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import "../../cssModules/Dashboard.css";
 import img1 from "../../images/57  Write, Basic, Essential, Pencil.png";
 import img2 from "../../images/Component 7.png";
@@ -11,23 +11,55 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectQuestion } from "../../features/questionSlice";
 import { selectUser } from "../../features/userSlice";
+import { selectResults } from "../../features/resultSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function Dashboard() {
   const questions = useSelector(selectQuestion);
   const navigator = useNavigate();
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
+  const results = useSelector(selectResults);
 
   const handleClick = () => {
     navigator("/questions");
   };
 
+  const staffLevels = useMemo(() => {
+    return user?.user.level.map((level) => level.name) || [];
+  }, [user]);
+
+  const filteredResult = results.filter((student) => {
+    const studentLevelName = student.student.level.name;
+    return staffLevels.includes(studentLevelName);
+  });
+
+  const filteredStudents = [];
+
+  filteredResult.forEach((student) => {
+    const existingIndex = filteredStudents.findIndex(
+      (s) => s.student.id === student.student.id
+    );
+
+    if (existingIndex === -1) {
+      filteredStudents.push(student);
+    } else {
+      const existingStudent = filteredStudents[existingIndex];
+
+      if (new Date(student.createdAt) > new Date(existingStudent.createdAt))
+        filteredStudents[existingIndex] = student;
+    }
+  });
+
+  console.log(filteredStudents);
+
   const filteredQuestions = questions.filter(
     (question) => question.staffId === user.user.id
   );
 
-  const completedQuestions = filteredQuestions.filter((question)=> question.isCompleted===true)
+  const completedQuestions = filteredQuestions.filter(
+    (question) => question.isCompleted === true
+  );
 
   const num1 = completedQuestions.length;
   const num2 = filteredQuestions.length;
@@ -129,9 +161,7 @@ function Dashboard() {
           // mb="20px"
           boxShadow={boxShadow}
           borderRadius="0.625rem"
-        >
-          
-        </Box>
+        ></Box>
       </Box>
       <Box display="flex" flexDirection="column">
         <Box
@@ -196,8 +226,16 @@ function Dashboard() {
             <p style={{ margin: "0px", fontWeight: "bold" }}>Name</p>
             <p style={{ margin: "0 30px 0 0", fontWeight: "bold" }}>Class</p>
           </Box>
-          <AttendanceSheet name="Philip Gibson Cudjoe" level="JHS 2" />
-          <AttendanceSheet name="Philip Gibson Cudjoe" level="Primary 4" />
+          {filteredStudents.map((student) => {
+            return (
+              <AttendanceSheet
+                key={student.id}
+                name={`${student.student.firstname} ${student.student
+                  .middlename || ""} ${student.student.lastname}`}
+                level={student.student.level.name}
+              />
+            );
+          })}
         </Box>
       </Box>
     </Box>

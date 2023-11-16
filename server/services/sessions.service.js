@@ -2,6 +2,10 @@ const PrismaService = require("./prisma.service");
 
 const prisma = PrismaService;
 
+async function getSession() {
+  return await prisma.sessions.findMany();
+}
+
 async function getSessionById({ id, ip }) {
   return await prisma.sessions.findFirst({
     where: {
@@ -34,5 +38,6 @@ async function createSession({ userId, ip }) {
 module.exports = {
   createSession,
   getSessionById,
-  getSessionByUserId
+  getSessionByUserId,
+  getSession
 };

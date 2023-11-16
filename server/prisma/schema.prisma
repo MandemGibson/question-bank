@@ -21,21 +21,23 @@ model Auth {
 }
 
 model Student {
-  id              String     @id @default(uuid())
-  student_id      String     @unique
-  firstname       String
-  middlename      String?
-  lastname        String
-  dob             DateTime
-  residence       String
-  level           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  classId         String
-  role            Int        @default(6631)
-  guardians       Guardian[]
-  date_registered DateTime?
+  id               String           @id @default(uuid())
+  student_id       String           @unique
+  firstname        String
+  middlename       String?
+  lastname         String
+  dob              DateTime
+  residence        String
+  level            Class            @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  classId          String
+  role             Int              @default(6631)
+  guardians        Guardian[]
+  date_registered  DateTime?
   // profile_pic     Bytes?     @unique
-  Results         Results[]
-  auth            Auth?
+  Results          Results[]
+  auth             Auth?
+  completed_topic  CompletedTopic[]
+  completedTopicId String
 
   @@unique([id, student_id], map: "student_auth_fk")
 }
@@ -111,20 +113,22 @@ model Class {
 }
 
 model Topic {
-  id          String     @id @default(uuid())
-  staff       Staff?     @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  staffId     String?
-  isCompleted Boolean    @default(false)
-  level       Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  classId     String
-  title       String
-  questions   Question[]
-  timeLimit   Int        @default(0)
-  deadline    DateTime
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId  String
+  id               String           @id @default(uuid())
+  staff            Staff?           @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  staffId          String?
+  isCompleted      Boolean          @default(false)
+  level            Class            @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  classId          String
+  title            String
+  questions        Question[]
+  timeLimit        Int              @default(0)
+  deadline         DateTime
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  category         Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId       String
+  CompletedTopic   CompletedTopic[]
+  completedTopicId String?
 }
 
 model Question {
@@ -177,4 +181,14 @@ model Sessions {
   userId String
   ip     String  @db.Inet
   valid  Boolean @default(true)
+}
+
+model CompletedTopic {
+  id        String   @id @default(uuid())
+  topics    Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  studentId String
+  topicId   String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

@@ -92,9 +92,10 @@ const dateAndTimestyle = {
   borderRadius: "0.625rem",
   height: "2rem",
   color: "white",
-  background:
-    "linear-gradient(100deg, #2F95CE 31.05%, #00B1C9 65.41%, #1494A6 95.41%)",
-  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+  // background:
+  //   "linear-gradient(100deg, #2F95CE 31.05%, #00B1C9 65.41%, #1494A6 95.41%)",
+  // boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+  background: "rgba(0, 0, 0, 0.75)",
   fontFamily: "Rubik",
   fontWeight: "bold",
   margin: "10px",

@@ -7,7 +7,7 @@ import SidebarItems from "../../../components/SidebarItems";
 import { ReactComponent as dashboardIcon } from "../../../svg/dashboard.svg";
 import { ReactComponent as staffIcon } from "../../../svg/staff.svg";
 import { ReactComponent as studentIcon } from "../../../svg/student.svg";
-import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.svg";
+// import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.svg";
 import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
 import { useSidebar } from "../../../SidebarContext";
@@ -99,13 +99,13 @@ function AdminSidebar() {
           setSelected={handleItemClick}
           to="/students"
         />
-        <SidebarItems
+        {/* <SidebarItems
           Icon={statisticsIcon}
           title="Statistics"
           selected={selectedItem === "Statistics"}
           setSelected={handleItemClick}
           to="/statistics"
-        />
+        /> */}
       </div>
       <div className="space2"></div>
       <div className="sidebar__options">

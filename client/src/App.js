@@ -99,7 +99,7 @@ function App() {
                 <Route exact path="/staff" element={<AddStaff />} />
                 <Route exact path="/students" element={<AddStudent />} />
                 <Route exact path="/statistics" element={<AdminStatistics />} />
-                <Route exact path="/guide" element={<AdminDashboard />} />
+                <Route exact path="/guide" element={<Guide />} />
                 <Route exact path="/feedback" element={<Feedback />} />
               </Routes>
             </main>

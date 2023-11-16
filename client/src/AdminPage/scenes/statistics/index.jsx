@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import { Box } from "@mui/material";
 
 function AdminStatistics() {
-  return (
-    <div>AdminStatistics</div>
-  )
+  return <Box></Box>;
 }
 
-export default AdminStatistics
+export default AdminStatistics;
