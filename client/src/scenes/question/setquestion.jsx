@@ -172,7 +172,7 @@ export function Modal({ onClose, onSubmit }) {
 }
 
 function AddQuestion() {
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
   const navigate = useNavigate();
   const [selected, setSelected] = useState("tab2");
   const [question, setQuestion] = useState(() => {
@@ -297,6 +297,7 @@ function AddQuestion() {
 
     setQuestionList([...questionList, newQuestionSet]);
     console.log("New Question:", newQuestionSet);
+    console.log(newQuestionSet.id);
 
     setQuestion("");
     setAnswerChoices(["", "", "", ""]);
@@ -340,7 +341,7 @@ function AddQuestion() {
         timeLimit: Number(duration),
         deadline: deadline,
         questionTexts: questionTexts,
-        staffId: user.user.id
+        staffId: user.user.id,
       });
     } catch (error) {
       console.error("An error has occured:", error);
@@ -352,7 +353,7 @@ function AddQuestion() {
     setLevelId("");
 
     setOpenModal(false);
-    setQuestionList([])
+    setQuestionList([]);
   };
 
   return (
@@ -410,7 +411,9 @@ function AddQuestion() {
           </Button>
         </Box>
       </Box>
-      <h3 style={{ margin: "0px", marginTop: "0px" }}>Set New Exams Questions</h3>
+      <h3 style={{ margin: "0px", marginTop: "0px" }}>
+        Set New Exams Questions
+      </h3>
       <Box
         display="flex"
         flexDirection="column"
@@ -667,16 +670,18 @@ function AddQuestion() {
               <li key={index} style={{ marginBottom: "15px" }}>
                 {q.question}
 
-                {image && (
-                  <img src={image} alt="" width="100px" height="100px" />
-                )}
+                <div>
+                  {q.image && (
+                    <img src={q.image} alt="" width="100px" height="100px" />
+                  )}
+                </div>
                 <ol type="A">
                   {q.answerChoices.map((choice, i) => (
                     <Box key={i} style={{ display: "flex" }}>
                       <li>{choice}</li>
                       <input
                         type="checkbox"
-                        name={choice}
+                        name={`${choice} && ${index}`}
                         value={choice}
                         checked={selectedAnswer === choice}
                         onChange={(e) => {
@@ -690,7 +695,7 @@ function AddQuestion() {
                     <Box>
                       {q.result && (
                         <span style={{ color: "green" }}>Correct!</span>
-                      ) }
+                      )}
                     </Box>
 
                     <Box>

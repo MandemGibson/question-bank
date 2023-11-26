@@ -181,7 +181,7 @@ Row.propTypes = {
   }).isRequired,
 };
 
-export default function CollapsibleTable() {
+export default function CollapsibleTable({ searchFilter }) {
   const user = useSelector(selectUser);
 
   const results = useSelector(selectResults);

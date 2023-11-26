@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchQuestions, selectQuestion } from "../../features/questionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
+import ReactTimeago from "react-timeago"
 
 function Questions() {
   const user = useSelector(selectUser);
@@ -123,7 +124,7 @@ function Questions() {
               title={question.title}
               subtitle={question.level.name}
               duration={question.timeLimit}
-              days={question.createdAt.split("T")[0]}
+              days={<ReactTimeago date={question.createdAt.split("T")[0]}/> }
               image={ola}
               onClick={() => handleQuestionClick(question.id)}
             />
@@ -150,7 +151,7 @@ function Questions() {
               title={question.title}
               subtitle={question.level.name}
               duration={question.timeLimit}
-              days={question.createdAt.split("T")[0]}
+              days={<ReactTimeago date={question.createdAt.split("T")[0]}/>}
               image={ola}
               onClick={() => handleQuestionClick(question.id)}
             />

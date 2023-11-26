@@ -40,6 +40,10 @@ function ExamsTab() {
     (question) => question.level.name === user.user.level.name
   );
 
+  const exams = filteredQuestions.filter(
+    (question) => question.categoryId === "f24df200-8f37-40e5-836b-21cbb7f42636"
+  );
+
   return (
     <Box display="flex" flexDirection="column" m="20px">
       <Box
@@ -75,10 +79,9 @@ function ExamsTab() {
             <p style={{ margin: "0px 5.2em 0px 0px" }}>Deadline</p>
             <p style={{ margin: "0px" }}>Duration</p>
           </Box>
-          {filteredQuestions.length !== 0 &&
-            filteredQuestions.map((question) => {
-              return question.categoryId ===
-                "f24df200-8f37-40e5-836b-21cbb7f42636" ? (
+          {exams.length !== 0 ? (
+            exams.map((question) => {
+              return (
                 <QuizQuest
                   key={question.id}
                   title={question.title}
@@ -91,28 +94,29 @@ function ExamsTab() {
                   duration={question.timeLimit}
                   onClick={() => handleAttempt(question.id)}
                 />
-              ) : (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  minHeight="100%"
-                  flexDirection="column"
-                  fontFamily="Rubik"
-                  fontWeight="600"
-                  fontSize="1.5rem"
-                  color="#6b6a6a"
-                >
-                  <p
-                    style={{
-                      margin: "0px",
-                    }}
-                  >
-                    No new exam posted
-                  </p>
-                </Box>
               );
-            })}
+            })
+          ) : (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              minHeight="100%"
+              flexDirection="column"
+              fontFamily="Rubik"
+              fontWeight="600"
+              fontSize="1.5rem"
+              color="#6b6a6a"
+            >
+              <p
+                style={{
+                  margin: "0px",
+                }}
+              >
+                No new exam posted
+              </p>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

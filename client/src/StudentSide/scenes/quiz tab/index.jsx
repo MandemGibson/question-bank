@@ -40,6 +40,10 @@ function QuizTab() {
     (question) => question.level.name === user.user.level.name
   );
 
+  const quiz = filteredQuestions.filter(
+    (question) => question.categoryId === "c021b0c7-6ed2-47d0-beed-748f5061ed0b"
+  );
+
   return (
     <Box display="flex" flexDirection="column" m="20px">
       <Box
@@ -63,7 +67,7 @@ function QuizTab() {
       >
         <Box p={2} display="flex" flexDirection="column">
           <Box
-            display= "flex"
+            display="flex"
             mb="20px"
             fontFamily="Rubik"
             fontSize="15px"
@@ -75,11 +79,9 @@ function QuizTab() {
             <p style={{ margin: "0px 5.2em 0px 0px" }}>Deadline</p>
             <p style={{ margin: "0px" }}>Duration</p>
           </Box>
-
-          {filteredQuestions.length !== 0 &&
-            filteredQuestions.map((question) => {
-              return question.categoryId ===
-                "c021b0c7-6ed2-47d0-beed-748f5061ed0b" ? (
+          {quiz.length !== 0 ? (
+            quiz.map((question) => {
+              return (
                 <QuizQuest
                   key={question.id}
                   title={question.title}
@@ -92,28 +94,29 @@ function QuizTab() {
                   }
                   onClick={() => handleAttempt(question.id)}
                 />
-              ) : (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  height="100%"
-                  flexDirection="column"
-                  fontFamily="Rubik"
-                  fontWeight="600"
-                  fontSize="1.5rem"
-                  color="#6b6a6a"
-                >
-                  <p
-                    style={{
-                      margin: "0px",
-                    }}
-                  >
-                    No new quiz posted
-                  </p>
-                </Box>
               );
-            })}
+            })
+          ) : (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="100%"
+              flexDirection="column"
+              fontFamily="Rubik"
+              fontWeight="600"
+              fontSize="1.5rem"
+              color="#6b6a6a"
+            >
+              <p
+                style={{
+                  margin: "0px",
+                }}
+              >
+                No new quiz posted
+              </p>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>
