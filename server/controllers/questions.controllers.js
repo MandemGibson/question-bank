@@ -46,6 +46,10 @@ async function createQuestionsHandler(req, res, next) {
       staffId: staffId
     };
 
+    // if (questionTexts.image) {
+    //   questionTexts.image = Buffer.from(questionTexts.image, "base64");
+    // }
+
     const topic = await createTopic({ data: topicData, questionTexts });
 
     res.status(201).json(topic);
@@ -69,6 +73,7 @@ async function updateQuestionHandler(req, res, next) {
     const { id } = req.params;
     const {
       question,
+      image,
       answerChoices,
       isFlagged,
       isCompleted,
@@ -78,6 +83,7 @@ async function updateQuestionHandler(req, res, next) {
     const updatedQuestion = await updateQuestionById({
       id,
       question,
+      image,
       answerChoices,
       isFlagged,
       isCompleted,

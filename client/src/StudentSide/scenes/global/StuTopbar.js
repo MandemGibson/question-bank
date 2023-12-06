@@ -12,7 +12,7 @@ function Topbar() {
   const user = useSelector(selectUser);
   return (
     <div className="topbar">
-      <p>{title}</p>
+      <p style={{ color: "white" }}>{title}</p>
       <div>
         <h3>Welcome {user?.user.firstname}</h3>
       </div>

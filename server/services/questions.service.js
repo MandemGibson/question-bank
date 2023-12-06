@@ -36,9 +36,13 @@ async function createTopic({ data, questionTexts }) {
     data: data
   });
 
-  for (const { question, answerChoices } of questionTexts) {
+  for (let { question, image, answerChoices } of questionTexts) {
+    if (image) {
+      image = Buffer.from(image, "base64");
+    }
     await createQuestion({
       questionData: { topicId: id, question },
+      image,
       answerChoices
     });
   }
@@ -46,10 +50,11 @@ async function createTopic({ data, questionTexts }) {
   return await getQuestionById(id);
 }
 
-async function createQuestion({ questionData, answerChoices }) {
+async function createQuestion({ questionData, questionImage, answerChoices }) {
   return await prisma.question.create({
     data: {
       ...questionData,
+      questionImage,
       answerChoices: {
         createMany: {
           data: answerChoices

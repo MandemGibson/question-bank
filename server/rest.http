@@ -1,7 +1,7 @@
 GET http://localhost:3005/api/questions
 
 ###
-DELETE http://localhost:3005/api/questions/4ab5d7f3-79c2-47ce-ba07-fc1487252514
+DELETE http://localhost:3005/api/questions/ae36b763-6a88-499d-84f9-faf43825f182
 ###
 POST http://localhost:3005/api/staffs
 Content-Type: application/json
@@ -31,6 +31,7 @@ Content-Type: application/json
     "questionTexts":[
         {
             "question":"Ha_ _iness",
+            "image": "../client/src/images/Security.png",
             "answerChoices": [
                 {
                     "choice": "pp",

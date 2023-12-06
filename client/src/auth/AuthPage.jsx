@@ -6,7 +6,6 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import Security from "../images/Security.png";
 import { Formik } from "formik";
 import * as yup from "yup";
 import Visibility from "@mui/icons-material/Visibility";
@@ -70,18 +69,8 @@ function AuthPage() {
   };
 
   return (
-    <Box height="100%" width="100%" bgcolor="#fff" justifyContent="center">
-      <Box display="flex">
-        <img
-          src={Security}
-          alt=""
-          width="400px"
-          height="600px"
-          style={{ objectFit: "contain" }}
-        />
+    <Box height="100vh" width="100vw" bgcolor="#fff" sx={{display:"flex", justifyContent:"center", alignItems:"center"}}>
         <Box
-          alignSelf="center"
-          paddingLeft="10em"
           sx={{
             "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root": {
               fontFamily: "Acme",
@@ -93,8 +82,8 @@ function AuthPage() {
             "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
               fontFamily: "Acme",
             },
-          }}
-          width="30%"
+        }}
+        width="50%"
         >
           <Formik
             initialValues={initialValues}
@@ -207,7 +196,6 @@ function AuthPage() {
             )}
           </Formik>
         </Box>
-      </Box>
     </Box>
   );
 }

@@ -327,6 +327,7 @@ function AddQuestion() {
 
     const questionTexts = questionList.map((q) => ({
       question: q.question,
+      image: q.image,
       answerChoices: q.answerChoices.map((choice) => ({
         choice: choice,
         isCorrect: choice === q.correctAnswer,

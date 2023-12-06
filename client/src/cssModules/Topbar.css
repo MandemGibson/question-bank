@@ -7,7 +7,8 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #83eaf8;
-    background-color: #f0fbfe;
+    background-color: #3bb7da;
+    color: white;
 }
 
 .topbar>p {

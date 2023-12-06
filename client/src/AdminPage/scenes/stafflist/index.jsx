@@ -11,12 +11,14 @@ import {
   TextField,
 } from "@mui/material";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { selectClass } from "../../../features/classSlice";
 import { selectSubject } from "../../../features/subjectSlice";
 import axios from "axios";
+import { useDropzone } from "react-dropzone";
+
 
 const initialValues = {
   firstname: "",
@@ -69,7 +71,38 @@ const TextFieldStyle = {
 
 function AddStaff() {
   const levels = useSelector(selectClass);
-  const subjects = useSelector(selectSubject);
+  const subjects = useSelector(selectSubject); 
+  const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("No image selected");
+
+  useEffect(() => {
+    console.log("File", file)
+    console.log("Filename", filename)
+  })
+
+  const onDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+  
+    if (file) {
+      setFilename(file.name);
+  
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileContent = reader.result;
+        // Do something with the file content, e.g., save it in state
+        setFile(fileContent);
+      };
+  
+      reader.readAsText(file); // You can use readAsDataURL for images, readAsArrayBuffer for binary files, etc.
+    }
+  };
+  
+
+  // Use the useDropzone hook
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: ".xlsx, .xls, .doc, .docx", // Specify accepted file types
+  });
 
   const handleCreateStaff = async (values) => {
     try {
@@ -88,7 +121,7 @@ function AddStaff() {
 
   return (
     <Box display="flex" flexDirection="column" m={2}>
-      <Box bgcolor="white" width="100%">
+      <Box bgcolor="white" width="100%" pr={1}>
         <p style={{ margin: "10px 0 0px 10px", fontWeight: "600" }}>
           All fields marked <span style={{ color: "#ff0000" }}>*</span> are
           required
@@ -103,8 +136,10 @@ function AddStaff() {
               borderWidth: "3px",
             },
             "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
-              fontFamily: "Amaranth",
-              fontStyle: "italic",
+              // fontFamily: "Amaranth",
+              // fontStyle: "italic",
+              // color: "gray",
+              fontWeight: "600",
             },
           }}
         >
@@ -135,11 +170,25 @@ function AddStaff() {
                   marginRight: "1rem",
                 }}
               >
-                <Box display="flex">
-                  <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column">
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
                     <p style={{ fontWeight: "600", fontSize: "1.6rem" }}>
                       Profile
                     </p>
+                    <div {...getRootProps()} style={{ marginLeft: "10px" }}>
+                      <input {...getInputProps()} />
+                      <Button>
+                        {isDragActive ? "Drop the file here" : "Upload file"}
+                      </Button>
+                    </div>
+                    <p>{filename}</p>
+                  </Box>
+
+                  <Box
+                    display="grid"
+                    gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))"
+                    gap={1}
+                  >
                     <TextField
                       fullWidth
                       type="text"
@@ -236,29 +285,31 @@ function AddStaff() {
                       }
                       sx={TextFieldStyle}
                     />
-                    <InputLabel>
-                      <p
-                        style={{
-                          margin: "0",
-                          fontFamily: "Amaranth",
-                          fontStyle: "italic",
-                        }}
-                      >
-                        date of birth<span style={{ color: "#ff0000" }}>*</span>
-                      </p>
-                    </InputLabel>
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      type="date"
-                      name="dob"
-                      value={values.dob}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={!!touched.dob && !!errors.dob}
-                      helperText={touched.dob && errors.dob}
-                      sx={TextFieldStyle}
-                    />
+                    <Box>
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        type="date"
+                        label={
+                          <p
+                            style={{
+                              margin: "0",
+                              backgroundColor: "white",
+                            }}
+                          >
+                            date of birth
+                            <span style={{ color: "#ff0000" }}>*</span>
+                          </p>
+                        }
+                        name="dob"
+                        value={values.dob}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={!!touched.dob && !!errors.dob}
+                        helperText={touched.dob && errors.dob}
+                        sx={TextFieldStyle}
+                      />
+                    </Box>
                     <TextField
                       type="text"
                       name="residence"
@@ -290,106 +341,106 @@ function AddStaff() {
                       sx={TextFieldStyle}
                     />
                   </Box>
-                  <Box
-                    borderLeft="1px dashed"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    marginLeft="20%"
-                  />
-                  <Box ml="1rem">
+
+                  <Box>
                     <p style={{ fontWeight: "600", fontSize: "1.6rem" }}>
                       Others
                     </p>
-                    <FormControl sx={{ width: 300, mb: "1.5rem" }}>
-                      <InputLabel id="assign-class">
-                        <p
-                          style={{
-                            margin: "0",
-                            fontFamily: "Amaranth",
-                            fontStyle: "italic",
+                    <Box justifyContent="">
+                      <FormControl
+                        sx={{ width: 300, mb: "1.5rem", mr: "1.5rem" }}
+                      >
+                        <InputLabel id="assign-class">
+                          <p
+                            style={{
+                              margin: "0",
+                              // fontFamily: "Amaranth",
+                              // fontStyle: "italic",
+                            }}
+                          >
+                            Assign Class(es)
+                          </p>
+                        </InputLabel>
+                        <Select
+                          labelId="assign-class"
+                          id="demo-multiple-checkbox"
+                          multiple
+                          value={values.level}
+                          onChange={(event) => {
+                            const selectedClasses = event.target.value;
+                            setFieldValue("level", selectedClasses);
+                          }}
+                          input={<OutlinedInput label="Assign Class(es)" />}
+                          renderValue={(selected) => selected.join(", ")}
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 48 * 4.5 + 8,
+                                width: 150,
+                              },
+                            },
                           }}
                         >
-                          Assign Class(es)
-                        </p>
-                      </InputLabel>
-                      <Select
-                        labelId="assign-class"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={values.level}
-                        onChange={(event) => {
-                          const selectedClasses = event.target.value;
-                          setFieldValue("level", selectedClasses);
-                        }}
-                        input={<OutlinedInput label="Assign Class(es)" />}
-                        renderValue={(selected) => selected.join(", ")}
-                        MenuProps={{
-                          PaperProps: {
-                            style: {
-                              maxHeight: 48 * 4.5 + 8,
-                              width: 150,
-                            },
-                          },
-                        }}
-                      >
-                        {levels?.map((level) => {
-                          return (
-                            <MenuItem key={level.id} value={level.name}>
-                              <Checkbox
-                                checked={values.level.includes(level.name)}
-                              />
-                              <ListItemText primary={level.name} />
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                          {levels?.map((level) => {
+                            return (
+                              <MenuItem key={level.id} value={level.name}>
+                                <Checkbox
+                                  checked={values.level.includes(level.name)}
+                                />
+                                <ListItemText primary={level.name} />
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
 
-                    <FormControl sx={{ width: 300 }}>
-                      <InputLabel id="assign-subject">
-                        <p
-                          style={{
-                            margin: "0",
-                            fontFamily: "Amaranth",
-                            fontStyle: "italic",
+                      <FormControl sx={{ width: 300 }}>
+                        <InputLabel id="assign-subject">
+                          <p
+                            style={{
+                              margin: "0",
+                              // fontFamily: "Amaranth",
+                              // fontStyle: "italic",
+                            }}
+                          >
+                            Assign Subject(s)
+                          </p>
+                        </InputLabel>
+                        <Select
+                          labelId="assign-subject"
+                          id="demo-multiple-checkbox"
+                          multiple
+                          value={values.subjects}
+                          onChange={(event) => {
+                            const selectedClasses = event.target.value;
+                            setFieldValue("subjects", selectedClasses);
+                          }}
+                          input={<OutlinedInput label="Assign Subject(s)" />}
+                          renderValue={(selected) => selected.join(", ")}
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: 48 * 4.5 + 8,
+                                width: 150,
+                              },
+                            },
                           }}
                         >
-                          Assign Subject(s)
-                        </p>
-                      </InputLabel>
-                      <Select
-                        labelId="assign-subject"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={values.subjects}
-                        onChange={(event) => {
-                          const selectedClasses = event.target.value;
-                          setFieldValue("subjects", selectedClasses);
-                        }}
-                        input={<OutlinedInput label="Assign Subject(s)" />}
-                        renderValue={(selected) => selected.join(", ")}
-                        MenuProps={{
-                          PaperProps: {
-                            style: {
-                              maxHeight: 48 * 4.5 + 8,
-                              width: 150,
-                            },
-                          },
-                        }}
-                      >
-                        {subjects.map((subject) => {
-                          return (
-                            <MenuItem key={subject.id} value={subject.name}>
-                              <Checkbox
-                                checked={values.subjects.includes(subject.name)}
-                              />
-                              <ListItemText primary={subject.name} />
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
+                          {subjects.map((subject) => {
+                            return (
+                              <MenuItem key={subject.id} value={subject.name}>
+                                <Checkbox
+                                  checked={values.subjects.includes(
+                                    subject.name
+                                  )}
+                                />
+                                <ListItemText primary={subject.name} />
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Box>
                   </Box>
                 </Box>
 
