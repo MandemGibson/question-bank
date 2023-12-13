@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
-import "../../../cssModules/Sidebar.css";
+import "../../cssModules/Sidebar.css";
 import { CloseOutlined, Logout, MenuRounded } from "@mui/icons-material";
-import ola from "../../../images/ola.jpg";
+import ola from "../../images/ola.jpg";
 import { Button, IconButton } from "@mui/material";
-import SidebarItems from "../../../components/SidebarItems";
-import { ReactComponent as dashboardIcon } from "../../../svg/dashboard.svg";
-import { ReactComponent as staffIcon } from "../../../svg/staff.svg";
-import { ReactComponent as studentIcon } from "../../../svg/student.svg";
-// import { ReactComponent as statisticsIcon } from "../../../svg/Many Line Graph.svg";
-import { ReactComponent as usersGuideIcon } from "../../../svg/usersGuide.svg";
-import { ReactComponent as feedbackIcon } from "../../../svg/Vector.svg";
-import { useSidebar } from "../../../SidebarContext";
+import SidebarItems from "../../components/SidebarItems";
+import { ReactComponent as dashboardIcon } from "../../svg/dashboard.svg";
+import { ReactComponent as staffIcon } from "../../svg/staff.svg";
+import { ReactComponent as studentIcon } from "../../svg/student.svg";
+import { ReactComponent as usersGuideIcon } from "../../svg/usersGuide.svg";
+import { ReactComponent as feedbackIcon } from "../../svg/Vector.svg";
+import { useSidebar } from "../../SidebarContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { logout } from "../../../features/userSlice";
+import { logout } from "../../features/userSlice";
 
-function AdminSidebar() {
+function SAdminSidebar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isCollapsed, setIsCollapsed } = useSidebar();
@@ -105,13 +104,20 @@ function AdminSidebar() {
           setSelected={handleItemClick}
           to="/students"
         />
-        {/* <SidebarItems
-          Icon={statisticsIcon}
+        <SidebarItems
+          Icon={studentIcon}
+          title="Questions"
+          selected={selectedItem === "Questions"}
+          setSelected={handleItemClick}
+          to="/questions"
+        />
+        <SidebarItems
+          Icon={studentIcon}
           title="Statistics"
           selected={selectedItem === "Statistics"}
           setSelected={handleItemClick}
           to="/statistics"
-        /> */}
+        />
       </div>
       <div className="space2"></div>
       <div className="sidebar__options">
@@ -166,4 +172,4 @@ function AdminSidebar() {
   );
 }
 
-export default AdminSidebar;
+export default SAdminSidebar;

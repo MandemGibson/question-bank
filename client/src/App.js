@@ -11,7 +11,7 @@ import Guide from "./scenes/guide";
 import Feedback from "./scenes/feedback";
 import AddQuestion from "./scenes/question/setquestion";
 import AddQuiz from "./scenes/question/addquiz";
-import QuesetionDetails from "./components/QuestionDetails";
+import QuestionDetails from "./components/QuestionDetails";
 import AuthPage from "./auth/AuthPage";
 import { useDispatch, useSelector } from "react-redux";
 import StudentDashBoard from "./StudentSide/scenes/dashboard";
@@ -27,7 +27,15 @@ import AdminSidebar from "./AdminPage/scenes/global/AdminSidebar";
 import { login, selectUser } from "./features/userSlice";
 import AddStaff from "./AdminPage/scenes/stafflist";
 import AddStudent from "./AdminPage/scenes/studentlist";
-import AdminStatistics from "./AdminPage/scenes/statistics";
+import SAdminSidebar from "./SuperAdmin/global/SAdminSidebar";
+import SAdminTopbar from "./SuperAdmin/global/SAdminTopbar";
+import SAdminDashboard from "./SuperAdmin/dashboard";
+import SAdminQuestionList from "./SuperAdmin/questionlist";
+import SAdminStaffList from "./SuperAdmin/stafflist";
+import SAdminStudentList from "./SuperAdmin/studentlist";
+import SAdminStatistics from "./SuperAdmin/statistics";
+
+const isSuperAdmin = true;
 
 function App() {
   const user = useSelector(selectUser);
@@ -48,7 +56,7 @@ function App() {
 
   return (
     <div className="app">
-      {!user ? (
+      {!user && !isSuperAdmin ? (
         <AuthPage />
       ) : user?.user.role === 3921 ? (
         <>
@@ -58,7 +66,7 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Dashboard />} />
               <Route path="/questions" element={<Questions />} />
-              <Route path="/questions/:id" element={<QuesetionDetails />} />
+              <Route path="/questions/:id" element={<QuestionDetails />} />
               <Route
                 path="/questions/exams-questions"
                 element={<AddQuestion />}
@@ -88,17 +96,46 @@ function App() {
             </Routes>
           </main>
         </>
+      ) : user?.user.role === 9291 ? (
+        <>
+          <AdminSidebar />
+          <main className="content">
+            <AdminTopbar />
+            <Routes>
+              <Route exact path="/" element={<AdminDashboard />} />
+              <Route exact path="/staff" element={<AddStaff />} />
+              <Route exact path="/students" element={<AddStudent />} />
+              <Route exact path="/guide" element={<Guide />} />
+              <Route exact path="/feedback" element={<Feedback />} />
+            </Routes>
+          </main>
+        </>
       ) : (
-        user?.user.role === 9291 && (
+        !user &&
+        isSuperAdmin && (
           <>
-            <AdminSidebar />
+            <SAdminSidebar />
             <main className="content">
-              <AdminTopbar />
+              <SAdminTopbar />
               <Routes>
-                <Route exact path="/" element={<AdminDashboard />} />
-                <Route exact path="/staff" element={<AddStaff />} />
-                <Route exact path="/students" element={<AddStudent />} />
-                <Route exact path="/statistics" element={<AdminStatistics />} />
+                <Route exact path="/" element={<SAdminDashboard />} />
+                <Route exact path="/staff" element={<SAdminStaffList />} />
+                <Route exact path="/students" element={<SAdminStudentList />} />
+                <Route
+                  exact
+                  path="/questions"
+                  element={<SAdminQuestionList />}
+                />
+                <Route
+                  exact
+                  path="/questions-review/:id"
+                  element={<QuestionDetails />}
+                />
+                <Route
+                  exact
+                  path="/statistics"
+                  element={<SAdminStatistics />}
+                />
                 <Route exact path="/guide" element={<Guide />} />
                 <Route exact path="/feedback" element={<Feedback />} />
               </Routes>

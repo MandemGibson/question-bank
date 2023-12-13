@@ -1,15 +1,15 @@
 import { Avatar, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import "../../../cssModules/Topbar.css";
+import "../../cssModules/Topbar.css";
 import { connect } from "react-redux";
-import { selectTitle } from "../../../features/titleSlice";
-import { selectStaff } from "../../../features/staffSlice";
-import { selectStudents } from "../../../features/studentSlice";
+import { selectTitle } from "../../features/titleSlice";
+import { selectStaff } from "../../features/staffSlice";
+import { selectStudents } from "../../features/studentSlice";
 import { useSelector } from "react-redux";
-import { ReactComponent as SearchIcon } from "../../../svg/Search.svg";
-import { ReactComponent as NotificationIcon } from "../../../svg/VectorBell.svg";
+import { ReactComponent as SearchIcon } from "../../svg/Search.svg";
+import { ReactComponent as NotificationIcon } from "../../svg/VectorBell.svg";
 import { useDispatch } from "react-redux";
-import { fetchStaffs } from "../../../features/staffSlice";
+import { fetchStaffs } from "../../features/staffSlice";
 
 function Topbar() {
   const dispatch = useDispatch();
@@ -105,7 +105,7 @@ function Topbar() {
           </p>
 
           <p id="position" style={{ margin: "0px" }}>
-            Admin
+            Super Admin
           </p>
         </Box>
       </div>

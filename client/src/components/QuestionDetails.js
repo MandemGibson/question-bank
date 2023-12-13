@@ -4,7 +4,7 @@ import { selectQuestion } from "../features/questionSlice";
 import { useParams } from "react-router";
 import { Box } from "@mui/material";
 
-function QuesetionDetails() {
+function QuestionDetails() {
   const { id } = useParams();
   const questions = useSelector(selectQuestion);
   const [question, setQuestion] = useState(null);
@@ -35,7 +35,6 @@ function QuesetionDetails() {
       minHeight="100vh"
       height="min-content"
       bgcolor="#fff"
-      borderRadius="0.625rem"
       p="20px"
       fontFamily="Rubik"
     >
@@ -66,4 +65,4 @@ function QuesetionDetails() {
   );
 }
 
-export default QuesetionDetails;
+export default QuestionDetails;

@@ -11,14 +11,14 @@ import {
   TextField,
 } from "@mui/material";
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { selectClass } from "../../../features/classSlice";
 import { selectSubject } from "../../../features/subjectSlice";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
-
+import * as XLSX from "xlsx";
 
 const initialValues = {
   firstname: "",
@@ -71,41 +71,82 @@ const TextFieldStyle = {
 
 function AddStaff() {
   const levels = useSelector(selectClass);
-  const subjects = useSelector(selectSubject); 
+  const subjects = useSelector(selectSubject);
   const [file, setFile] = useState(null);
-  const [filename, setFilename] = useState("No image selected");
-
-  useEffect(() => {
-    console.log("File", file)
-    console.log("Filename", filename)
-  })
+  const [filename, setFilename] = useState("No file selected");
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
-  
+
     if (file) {
       setFilename(file.name);
-  
+
       const reader = new FileReader();
-      reader.onload = () => {
-        const fileContent = reader.result;
-        // Do something with the file content, e.g., save it in state
-        setFile(fileContent);
+      reader.onload = (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        setFile(jsonData);
       };
-  
-      reader.readAsText(file); // You can use readAsDataURL for images, readAsArrayBuffer for binary files, etc.
+
+      reader.readAsArrayBuffer(file); // You can use readAsDataURL for images, readAsArrayBuffer for binary files, etc.
     }
   };
-  
 
-  // Use the useDropzone hook
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: ".xlsx, .xls, .doc, .docx", // Specify accepted file types
   });
 
+  const header = file && file[0];
+
+  const staffArray = file?.slice(1).map((entry) => {
+    const staffObject = {};
+    header.forEach((key, index) => {
+      staffObject[key] = entry[index];
+    });
+    return staffObject;
+  });
+
+  console.log(staffArray);
+
+  const handleCreateStaffWithExcel = async () => {
+    try {
+      const excelRows = [...staffArray];
+      for (const row of excelRows) {
+        const data = {
+          firstname: row.firstname,
+          middlename: row.middlename,
+          lastname: row.lastname,
+          email: row.email,
+          primary_contact: row.primary_contact.toString(),
+          secondary_contact: row.secondary_contact.toString(),
+          dob: row.dob,
+          residence: row.residence,
+          password: row.password,
+          level: [],
+          subjects: [],
+        };
+  
+        const response = await axios.post("http://localhost:3005/api/staffs", data);
+        console.log(response.data);
+      }
+  
+      console.log("All requests completed");
+        
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleCreateStaff = async (values) => {
     try {
+
       const response = await axios.post(
         "http://localhost:3005/api/staffs",
         values,
@@ -136,9 +177,6 @@ function AddStaff() {
               borderWidth: "3px",
             },
             "& .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root": {
-              // fontFamily: "Amaranth",
-              // fontStyle: "italic",
-              // color: "gray",
               fontWeight: "600",
             },
           }}
@@ -171,7 +209,11 @@ function AddStaff() {
                 }}
               >
                 <Box display="flex" flexDirection="column">
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                  >
                     <p style={{ fontWeight: "600", fontSize: "1.6rem" }}>
                       Profile
                     </p>
@@ -346,7 +388,7 @@ function AddStaff() {
                     <p style={{ fontWeight: "600", fontSize: "1.6rem" }}>
                       Others
                     </p>
-                    <Box justifyContent="">
+                    <Box>
                       <FormControl
                         sx={{ width: 300, mb: "1.5rem", mr: "1.5rem" }}
                       >
@@ -444,29 +486,54 @@ function AddStaff() {
                   </Box>
                 </Box>
 
-                <Button
-                  variant="contained"
-                  type="submit"
-                  style={{
-                    textTransform: "capitalize",
-                    backgroundColor: "#1494A6",
-                    borderRadius: "0.625rem",
-                    width: "50%",
-                    alignSelf: "center",
-                    margin: "0.5rem 0 0.5rem 0",
-                  }}
-                  disabled={isSubmitting}
-                >
-                  <p
+                {file !== null ? (
+                  <Button
+                    variant="contained"
                     style={{
-                      margin: "0px",
-                      fontFamily: "Rubik",
-                      fontWeight: "bold",
+                      textTransform: "capitalize",
+                      backgroundColor: "#1494A6",
+                      borderRadius: "0.625rem",
+                      width: "50%",
+                      alignSelf: "center",
+                      margin: "0.5rem 0 0.5rem 0",
                     }}
+                    onClick={handleCreateStaffWithExcel}
                   >
-                    Create Staff
-                  </p>
-                </Button>
+                    <p
+                      style={{
+                        margin: "0px",
+                        fontFamily: "Rubik",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Create Staff With Excel Data
+                    </p>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      textTransform: "capitalize",
+                      backgroundColor: "#1494A6",
+                      borderRadius: "0.625rem",
+                      width: "50%",
+                      alignSelf: "center",
+                      margin: "0.5rem 0 0.5rem 0",
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    <p
+                      style={{
+                        margin: "0px",
+                        fontFamily: "Rubik",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Create Staff
+                    </p>
+                  </Button>
+                )}
               </form>
             )}
           </Formik>

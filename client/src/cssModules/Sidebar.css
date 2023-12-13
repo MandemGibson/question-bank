@@ -5,7 +5,7 @@
     height: 100vh;
     width: 300px;
     background: linear-gradient(180deg, #fff 70%, #83eaf8);
-    /* transition: 0.4s; */
+    transition: 0.4s;
 }
 
 .sidebar__collapsed {

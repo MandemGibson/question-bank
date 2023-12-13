@@ -17,10 +17,37 @@ function Results() {
   const [studentsOfStaff, setStudentsOfStaff] = useState([]);
   const [averagePercentage, setAveragePercentage] = useState(0);
   const [grade, setGrade] = useState("N/A");
+  const [bestGradeVal, setBestGradeVal] = useState(() => {
+    const localValue = localStorage.getItem("BEST")
+    if (localValue == null) {
+      return 80
+    }
+    return JSON.parse(localValue)
+  });
+  const [worstGradeVal, setWorstGradeVal] = useState(() => {
+    const localValue = localStorage.getItem("WORST")
+    if (localValue == null) {
+      return 40
+    }
+    return JSON.parse(localValue)
+  });
+  const [belowAverageVal, setBelowAverageVal] = useState(() => {
+    const localValue = localStorage.getItem("AVERAGE")
+    if (localValue == null) {
+      return 50
+    }
+    return JSON.parse(localValue)
+  });
 
   const staffLevels = useMemo(() => {
     return user?.user.level.map((level) => level.name) || [];
   }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem("BEST", JSON.stringify(bestGradeVal))
+    localStorage.setItem("AVERAGE", JSON.stringify(belowAverageVal))
+    localStorage.setItem("WORST", JSON.stringify(worstGradeVal))
+  })
 
   useEffect(() => {
     const filteredStudents = results.filter((student) => {
@@ -144,13 +171,31 @@ function Results() {
           mr="20px"
           borderRadius="0.625rem"
           boxShadow={boxShadow}
+          overflow="hidden"
         >
           <Box>
-            <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
-              Best performing students
-            </p>
+            <div style={{ display: "flex", margin: "2px" }}>
+              <p style={{ margin: "0", color: "#473333", fontSize: "20px" }}>
+                Best performing students
+              </p>
+              <input
+                type="number"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  outline: "none",
+                  borderRadius: "0.62rem",
+                  border: "none",
+                  fontFamily: "Montserrat",
+                  opacity: "70%",
+                  textAlign:"center"
+                }}
+                value={bestGradeVal}
+                onChange={(e) => setBestGradeVal(e.target.value)}
+              />
+            </div>
             {studentsOfStaff
-              .filter((val) => val.result >= 70)
+              .filter((val) => val.result >= bestGradeVal)
               .map((student) => {
                 return (
                   <Performance
@@ -171,8 +216,9 @@ function Results() {
           mr="20px"
           borderRadius="0.625rem"
           boxShadow={boxShadow}
+          overflow="hidden"
         >
-          <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
+          <p style={{ margin: "10px", color: "#473333", fontSize: "20px" }}>
             Average Grade
           </p>
           <p
@@ -213,12 +259,30 @@ function Results() {
           mr="20px"
           borderRadius="0.625rem"
           boxShadow={boxShadow}
+          overflow="hidden"
         >
-          <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
-            Below Average
-          </p>
+          <div style={{ display: "flex", margin: "2px", justifyContent:"space-between" }}>
+              <p style={{ margin: "0", color: "#473333", fontSize: "20px" }}>
+                Below Average
+              </p>
+              <input
+                type="number"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  outline: "none",
+                  borderRadius: "0.62rem",
+                  border: "none",
+                  fontFamily: "Montserrat",
+                  opacity: "70%",
+                  textAlign:"center"
+                }}
+                value={belowAverageVal}
+                onChange={(e) => setBelowAverageVal(e.target.value)}
+              />
+            </div>
           {studentsOfStaff
-            .filter((val) => val.result < 50)
+            .filter((val) => val.result < belowAverageVal)
             .map((student) => {
               return (
                 <Performance
@@ -238,11 +302,28 @@ function Results() {
           boxShadow={boxShadow}
           overflow="hidden"
         >
-          <p style={{ margin: "10px", color: "#473333", fontSize: "25px" }}>
-            Worst performing students
-          </p>
+          <div style={{ display: "flex", margin: "2px" }}>
+              <p style={{ margin: "0", color: "#473333", fontSize: "20px" }}>
+                Worst performing students
+              </p>
+              <input
+                type="number"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  outline: "none",
+                  borderRadius: "0.62rem",
+                  border: "none",
+                  fontFamily: "Montserrat",
+                  opacity: "70%",
+                  textAlign:"center"
+                }}
+                value={worstGradeVal}
+                onChange={(e) => setWorstGradeVal(e.target.value)}
+              />
+            </div>
           {studentsOfStaff
-            .filter((val) => val.result <= 40)
+            .filter((val) => val.result <= worstGradeVal)
             .map((student) => {
               return (
                 <Performance

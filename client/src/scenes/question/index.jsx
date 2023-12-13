@@ -114,7 +114,7 @@ function Questions() {
               fontFamily: "Amaranth",
             }}
           >
-            No new question posted
+            No completed question
           </p>
         ) : (
           completedQuestions.map((question) => (

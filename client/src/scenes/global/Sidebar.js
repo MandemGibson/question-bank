@@ -49,7 +49,13 @@ function Sidebar() {
       >
         {isCollapsed ? (
           <div className="logo">
-            <img src={ola} alt="" width="150px" height="100px" />
+            <img
+              src={ola}
+              alt=""
+              width="150px"
+              height="100px"
+              style={{ objectFit: "contain" }}
+            />
           </div>
         ) : (
           <img
