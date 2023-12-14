@@ -13,6 +13,7 @@ const containerStyle = {
 function SAdminStudentList() {
   const student = useSelector(selectStudents);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null)
 
   const handleStudentClick = (studentDetails) => {
     setSelectedStudent(studentDetails);
@@ -70,6 +71,8 @@ function SAdminStudentList() {
                   name={`${eachStudent.firstname} ${eachStudent.middlename ||
                     ""} ${eachStudent.lastname}`}
                   onClick={() => handleStudentClick(eachStudent)}
+                  selected={selectedItem}
+                  setSelected={setSelectedItem}
                 />
               );
             })}

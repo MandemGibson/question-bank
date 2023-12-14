@@ -100,7 +100,7 @@ function AddStaff() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: ".xlsx, .xls, .doc, .docx", // Specify accepted file types
+    accept: ".xlsx, .xls", // Specify accepted file types
   });
 
   const header = file && file[0];
@@ -113,7 +113,25 @@ function AddStaff() {
     return staffObject;
   });
 
-  console.log(staffArray);
+  const excelSerialToDate = (serial) => {
+    const utcDays = Math.floor(serial - 25569);
+    const utcValue = utcDays * 86400; // seconds per day
+    const date = new Date(utcValue * 1000);
+  
+    // Adjust to local timezone
+    const offset = date.getTimezoneOffset();
+    date.setMinutes(date.getMinutes() - offset);
+  
+    return date;
+  };
+
+  const addLeadingZero = (number) => {
+    if (number == null) {
+      return;
+    }
+    const contact = number.toString();
+    return contact[0] !== '0' ? '0' + contact : contact;
+  };
 
   const handleCreateStaffWithExcel = async () => {
     try {
@@ -124,21 +142,25 @@ function AddStaff() {
           middlename: row.middlename,
           lastname: row.lastname,
           email: row.email,
-          primary_contact: row.primary_contact.toString(),
-          secondary_contact: row.secondary_contact.toString(),
-          dob: row.dob,
+          primary_contact: addLeadingZero(row.primary_contact),
+          secondary_contact: addLeadingZero(row.secondary_contact),
+          dob: excelSerialToDate(row.dob),
           residence: row.residence,
           password: row.password,
-          level: [],
-          subjects: [],
+          level: row.level.split(",").map((level) => level.trim()),
+          subjects: row.subjects.split(",").map((subject) => subject.trim()),
         };
-  
-        const response = await axios.post("http://localhost:3005/api/staffs", data);
+
+        const response = await axios.post(
+          "http://localhost:3005/api/staffs",
+          data
+        );
         console.log(response.data);
       }
-  
+
+      setFile(null)
+      setFilename("No file selected")
       console.log("All requests completed");
-        
     } catch (error) {
       console.error(error);
     }
@@ -146,7 +168,6 @@ function AddStaff() {
 
   const handleCreateStaff = async (values) => {
     try {
-
       const response = await axios.post(
         "http://localhost:3005/api/staffs",
         values,
@@ -468,7 +489,7 @@ function AddStaff() {
                             },
                           }}
                         >
-                          {subjects.map((subject) => {
+                          {subjects?.map((subject) => {
                             return (
                               <MenuItem key={subject.id} value={subject.name}>
                                 <Checkbox

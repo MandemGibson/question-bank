@@ -335,7 +335,7 @@ function AddQuiz() {
       await axios.post("http://localhost:3005/api/questions", {
         title: title,
         classId: levelId,
-        categoryId: "c021b0c7-6ed2-47d0-beed-748f5061ed0b",
+        categoryId: "6d6a5c05-17c4-4e5f-827d-514e29d66b12",
         timeLimit: Number(duration),
         deadline: deadline,
         questionTexts: quizquestionTexts,

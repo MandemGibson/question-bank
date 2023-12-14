@@ -35,7 +35,7 @@ import SAdminStaffList from "./SuperAdmin/stafflist";
 import SAdminStudentList from "./SuperAdmin/studentlist";
 import SAdminStatistics from "./SuperAdmin/statistics";
 
-const isSuperAdmin = true;
+// const isSuperAdmin = true;
 
 function App() {
   const user = useSelector(selectUser);
@@ -56,7 +56,7 @@ function App() {
 
   return (
     <div className="app">
-      {!user && !isSuperAdmin ? (
+      {!user ? (
         <AuthPage />
       ) : user?.user.role === 3921 ? (
         <>
@@ -111,8 +111,7 @@ function App() {
           </main>
         </>
       ) : (
-        !user &&
-        isSuperAdmin && (
+        user?.user.role === 7832 && (
           <>
             <SAdminSidebar />
             <main className="content">
