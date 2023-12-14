@@ -173,6 +173,13 @@ model Admin {
   role     Int    @default(9291)
 }
 
+model SuperAdmin {
+  id       String @id @default(uuid())
+  username String
+  password String
+  role     Int    @default(7832)
+}
+
 model Sessions {
   id     String  @id @default(uuid())
   userId String

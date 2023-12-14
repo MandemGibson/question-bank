@@ -8,7 +8,8 @@ async function getAllStaff() {
   return await prisma.staff.findMany({
     include: {
       level: true,
-      subjects: true
+      subjects: true,
+      topics: true
     }
   });
 }

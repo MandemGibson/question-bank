@@ -1,5 +1,6 @@
 const { decryptPassword } = require("../util/password");
 const { loginAdmin } = require("./admin.service");
+const { loginSuperAdmin } = require("../services/superadmin.service");
 const PrismaService = require("./prisma.service");
 const { getStaffById } = require("./staffs.service");
 const { getStudentById } = require("./students.service");
@@ -17,7 +18,8 @@ async function getAuth(userId) {
 async function loginUser({ userId, password }) {
   let auth =
     (await getAuth(userId)) ??
-    (await loginAdmin({ username: userId, password }));
+    (await loginAdmin({ username: userId, password })) ??
+    (await loginSuperAdmin({ username: userId, password }));
 
   if (!auth) return undefined;
 
