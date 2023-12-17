@@ -19,6 +19,7 @@ import { selectSubject } from "../../../features/subjectSlice";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
+import { selectStaff } from "../../../features/staffSlice";
 
 const initialValues = {
   firstname: "",
@@ -72,6 +73,7 @@ const TextFieldStyle = {
 function AddStaff() {
   const levels = useSelector(selectClass);
   const subjects = useSelector(selectSubject);
+  const staffs = useSelector(selectStaff);
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("No file selected");
 
@@ -117,11 +119,11 @@ function AddStaff() {
     const utcDays = Math.floor(serial - 25569);
     const utcValue = utcDays * 86400; // seconds per day
     const date = new Date(utcValue * 1000);
-  
+
     // Adjust to local timezone
     const offset = date.getTimezoneOffset();
     date.setMinutes(date.getMinutes() - offset);
-  
+
     return date;
   };
 
@@ -130,7 +132,7 @@ function AddStaff() {
       return;
     }
     const contact = number.toString();
-    return contact[0] !== '0' ? '0' + contact : contact;
+    return contact[0] !== "0" ? "0" + contact : contact;
   };
 
   const handleCreateStaffWithExcel = async () => {
@@ -151,15 +153,23 @@ function AddStaff() {
           subjects: row.subjects.split(",").map((subject) => subject.trim()),
         };
 
-        const response = await axios.post(
-          "http://localhost:3005/api/staffs",
-          data
-        );
-        console.log(response.data);
+        const staffExist = staffs.some((existingStaff) => {
+          return existingStaff.email.toLowerCase() === data.email.toLowerCase();
+        });
+
+        if (!staffExist) {
+          const response = await axios.post(
+            "http://localhost:3005/api/staffs",
+            data
+          );
+          console.log(response.data);
+        } else {
+          console.log(`Staff with email ${data.email} already exists. Skipping.`);
+        }
       }
 
-      setFile(null)
-      setFilename("No file selected")
+      setFile(null);
+      setFilename("No file selected");
       console.log("All requests completed");
     } catch (error) {
       console.error(error);

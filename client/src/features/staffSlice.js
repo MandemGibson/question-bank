@@ -10,6 +10,11 @@ export const fetchStaffs = createAsyncThunk("staffs/fetchStaffs", async () => {
   }
 });
 
+export const removeStaff = (staffId) => ({
+  type: "staffs/removeStaff",
+  payload: { staffId },
+});
+
 const initialState = {
   staffs: [],
 };
@@ -20,6 +25,12 @@ const staffSlice = createSlice({
   reducers: {
     schoolStaff: (state, action) => {
       state.staffs = action.payload;
+    },
+    removeStaff: (state, action) => {
+      const updatedStaff = state.staffs.filter(
+        (staff) => staff.id !== action.payload.staffId
+      );
+      state.staffs = updatedStaff;
     },
   },
 

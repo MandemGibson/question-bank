@@ -15,12 +15,12 @@ function Topbar() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const students = useSelector(selectStudents);
+  const staff = useSelector(selectStaff);
+  const title = useSelector(selectTitle);
 
   useEffect(() => {
     dispatch(fetchStaffs());
   }, [dispatch]);
-  const staff = useSelector(selectStaff);
-  const title = useSelector(selectTitle);
 
   const StaffAndStudents = [...staff, ...students];
 
@@ -30,7 +30,7 @@ function Topbar() {
 
   return (
     <div className="topbar">
-      <p>{title}</p>
+      <p style={{ color: "white" }}>{title}</p>
 
       <div className="search__tray">
         <input
@@ -104,7 +104,7 @@ function Topbar() {
             {staff?.middlename} {staff?.lastname}
           </p>
 
-          <p id="position" style={{ margin: "0px" }}>
+          <p id="position" style={{ margin: "0px", color: "white" }}>
             Super Admin
           </p>
         </Box>

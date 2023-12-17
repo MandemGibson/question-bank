@@ -45,10 +45,10 @@ function App() {
   useEffect(() => {
     const session = JSON.parse(localStorage.getItem("sessionId"));
     if (session) {
-      dispatch(login(user));
+      dispatch(login(session));
     }
     console.log(session);
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   const isOpenQuiz = /^\/quiz-tab\/[a-f0-9-]+|^\/exams-tab\/[a-f0-9-]+/.test(
     location.pathname

@@ -53,7 +53,7 @@ function Results() {
     const filteredStudents = results.filter((student) => {
       const studentLevelName = student.student.level.name;
       return staffLevels.includes(studentLevelName);
-    });
+    },[]);
 
     const studentRecord = [];
     filteredStudents.forEach((student) => {

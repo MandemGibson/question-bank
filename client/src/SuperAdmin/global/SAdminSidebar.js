@@ -7,9 +7,10 @@ import SidebarItems from "../../components/SidebarItems";
 import { ReactComponent as dashboardIcon } from "../../svg/dashboard.svg";
 import { ReactComponent as staffIcon } from "../../svg/staff.svg";
 import { ReactComponent as studentIcon } from "../../svg/student.svg";
-import { ReactComponent as statisticsIcon } from "../../svg/Many Line Graph.svg";
+// import { ReactComponent as statisticsIcon } from "../../svg/Many Line Graph.svg";
 import { ReactComponent as usersGuideIcon } from "../../svg/usersGuide.svg";
 import { ReactComponent as feedbackIcon } from "../../svg/Vector.svg";
+import { ReactComponent as questionslistIcon } from "../../svg/questionlist.svg";
 import { useSidebar } from "../../SidebarContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
@@ -106,19 +107,19 @@ function SAdminSidebar() {
           to="/students"
         />
         <SidebarItems
-          Icon={studentIcon}
+          Icon={questionslistIcon}
           title="Questions"
           selected={selectedItem === "Questions"}
           setSelected={handleItemClick}
           to="/questions"
         />
-        <SidebarItems
+        {/* <SidebarItems
           Icon={statisticsIcon}
           title="Statistics"
           selected={selectedItem === "Statistics"}
           setSelected={handleItemClick}
           to="/statistics"
-        />
+        /> */}
       </div>
       <div className="space2"></div>
       <div className="sidebar__options">
