@@ -31,10 +31,19 @@ const boxStyle = {
 };
 
 function Grades() {
+  // const dispatch = useDispatch()
   const user = useSelector(selectUser);
   const [grade, setGrade] = useState("");
   const [average, setAverage] = useState(0);
   const [remarks, setRemarks] = useState("");
+
+  // useEffect(() => {
+  //   const session = JSON.parse(localStorage.getItem("sessionId"));
+  //   if (session) {
+  //     dispatch(login(session));
+  //   }
+  //   console.log(session);
+  // }, [dispatch]);
 
   const months = [
     "Jan",

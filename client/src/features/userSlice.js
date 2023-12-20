@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// export const updateUser = (userId) => ({
+//   type: "users/updateUser",
+//   payload: { userId },
+// });
+
 const initialState = {
   users: null,
 };
@@ -14,6 +19,9 @@ const userSlice = createSlice({
     logout: (state) => {
       state.users = null;
     },
+    // updateUser: (state, action) => {
+    //   const updatedUser = state.users.patch()
+    // }
   },
 });
 
