@@ -30,8 +30,8 @@ async function loginUser({ userId, password }) {
   if (!isEqual) return undefined;
 
   return (
-    (await getStudentById(auth.userId)) ??
-    (await getStaffById(auth.userId)) ??
+    (await getStudentById({ student_id: auth.userId })) ??
+    (await getStaffById({ staff_id: auth.userId })) ??
     undefined
   );
 }

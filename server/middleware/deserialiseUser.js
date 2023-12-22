@@ -11,12 +11,13 @@ async function deserialiseUser(req, res, next) {
     if (!sessionId) return next();
 
     const session = await getSessionById({ id: sessionId, ip });
+    console.log(session);
 
     if (!session) return next();
 
     const user =
-      (await getStaffById(session.userId)) ??
-      (await getStudentById(session.userId)) ??
+      (await getStaffById({ id: session.userId })) ??
+      (await getStudentById({ id: session.userId })) ??
       (await getAdmin({ id: session.userId }));
     console.log(user);
 

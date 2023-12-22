@@ -10,9 +10,11 @@ async function getAllStudents() {
   });
 }
 
-async function getStudentById(student_id) {
+async function getStudentById({ id, student_id }) {
+  console.log(id);
   return await prisma.student.findUnique({
     where: {
+      id,
       student_id
     },
     include: { level: true, Results: true }

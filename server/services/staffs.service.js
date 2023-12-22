@@ -14,9 +14,10 @@ async function getAllStaff() {
   });
 }
 
-async function getStaffById(staff_id) {
+async function getStaffById({ id, staff_id }) {
   return await prisma.staff.findUnique({
     where: {
+      id,
       staff_id
     },
     include: { level: true }
