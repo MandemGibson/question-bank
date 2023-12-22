@@ -45,16 +45,9 @@ function AuthPage() {
 
   const LoginToApp = async (values) => {
     try {
-      const sessionId = localStorage.getItem("sessionId");
       const response = await axios.post(
         "http://localhost:3005/api/auth/login",
         values,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionId}`,
-          },
-          withCredentials: true,
-        }
       );
       const Id = response.data;
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../../../cssModules/Sidebar.css";
 import { CloseOutlined, Logout, MenuRounded } from "@mui/icons-material";
 import ola from "../../../images/ola.jpg";
@@ -37,16 +38,25 @@ function StuSidebar() {
   };
 
   const LogoutOutOfApp = async () => {
-    // try {
-    //   const result = await axios.post("http://localhost:3005/api/auth/logout");
-    //   console.log(result.data);
-    //   return result.data;
-    // } catch (error) {
-    //   console.error(error);
-    // }
-    localStorage.clear();
-    dispatch(logout());
-    navigate("/");
+    try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+      console.log(sessionId.sessionId);
+      const result = await axios.post(
+        "http://localhost:3005/api/auth/logout",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`,
+          },
+        }
+      );
+      console.log(result.data);
+      localStorage.clear();
+      dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
