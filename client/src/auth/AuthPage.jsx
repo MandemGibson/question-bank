@@ -45,8 +45,9 @@ function AuthPage() {
 
   const LoginToApp = async (values) => {
     try {
+      const apiUrl = process.env.REACT_APP_API_URL;
       const response = await axios.post(
-        "http://localhost:3005/api/auth/login",
+        `${apiUrl}/auth/login`,
         values,
       );
       const Id = response.data;

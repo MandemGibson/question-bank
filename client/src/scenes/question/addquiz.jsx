@@ -332,7 +332,8 @@ function AddQuiz() {
     }));
 
     try {
-      await axios.post("http://localhost:3005/api/questions", {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      await axios.post(`${apiUrl}/questions`, {
         title: title,
         classId: levelId,
         categoryId: "6d6a5c05-17c4-4e5f-827d-514e29d66b12",

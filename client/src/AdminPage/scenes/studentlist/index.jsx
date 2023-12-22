@@ -56,6 +56,8 @@ function AddStudent() {
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("No file selected");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
 
@@ -111,7 +113,7 @@ function AddStudent() {
         };
 
         const response = await axios.post(
-          "http://localhost:3005/api/students",
+          `${apiUrl}/students`,
           data
         );
         console.log(response.data);
@@ -126,7 +128,7 @@ function AddStudent() {
   const handleCreateStudent = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:3005/api/students",
+        `${apiUrl}/students`,
         values,
         {
           withCredentials: true,

@@ -111,7 +111,8 @@ function OpenQuestion() {
     setScore((result / quiz.questions.length) * 100);
 
     try {
-      await axios.post("http://localhost:3005/api/results", {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      await axios.post(`${apiUrl}/results`, {
         result: (result / quiz.questions.length) * 100,
         categoryId: quiz.categoryId,
         studentId: user?.user.id,
@@ -134,10 +135,8 @@ function OpenQuestion() {
     };
 
     try {
-      await axios.patch(
-        `http://localhost:3005/api/questions/${questionId}`,
-        data
-      );
+      const apiUrl = process.env.REACT_APP_API_URL;
+      await axios.patch(`${apiUrl}/questions/${questionId}`, data);
     } catch (error) {
       console.error("Error updating question", error);
     }
@@ -156,10 +155,8 @@ function OpenQuestion() {
     };
 
     try {
-      await axios.patch(
-        `http://localhost:3005/api/questions/${questionId}`,
-        data
-      );
+      const apiUrl = process.env.REACT_APP_API_URL;
+      await axios.patch(`${apiUrl}/questions/${questionId}`, data);
     } catch (error) {
       console.error("Error updating question", error);
     }

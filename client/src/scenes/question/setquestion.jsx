@@ -335,7 +335,8 @@ function AddQuestion() {
     }));
 
     try {
-      await axios.post("http://localhost:3005/api/questions", {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      await axios.post(`${apiUrl}/questions`, {
         title: title,
         classId: levelId,
         categoryId: "68f3fa4c-356d-406d-af20-e0c3a5eb3cb1",

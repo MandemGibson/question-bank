@@ -33,7 +33,8 @@ function QuestionSet({
 
     if (option === "Delete") {
       try {
-        await axios.delete(`http://localhost:3005/api/questions/${questionId}`);
+        const apiUrl = process.env.REACT_APP_API_URL;
+        await axios.delete(`${apiUrl}/questions/${questionId}`);
         dispatch(removeQuestion(questionId));
       } catch (error) {
         console.error(error);

@@ -158,8 +158,9 @@ function AddStaff() {
         });
 
         if (!staffExist) {
+          const apiUrl = process.env.REACT_APP_API_URL;
           const response = await axios.post(
-            "http://localhost:3005/api/staffs",
+            `${apiUrl}/staffs`,
             data
           );
           console.log(response.data);
@@ -178,8 +179,9 @@ function AddStaff() {
 
   const handleCreateStaff = async (values) => {
     try {
+      const apiUrl = process.env.REACT_APP_API_URL;
       const response = await axios.post(
-        "http://localhost:3005/api/staffs",
+        `${apiUrl}/staffs`,
         values,
         {
           withCredentials: true,

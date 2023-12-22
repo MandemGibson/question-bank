@@ -248,7 +248,8 @@ function SAdminDashboard() {
   const handleDelete = async(role, id) => {
     if (role === 3921) {
       try {
-        await axios.delete(`http://localhost:3005/api/staffs/${id}`)
+        const apiUrl = process.env.REACT_APP_API_URL;
+        await axios.delete(`${apiUrl}/staffs/${id}`)
         dispatch(removeStaff(id))
       } catch (error) {
         console.error("Deletion error", error)
