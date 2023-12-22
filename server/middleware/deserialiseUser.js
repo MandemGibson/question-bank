@@ -19,7 +19,6 @@ async function deserialiseUser(req, res, next) {
       (await getStaffById({ id: session.userId })) ??
       (await getStudentById({ id: session.userId })) ??
       (await getAdmin({ id: session.userId }));
-    console.log(user);
 
     if (!user) return next();
 
