@@ -41,7 +41,7 @@ function ExamsTab() {
   );
 
   const exams = filteredQuestions.filter(
-    (question) => question.categoryId === "68f3fa4c-356d-406d-af20-e0c3a5eb3cb1"
+    (question) => question.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db"
   );
 
   return (

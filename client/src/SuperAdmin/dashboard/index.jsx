@@ -306,7 +306,7 @@ function SAdminDashboard() {
           >
             Question Category
           </Box>
-          <CircularProgressBar value={examPercentage} />
+          <CircularProgressBar value={examPercentage || 0} />
           <Box display={"grid"} gridTemplateColumns={"1fr 1fr"} gap={2}>
             <Box>
               <Box display="flex" alignItems="center">

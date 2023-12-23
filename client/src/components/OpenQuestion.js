@@ -65,9 +65,7 @@ function OpenQuestion() {
           setSeconds(59);
         }
       }, 1000);
-    }
-
-    if (hour === 0 && minute === 0 && seconds === 0) {
+    } else {
       clearInterval(timer);
     }
 
@@ -121,7 +119,7 @@ function OpenQuestion() {
     } catch (error) {
       console.error("Error making requesting: ", error);
     }
-    if (quiz.categoryId === "f24df200-8f37-40e5-836b-21cbb7f42636") {
+    if (quiz.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db") {
       navigate("/exams-tab");
     } else {
       navigate("/quiz-tab");

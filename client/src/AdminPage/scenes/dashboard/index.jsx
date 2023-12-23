@@ -13,6 +13,7 @@ import { fetchClass } from "../../../features/classSlice";
 import { fetchSubject } from "../../../features/subjectSlice";
 import Calendar from "react-calendar";
 import "../../../cssModules/Calendar.css";
+import axios from "axios";
 
 const staffColumn = [
   {
@@ -112,6 +113,25 @@ function AdminDashboard() {
   const questions = useSelector(selectQuestion);
   const [date, setDate] = useState(new Date());
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  
+  const numOfValidOnline = onlineUsers.filter((user)=> user.valid)
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    const fetchOnlineUsers = async () => {
+      try {
+        const res = await axios.get(`${apiUrl}/sessions`);
+        setOnlineUsers(res.data);
+        console.log(res);
+      } catch (error) {
+        console.error("Error fetching users", error);
+      }
+    };
+
+    fetchOnlineUsers();
+  }, [apiUrl]);
 
   const onChange = (date) => {
     setDate(date);
@@ -165,7 +185,7 @@ function AdminDashboard() {
         <AdminFlexBox header="Total Staff" count={staffs.length} />
         <AdminFlexBox header="Total Students" count={students.length} />
         <AdminFlexBox header="Total Questions" count={questions.length} />
-        <AdminFlexBox header="Total Online" count="0" />
+        <AdminFlexBox header="Total Online" count={numOfValidOnline.length} />
       </Box>
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" flexDirection="column">

@@ -6,22 +6,27 @@ import "../../../cssModules/StuDashboard.css";
 import CourseBox from "../../../components/CourseBox";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
-import { fetchQuestions, selectQuestion } from "../../../features/questionSlice";
+import {
+  fetchQuestions,
+  selectQuestion,
+} from "../../../features/questionSlice";
 
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function StudentDashBoard() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const questions = useSelector(selectQuestion);
   const user = useSelector(selectUser);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    dispatch(fetchQuestions())
-  },[dispatch])
+    dispatch(fetchQuestions());
+  }, [dispatch]);
 
   const filteredQuestions = questions.filter(
-    (question) => question.level.name === user.user.level.name && question.isCompleted === true
+    (question) =>
+      question.level.name === user.user.level.name &&
+      question.isCompleted === true
   );
 
   const AccessedCourses = filteredQuestions?.map((question, index) => ({
@@ -29,8 +34,6 @@ function StudentDashBoard() {
     title: question.title,
     subtitle: "First semester",
   }));
-
-  const name = user?.user.firstname + " " + user?.user.lastname;
 
   const handlePrev = () => {
     if (currentIndex > 0) {
@@ -49,8 +52,14 @@ function StudentDashBoard() {
   };
 
   return (
-    <Box display="flex" m="20px" justifyContent="space-between">
-      <Box display="flex" width="68%" flexDirection="column">
+    <Box
+      display="grid"
+      mx="4rem"
+      my="2rem"
+      sx={{ placeContent: "center" }}
+      gridTemplateColumns={"1fr"}
+    >
+      <Box display="flex" flexDirection="column">
         <Box
           borderRadius="0.625rem"
           bgcolor="white"
@@ -130,7 +139,7 @@ function StudentDashBoard() {
           </Box>
         </Box>
       </Box>
-      <Box
+      {/* <Box
         bgcolor="white"
         borderRadius="0.625rem"
         width="30%"
@@ -142,11 +151,16 @@ function StudentDashBoard() {
           <p style={{ margin: "0px", fontFamily: "Rubik", fontWeight: "600" }}>
             Online Users
           </p>
-          <ol>
-            <li>{name}</li>
-          </ol>
+          <ul>
+            {
+              onlineUsers.filter((user)=> user.valid).map((users) => {
+                return <li key={users.id}>{users.userId}</li>
+              })
+            }
+            
+          </ul>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 }

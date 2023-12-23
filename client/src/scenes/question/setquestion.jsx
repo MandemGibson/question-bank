@@ -98,6 +98,7 @@ export function Modal({ onClose, onSubmit }) {
               required
               name="deadline"
               aria-label="Deadline"
+              placeholder="Deadline"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
               style={{
@@ -339,7 +340,7 @@ function AddQuestion() {
       await axios.post(`${apiUrl}/questions`, {
         title: title,
         classId: levelId,
-        categoryId: "68f3fa4c-356d-406d-af20-e0c3a5eb3cb1",
+        categoryId: "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db",
         timeLimit: Number(duration),
         deadline: deadline,
         questionTexts: questionTexts,
