@@ -78,7 +78,8 @@ async function updateQuestionById({
   answerChoices,
   isFlagged,
   isCompleted,
-  topicId
+  topicId,
+  userId
 }) {
   if (answerChoices) {
     for (const answerChoice of answerChoices) {
@@ -106,14 +107,17 @@ async function updateQuestionById({
     }
   });
 
-  await prisma.topic.update({
-    where: {
-      id: topicId
-    },
-    data: {
-      isCompleted
-    }
-  });
+  if (isCompleted)
+    await prisma.topic.update({
+      where: {
+        id: topicId
+      },
+      data: {
+        completed: {
+          connect: { topicId, userId }
+        }
+      }
+    });
 }
 
 module.exports = {

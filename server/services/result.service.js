@@ -18,11 +18,12 @@ async function getResult() {
 
 async function createResult({ data }) {
   return await prisma.results.create({
-    data: data
+    data
   });
 }
 
 module.exports = {
   getResult,
+  getCategory,
   createResult
 };

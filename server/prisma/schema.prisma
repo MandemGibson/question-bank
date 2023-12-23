@@ -21,21 +21,22 @@ model Auth {
 }
 
 model Student {
-  id              String     @id @default(uuid())
-  student_id      String     @unique
+  id              String            @id @default(uuid())
+  student_id      String            @unique
   firstname       String
   middlename      String?
   lastname        String
   dob             DateTime
   residence       String
-  level           Class      @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  level           Class             @relation(fields: [classId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   classId         String
-  role            Int        @default(6631)
+  role            Int               @default(6631)
   guardians       Guardian[]
   date_registered DateTime?
   // profile_pic     Bytes?     @unique
   Results         Results[]
   auth            Auth?
+  completedTopics CompletedTopics[]
 
   @@unique([id, student_id], map: "student_auth_fk")
 }
@@ -111,20 +112,28 @@ model Class {
 }
 
 model Topic {
-  id          String     @id @default(uuid())
-  staff       Staff?     @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  staffId     String?
-  isCompleted Boolean    @default(false)
-  level       Class      @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  classId     String
-  title       String
-  questions   Question[]
-  timeLimit   Int        @default(0)
-  deadline    DateTime
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  categoryId  String
+  id         String            @id @default(uuid())
+  staff      Staff?            @relation(fields: [staffId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  staffId    String?
+  level      Class             @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  classId    String
+  title      String
+  questions  Question[]
+  timeLimit  Int               @default(0)
+  deadline   DateTime
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  category   Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId String
+  completed  CompletedTopics[]
+}
+
+model CompletedTopics {
+  id        String  @id @default(uuid())
+  topicId   String
+  studentId String
+  topic     Topic   @relation(references: [id], fields: [topicId], onUpdate: Cascade, onDelete: Cascade)
+  student   Student @relation(references: [id], fields: [studentId], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Question {
