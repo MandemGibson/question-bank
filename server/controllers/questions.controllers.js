@@ -80,18 +80,20 @@ async function updateQuestionHandler(req, res, next) {
       topicId
     } = req.body;
 
+    console.log(res.locals.user);
     const updatedQuestion = await updateQuestionById({
       id,
       question,
       image,
       answerChoices,
       isFlagged,
-      isCompleted,
+      isCompleted: false,
       topicId,
-      userId: res.locals.user.id,
+      studentId: res.locals.user.id
     });
     res.json(updatedQuestion);
   } catch (error) {
+    console.error(error);
     next(error);
   }
 }

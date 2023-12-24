@@ -79,7 +79,7 @@ async function updateQuestionById({
   isFlagged,
   isCompleted,
   topicId,
-  userId
+  studentId
 }) {
   if (answerChoices) {
     for (const answerChoice of answerChoices) {
@@ -114,7 +114,10 @@ async function updateQuestionById({
       },
       data: {
         completed: {
-          connect: { topicId, userId }
+          connect: {
+            topicId,
+            studentId
+          }
         }
       }
     });

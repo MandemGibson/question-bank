@@ -24,6 +24,5 @@ async function createResult({ data }) {
 
 module.exports = {
   getResult,
-  getCategory,
   createResult
 };

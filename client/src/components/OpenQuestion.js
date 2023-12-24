@@ -109,20 +109,24 @@ function OpenQuestion() {
     setScore((result / quiz.questions.length) * 100);
 
     try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.post(`${apiUrl}/results`, {
-        result: (result / quiz.questions.length) * 100,
-        categoryId: quiz.categoryId,
-        studentId: user?.user.id,
-        title: quiz.title,
-      });
+      await axios.post(
+        `${apiUrl}/results`,
+        {
+          result: (result / quiz.questions.length) * 100,
+          categoryId: quiz.categoryId,
+          studentId: user?.user.id,
+          title: quiz.title,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`,
+          },
+        }
+      );
     } catch (error) {
       console.error("Error making requesting: ", error);
-    }
-    if (quiz.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db") {
-      navigate("/exams-tab");
-    } else {
-      navigate("/quiz-tab");
     }
 
     const questionId = quiz.questions[currentIndex].id;
@@ -133,10 +137,22 @@ function OpenQuestion() {
     };
 
     try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${questionId}`, data);
+      await axios.patch(`${apiUrl}/questions/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${sessionId.sessionId}`,
+        },
+      });
+
+      if (quiz.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db") {
+        navigate("/exams-tab");
+      } else {
+        navigate("/quiz-tab");
+      }
     } catch (error) {
       console.error("Error updating question", error);
+      alert("Couldn't navigate");
     }
   };
 
@@ -153,8 +169,14 @@ function OpenQuestion() {
     };
 
     try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+      console.log(sessionId.sessionId);
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${questionId}`, data);
+      await axios.patch(`${apiUrl}/questions/${questionId}`, data, {
+        headers: {
+          Authorization: `Bearer ${sessionId.sessionId}`,
+        },
+      });
     } catch (error) {
       console.error("Error updating question", error);
     }

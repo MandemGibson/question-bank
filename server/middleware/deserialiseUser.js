@@ -8,10 +8,11 @@ async function deserialiseUser(req, res, next) {
     const sessionId = req.get("Authorization")?.replace("Bearer ", "");
     const ip = req.ip;
 
+    console.log("sessionId");
     if (!sessionId) return next();
 
     const session = await getSessionById({ id: sessionId, ip });
-    console.log(session);
+    console.log("session");
 
     if (!session) return next();
 
