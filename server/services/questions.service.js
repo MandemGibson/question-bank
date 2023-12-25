@@ -108,17 +108,10 @@ async function updateQuestionById({
   });
 
   if (isCompleted)
-    await prisma.topic.update({
-      where: {
-        id: topicId
-      },
+    await prisma.completedTopics.create({
       data: {
-        completed: {
-          connect: {
-            topicId,
-            studentId
-          }
-        }
+        topicId,
+        studentId,
       }
     });
 }

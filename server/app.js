@@ -5,12 +5,8 @@ const express = require("express");
 const createError = require("http-errors");
 
 const apiRouter = require("./routes/api.routes");
-const { createAdmin } = require("./services/admin.service");
 const deserialiseUser = require("./middleware/deserialiseUser");
 const errorHandler = require("./middleware/errorHandler");
-const { createClass } = require("./services/class.service");
-const { createSubjects } = require("./services/subjects.service");
-const { createSuperAdmin } = require("./services/superadmin.service");
 const seedDatabase = require("./util/seedDatabase");
 
 const PORT = process.env.PORT || 3000;

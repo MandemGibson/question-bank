@@ -11,7 +11,6 @@ async function getAllStudents() {
 }
 
 async function getStudentById({ id, student_id }) {
-  console.log(id);
   return await prisma.student.findUnique({
     where: {
       id,

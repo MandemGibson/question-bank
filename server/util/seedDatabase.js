@@ -1,3 +1,9 @@
+const { createAdmin } = require("../services/admin.service");
+const { createCategories, getCategories } = require("../services/category.service");
+const { createClass } = require("../services/class.service");
+const { createSubjects } = require("../services/subjects.service");
+const { createSuperAdmin } = require("../services/superadmin.service");
+
 async function seedDatabase() {
     const superAdmin = await createSuperAdmin();
     console.log(
@@ -9,6 +15,10 @@ async function seedDatabase() {
 
     await createClass();
     await createSubjects();
+
+    const categories = await getCategories()
+
+    if (categories.length === 0) await createCategories()
 }
 
 module.exports = seedDatabase
