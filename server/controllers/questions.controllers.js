@@ -87,7 +87,7 @@ async function updateQuestionHandler(req, res, next) {
       image,
       answerChoices,
       isFlagged,
-      isCompleted: false,
+      isCompleted,
       topicId,
       studentId: res.locals.user.id
     });
