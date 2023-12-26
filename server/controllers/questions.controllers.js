@@ -33,17 +33,16 @@ async function createQuestionsHandler(req, res, next) {
       deadline,
       categoryId,
       questionTexts,
-      classId,
-      staffId
+      classId
     } = req.body;
-
+    // console.log(res.locals.user);
     const topicData = {
       title: title,
       timeLimit: timeLimit,
       deadline: new Date(deadline),
       categoryId: categoryId,
       classId: classId,
-      staffId: staffId
+      staffId: res.locals.user.id
     };
 
     // if (questionTexts.image) {
@@ -80,7 +79,6 @@ async function updateQuestionHandler(req, res, next) {
       topicId
     } = req.body;
 
-    console.log(res.locals.user);
     const updatedQuestion = await updateQuestionById({
       id,
       question,

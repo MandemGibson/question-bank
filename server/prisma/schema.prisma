@@ -130,8 +130,8 @@ model Topic {
 
 model CompletedTopics {
   id        String   @id @default(uuid())
-  topicId   String   @unique
-  studentId String   @unique
+  topicId   String
+  studentId String
   topic     Topic?   @relation(references: [id], fields: [topicId], onUpdate: Cascade, onDelete: Cascade)
   student   Student? @relation(references: [id], fields: [studentId], onUpdate: Cascade, onDelete: Cascade)
 }
