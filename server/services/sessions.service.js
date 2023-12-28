@@ -2,8 +2,10 @@ const PrismaService = require("./prisma.service");
 
 const prisma = PrismaService;
 
-async function getSession() {
-  return await prisma.sessions.findMany();
+async function getValidSession() {
+  return await prisma.sessions.findMany({
+    valid: true
+  });
 }
 
 async function getSessionById({ id, ip }) {
@@ -39,5 +41,5 @@ module.exports = {
   createSession,
   getSessionById,
   getSessionByUserId,
-  getSession
+  getValidSession
 };
