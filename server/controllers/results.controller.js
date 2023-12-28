@@ -11,9 +11,21 @@ async function getResultHandler(req, res, next) {
 
 async function createResultHandler(req, res, next) {
   try {
-    const data = req.body;
-    const result = await createResult({ data });
-    res.status(201).json(result);
+    const { result, categoryId, title, topicId, isCompleted } = req.body;
+    const { id, classId } = res.locals.user;
+    const results = await createResult({
+      data: {
+        result,
+        categoryId,
+        studentId: id,
+        title
+      },
+      topicId,
+      isCompleted,
+      studentId: id,
+      classId
+    });
+    res.status(201).json(results);
   } catch (error) {
     next(error);
   }

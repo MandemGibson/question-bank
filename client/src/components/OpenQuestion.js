@@ -116,8 +116,9 @@ function OpenQuestion() {
         {
           result: (result / quiz.questions.length) * 100,
           categoryId: quiz.categoryId,
-          studentId: user?.user.id,
           title: quiz.title,
+          topicId: id,
+          isCompleted: true,
         },
         {
           headers: {
@@ -125,25 +126,6 @@ function OpenQuestion() {
           },
         }
       );
-    } catch (error) {
-      console.error("Error making requesting: ", error);
-    }
-
-    const questionId = quiz.questions[currentIndex].id;
-
-    const data = {
-      topicId: id,
-      isCompleted: true,
-    };
-
-    try {
-      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
-      const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${questionId}`, data, {
-        headers: {
-          Authorization: `Bearer ${sessionId.sessionId}`,
-        },
-      });
 
       if (quiz.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db") {
         navigate("/exams-tab");
@@ -151,28 +133,18 @@ function OpenQuestion() {
         navigate("/quiz-tab");
       }
     } catch (error) {
-      console.error("Error updating question", error);
-      alert("Couldn't navigate");
+      console.error("Error making requesting: ", error);
     }
   };
 
   const handleFlagged = async (index) => {
-    const newFlagged = [...flagged];
-    newFlagged[index] = !newFlagged[index];
-    setFlagged(newFlagged);
-
-    const questionId = quiz.questions[index].id;
-
-    const data = {
-      topicId: id,
-      isFlagged: newFlagged[index],
-    };
+    const { id } = quiz.questions[index];
 
     try {
       const sessionId = JSON.parse(localStorage.getItem("sessionId"));
       console.log(sessionId.sessionId);
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${questionId}`, data, {
+      await axios.patch(`${apiUrl}/questions/${id}/flag`, {
         headers: {
           Authorization: `Bearer ${sessionId.sessionId}`,
         },

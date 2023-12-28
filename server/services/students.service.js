@@ -57,9 +57,18 @@ async function updateStudent({ id, studentDetails }) {
   });
 }
 
+async function countStudentsInClass(classId) {
+  return await prisma.student.count({
+    where: {
+      classId
+    }
+  })
+}
+
 module.exports = {
   getAllStudents,
   getStudentById,
   createStudent,
-  updateStudent
+  updateStudent,
+  countStudentsInClass
 };

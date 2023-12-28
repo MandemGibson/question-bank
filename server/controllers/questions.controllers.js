@@ -3,7 +3,8 @@ const {
   getQuestionById,
   deleteQuestionById,
   updateQuestionById,
-  createTopic
+  createTopic,
+  flagQuestion,
 } = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
@@ -74,9 +75,6 @@ async function updateQuestionHandler(req, res, next) {
       question,
       image,
       answerChoices,
-      isFlagged,
-      isCompleted,
-      topicId
     } = req.body;
 
     const updatedQuestion = await updateQuestionById({
@@ -84,13 +82,22 @@ async function updateQuestionHandler(req, res, next) {
       question,
       image,
       answerChoices,
-      isFlagged,
-      isCompleted,
-      topicId,
-      studentId: res.locals.user.id,
-      classId: res.locals.user.classId
     });
+
     res.json(updatedQuestion);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+async function flagQuestionHandler(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    await flagQuestion(id);
+
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     next(error);
@@ -102,5 +109,6 @@ module.exports = {
   getQuestionByIdHandler,
   createQuestionsHandler,
   deleteQuestionsHandler,
-  updateQuestionHandler
+  updateQuestionHandler,
+  flagQuestionHandler
 };
