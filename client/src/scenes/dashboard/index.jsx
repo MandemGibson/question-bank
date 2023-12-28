@@ -58,7 +58,7 @@ function Dashboard() {
   );
 
   const completedQuestions = filteredQuestions.filter(
-    (question) => question.isCompleted === true
+    (question) => question.isDone
   );
 
   const num1 = completedQuestions.length;

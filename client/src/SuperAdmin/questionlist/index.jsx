@@ -100,7 +100,7 @@ function SAdminQuestionList() {
     title: question.title,
     level: question.level.name,
     createdAt: question.createdAt.split("T")[0],
-    status: question.isCompleted,
+    status: question.isDone,
     questionId: question.id
   }));
   return (

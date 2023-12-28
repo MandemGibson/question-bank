@@ -2,6 +2,28 @@ const PrismaService = require("./prisma.service");
 
 const prisma = PrismaService;
 
+async function isClassCompleted(classId, topicId) {
+  // Count the number of students in the class
+  const totalStudents = await prisma.student.count({
+    where: {
+      classId
+    }
+  });
+
+  // Count the number of completed topics for the class and topic
+  const completedTopicsCount = await prisma.completedTopics.count({
+    where: {
+      topicId,
+      student: {
+        classId
+      }
+    }
+  });
+
+  // Check if all students in the class have completed the questions
+  return totalStudents === completedTopicsCount;
+}
+
 async function getQuestions() {
   return await prisma.topic.findMany({
     include: {
@@ -79,7 +101,8 @@ async function updateQuestionById({
   isFlagged,
   isCompleted,
   topicId,
-  studentId
+  studentId,
+  classId
 }) {
   if (answerChoices) {
     for (const answerChoice of answerChoices) {
@@ -107,13 +130,30 @@ async function updateQuestionById({
     }
   });
 
-  if (isCompleted)
+  if (isCompleted) {
+    // Check if all students in the class have completed the questions
+    const classCompleted = await isClassCompleted(classId, topicId);
+
+    // Update the isCompleted field of the topic if all students have completed
+    if (classCompleted) {
+      await prisma.topic.update({
+        where: {
+          id: topicId
+        },
+        data: {
+          isDone: true
+        }
+      });
+    }
+
+    // Create a completed topic entry for the specific student
     await prisma.completedTopics.create({
       data: {
         topicId,
-        studentId,
+        studentId
       }
     });
+  }
 }
 
 module.exports = {

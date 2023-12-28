@@ -126,6 +126,7 @@ model Topic {
   category   Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   categoryId String
   completed  CompletedTopics[]
+  isDone     Boolean           @default(false)
 }
 
 model CompletedTopics {

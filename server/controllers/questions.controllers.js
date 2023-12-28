@@ -87,7 +87,8 @@ async function updateQuestionHandler(req, res, next) {
       isFlagged,
       isCompleted,
       topicId,
-      studentId: res.locals.user.id
+      studentId: res.locals.user.id,
+      classId: res.locals.user.classId
     });
     res.json(updatedQuestion);
   } catch (error) {

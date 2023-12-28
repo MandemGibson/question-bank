@@ -139,7 +139,7 @@ function OpenQuestion() {
     try {
       const sessionId = JSON.parse(localStorage.getItem("sessionId"));
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${id}`, data, {
+      await axios.patch(`${apiUrl}/questions/${questionId}`, data, {
         headers: {
           Authorization: `Bearer ${sessionId.sessionId}`,
         },

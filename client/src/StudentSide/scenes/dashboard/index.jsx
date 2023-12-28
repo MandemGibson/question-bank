@@ -26,7 +26,7 @@ function StudentDashBoard() {
   const filteredQuestions = questions.filter(
     (question) =>
       question.level.name === user.user.level.name &&
-      question.isCompleted === true
+      question.isDone
   );
 
   const AccessedCourses = filteredQuestions?.map((question, index) => ({

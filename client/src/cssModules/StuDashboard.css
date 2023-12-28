@@ -9,13 +9,12 @@
 }
 
 .img-slider-btn:hover {
-    background: rgba(0, 0, 0, 0.5);
+    transition: all 0.5s;
     border-radius: 0.625rem;
 }
 
 .img-slider-btn:hover>* {
     animation: bounce 2s;
-    color: white;
 }
 
 @keyframes bounce {

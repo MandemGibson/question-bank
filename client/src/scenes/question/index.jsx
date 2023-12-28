@@ -45,9 +45,9 @@ function Questions() {
     (question) => question.staffId === user.user.id
   );
 
-  const newQuestions = filteredQuestions.filter((question)=> question.isCompleted === false)
+  const newQuestions = filteredQuestions.filter((question)=> question.isDone === false)
 
-  const completedQuestions = filteredQuestions.filter((question)=> question.isCompleted ===true)
+  const completedQuestions = filteredQuestions.filter((question)=> question.isDone)
 
   return (
     <Box display="flex" flexDirection="column" padding="20px">
