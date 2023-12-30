@@ -18,7 +18,7 @@ async function isAdmin(req, res, next) {
 
 async function isAdminOrSuperAdmin(req, res, next) {
   const { role } = res.locals.user
-  if (role !== 9291 || role !== 7832)
+  if (role !== 9291 && role !== 7832)
     return res.status(403).json(MESSAGE);
 
   return next();

@@ -2,6 +2,7 @@ const { getAdmin } = require("../services/admin.service");
 const { getSessionById } = require("../services/sessions.service");
 const { getStaffById } = require("../services/staffs.service");
 const { getStudentById } = require("../services/students.service");
+const { getSuperAdmin } = require("../services/superadmin.service");
 
 async function deserialiseUser(req, res, next) {
   try {
@@ -11,14 +12,14 @@ async function deserialiseUser(req, res, next) {
     if (!sessionId) return next();
 
     const session = await getSessionById({ id: sessionId, ip });
-    // console.log(session);
 
     if (!session) return next();
 
     const user =
       (await getStaffById({ staff_id: session.userId })) ??
       (await getStudentById({ id: session.userId })) ??
-      (await getAdmin({ id: session.userId }));
+      (await getAdmin({ id: session.userId })) ??
+      (await getSuperAdmin({ id: session.userId }));
 
     if (!user) return next();
 
