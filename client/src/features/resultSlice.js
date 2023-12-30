@@ -3,7 +3,12 @@ import axios from "axios";
 
 export const fetchResult = createAsyncThunk("results/fetchResult", async () => {
   try {
-    const result = await axios.get("http://localhost:3005/api/results");
+    const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+    const result = await axios.get("http://localhost:3005/api/results", {
+      headers: {
+        Authorization: `Bearer ${sessionId.sessionId}`,
+      },
+    });
     return result.data;
   } catch (error) {
     console.error(error);

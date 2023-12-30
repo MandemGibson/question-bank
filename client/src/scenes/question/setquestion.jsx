@@ -336,6 +336,7 @@ function AddQuestion() {
     }));
 
     try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"))
       const apiUrl = process.env.REACT_APP_API_URL;
       await axios.post(`${apiUrl}/questions`, {
         title: title,
@@ -345,6 +346,10 @@ function AddQuestion() {
         deadline: deadline,
         questionTexts: questionTexts,
         staffId: user.user.id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${sessionId.sessionId}`,
+        }
       });
     } catch (error) {
       console.error("An error has occured:", error);

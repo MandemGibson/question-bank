@@ -5,7 +5,12 @@ export const fetchSubject = createAsyncThunk(
   "subjects/fetchSubject",
   async () => {
     try {
-      const response = await axios.get("http://localhost:3005/api/subjects");
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+      const response = await axios.get("http://localhost:3005/api/subjects", {
+        headers: {
+          Authorization: `Bearer ${sessionId.sessionId}`,
+        },
+      });
       return response.data;
     } catch (error) {
       console.log(error);

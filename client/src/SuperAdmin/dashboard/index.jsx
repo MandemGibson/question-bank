@@ -16,7 +16,7 @@ import CircularProgressBar from "../../components/CircularProgress";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchQuestions, selectQuestion } from "../../features/questionSlice";
-import { removeStaff, selectStaff } from "../../features/staffSlice";
+import { fetchStaffs, removeStaff, selectStaff } from "../../features/staffSlice";
 import { fetchStudents, selectStudents } from "../../features/studentSlice";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -79,6 +79,7 @@ function SAdminDashboard() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    dispatch(fetchStaffs())
     dispatch(fetchQuestions())
     dispatch(fetchStudents())
   }, [dispatch])
@@ -248,8 +249,13 @@ function SAdminDashboard() {
   const handleDelete = async(role, id) => {
     if (role === 3921) {
       try {
+        const sessionId = JSON.parse(localStorage.getItem("sessionId"))
         const apiUrl = process.env.REACT_APP_API_URL;
-        await axios.delete(`${apiUrl}/staffs/${id}`)
+        await axios.delete(`${apiUrl}/staffs/${id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`
+          }
+        })
         dispatch(removeStaff(id))
       } catch (error) {
         console.error("Deletion error", error)

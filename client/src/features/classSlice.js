@@ -3,7 +3,12 @@ import axios from "axios";
 
 export const fetchClass = createAsyncThunk("level/fetchClass", async () => {
   try {
-    const response = await axios.get("http://localhost:3005/api/levels");
+    const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+    const response = await axios.get("http://localhost:3005/api/levels", {
+      headers: {
+        Authorization: `Bearer ${sessionId.sessionId}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error occured whiles fetching questions:", error);

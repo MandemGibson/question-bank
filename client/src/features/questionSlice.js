@@ -4,8 +4,13 @@ import axios from "axios";
 export const fetchQuestions = createAsyncThunk(
   "questions/fetchQuestions",
   async () => {
+    const sessionId = JSON.parse(localStorage.getItem("sessionId"));
     try {
-      const response = await axios.get("http://localhost:3005/api/questions");
+      const response = await axios.get("http://localhost:3005/api/questions", {
+        headers: {
+          Authorization: `Bearer ${sessionId.sessionId}`,
+        },
+      });
       console.log(response);
       return response.data;
     } catch (error) {
