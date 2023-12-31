@@ -20,6 +20,14 @@ model Auth {
   @@unique([student_id, userId], map: "student_auth_pk")
 }
 
+model Otp {
+  id        String   @id @unique @default(uuid())
+  otp       Int
+  email     String
+  expiresAt DateTime
+  valid     Boolean  @default(true)
+}
+
 model Student {
   id              String            @id @default(uuid())
   student_id      String            @unique
