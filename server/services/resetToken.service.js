@@ -11,6 +11,9 @@ async function createResetToken(userId) {
             token,
             userId,
             expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString()
+        },
+        select: {
+            token: true
         }
     })
 }
