@@ -1,6 +1,6 @@
 const { logoutUser, loginUser, updatePassword } = require("../services/auth.service");
 const { findOTP, createOTP, invalidateOTP } = require("../services/otp.service");
-const { createResetToken, findResetToken } = require("../services/resetToken.service");
+const { createResetToken, findResetToken, invalidateResetToken } = require("../services/resetToken.service");
 const {
   createSession,
   getSessionByUserId,
@@ -78,7 +78,7 @@ async function verifyOTPHandler(req, res, next) {
 
     await invalidateOTP(validOTP.id)
 
-    res.send(200).json({
+    res.status(200).json({
       token: resetToken.token,
     })
 
@@ -100,6 +100,8 @@ async function resetPasswordHandler(req, res, next) {
     const encryptedPassword = await createPassword(password)
 
     await updatePassword({ userId: resetToken.userId, password: encryptedPassword })
+
+    await invalidateResetToken(resetToken.id)
 
     return res.sendStatus(200)
   } catch (error) {
