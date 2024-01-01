@@ -20,10 +20,18 @@ model Auth {
   @@unique([student_id, userId], map: "student_auth_pk")
 }
 
+model ResetTokens {
+  id        String   @id @unique @default(uuid())
+  token     String
+  userId    String
+  valid     Boolean  @default(true)
+  expiresAt DateTime
+}
+
 model Otp {
   id        String   @id @unique @default(uuid())
   otp       Int
-  email     String
+  staffId   String   @default("")
   expiresAt DateTime
   valid     Boolean  @default(true)
 }
