@@ -18,10 +18,10 @@ async function createResetToken(userId) {
     })
 }
 
-async function findResetToken(token) {
+async function findResetToken(filter) {
     return await prisma.resetTokens.findFirst({
         where: {
-            token,
+            ...filter,
             valid: true,
             expiresAt: {
                 gt: new Date(),

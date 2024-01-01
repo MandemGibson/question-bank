@@ -68,13 +68,23 @@ async function verifyOTPHandler(req, res, next) {
   try {
     const { staffId, otp } = req.body
 
+    if (!staffId) return res.status(400).json({
+      message: 'Staff id  is required'
+    })
+
+    if (!otp) return res.status(400).json({
+      message: 'Otp code is required'
+    })
+
     const validOTP = await findOTP({ staffId, otp })
 
     if (!validOTP) return res.status(400).json({
       message: 'Invalid OTP!'
     })
 
-    const resetToken = await createResetToken(staffId)
+    let resetToken = await findResetToken({ userId: staffId })
+
+    if (!resetToken) resetToken = await createResetToken(staffId)
 
     await invalidateOTP(validOTP.id)
 
@@ -91,7 +101,7 @@ async function resetPasswordHandler(req, res, next) {
   try {
     const { token, password } = req.body
 
-    const resetToken = await findResetToken(token)
+    const resetToken = await findResetToken({ token })
 
     if (!resetToken) return res.status(400).json({
       message: 'Token invalid. Please request for an otp again',
