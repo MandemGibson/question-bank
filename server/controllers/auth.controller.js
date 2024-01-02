@@ -1,10 +1,12 @@
-const { logoutUser, loginUser } = require("../services/auth.service");
+const { logoutUser, loginUser, updatePassword } = require("../services/auth.service");
 const { findOTP, createOTP, invalidateOTP } = require("../services/otp.service");
+const { createResetToken, findResetToken, invalidateResetToken } = require("../services/resetToken.service");
 const {
   createSession,
   getSessionByUserId,
 } = require("../services/sessions.service");
 const { getStaffById } = require("../services/staffs.service");
+const { createPassword } = require("../util/password");
 const sendOTP = require("../util/sendOTP");
 
 async function loginHandler(req, res, next) {
@@ -43,10 +45,10 @@ async function requestOTPHandler(req, res, next) {
 
     if (!staff) return res.status(404).json({ message: 'Staff does not exist' })
 
-    let otp = await findOTP({ recipient: staff.email })
+    let otp = await findOTP({ staffId: staff.staff_id })
 
     if (!otp)
-      otp = await createOTP(staff.email)
+      otp = await createOTP(staff.staff_id)
 
     await sendOTP({ otp: otp.otp, recipient: staff.email })
 
@@ -64,19 +66,55 @@ async function requestOTPHandler(req, res, next) {
 
 async function verifyOTPHandler(req, res, next) {
   try {
-    const { email, otp } = req.body
+    const { staffId, otp } = req.body
 
-    const validOTP = await findOTP({ recipient: email, otp })
+    if (!staffId) return res.status(400).json({
+      message: 'Staff id  is required'
+    })
+
+    if (!otp) return res.status(400).json({
+      message: 'Otp code is required'
+    })
+
+    const validOTP = await findOTP({ staffId, otp })
 
     if (!validOTP) return res.status(400).json({
       message: 'Invalid OTP!'
     })
 
+    let resetToken = await findResetToken({ userId: staffId })
+
+    if (!resetToken) resetToken = await createResetToken(staffId)
+
     await invalidateOTP(validOTP.id)
 
-    res.sendStatus(200)
+    res.status(200).json({
+      token: resetToken.token,
+    })
 
   } catch (e) {
+    next(e)
+  }
+}
+
+async function resetPasswordHandler(req, res, next) {
+  try {
+    const { token, password } = req.body
+
+    const resetToken = await findResetToken({ token })
+
+    if (!resetToken) return res.status(400).json({
+      message: 'Token invalid. Please request for an otp again',
+    })
+
+    const encryptedPassword = await createPassword(password)
+
+    await updatePassword({ userId: resetToken.userId, password: encryptedPassword })
+
+    await invalidateResetToken(resetToken.id)
+
+    return res.sendStatus(200)
+  } catch (error) {
     next(e)
   }
 }
@@ -98,4 +136,5 @@ module.exports = {
   logoutHandler,
   verifyOTPHandler,
   requestOTPHandler,
+  resetPasswordHandler,
 };

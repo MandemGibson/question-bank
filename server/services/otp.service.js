@@ -3,23 +3,23 @@ const PrismaService = require("./prisma.service");
 
 const prisma = PrismaService;
 
-async function createOTP(recipient) {
+async function createOTP(staffId) {
   const otp = crypto.randomInt(100000, 999999);
 
   return await prisma.otp.create({
     data: {
       otp,
-      email: recipient,
+      staffId,
       expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
     }
   });
 }
 
-async function findOTP({ recipient, otp }) {
+async function findOTP({ staffId, otp }) {
   return await prisma.otp.findFirst({
     where: {
       otp,
-      email: recipient,
+      staffId,
       valid: true,
       expiresAt: {
         gt: new Date()

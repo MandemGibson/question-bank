@@ -15,6 +15,17 @@ async function getAuth(userId) {
   });
 }
 
+async function updatePassword({ userId, password }) {
+  return await prisma.auth.update({
+    where: {
+      userId
+    },
+    data: {
+      password
+    }
+  })
+}
+
 async function loginUser({ userId, password }) {
   let auth =
     (await getAuth(userId)) ??
@@ -50,5 +61,6 @@ async function logoutUser(id) {
 module.exports = {
   getAuth,
   loginUser,
-  logoutUser
+  logoutUser,
+  updatePassword
 };
