@@ -14,6 +14,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { login } from "../features/userSlice";
+import { Link, useNavigate } from "react-router-dom";
+import ForgotPassword from "../components/ForgotPassword";
 
 const initialValues = {
   userId: "",
@@ -32,8 +34,10 @@ const userSchema = yup.object().shape({
 
 function AuthPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [showID, setShowID] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const handleIDClick = () => {
     setShowID(!showID);
@@ -41,6 +45,15 @@ function AuthPage() {
 
   const handlePasswordClick = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleForgotPasswordClick = () => {
+    setShowForgotPassword(true);
+  };
+
+  const handleCloseForgotPassword = () => {
+    setShowForgotPassword(false);
+    navigate("/")
   };
 
   const LoginToApp = async (values) => {
@@ -175,7 +188,7 @@ function AuthPage() {
               <Typography sx={{ fontFamily: "Acme", color:"#6b6a6a" }}>
                 Forgotten Password?{" "}
                 <span>
-                  <a href="/">Click here to reset</a>
+                  <Link to="/forgot-password" onClick={handleForgotPasswordClick}>Click here to reset</Link>
                 </span>
               </Typography>
               <Button
@@ -202,6 +215,16 @@ function AuthPage() {
                   Log In
                 </p>
               </Button>
+
+              {showForgotPassword && (
+                <ForgotPassword
+                  onClose={handleCloseForgotPassword}
+                  onSubmit={(userId) => {
+                    console.log("Reset password for user ID:", userId);
+                    handleCloseForgotPassword();
+                  }}
+                />
+              )}
             </form>
           )}
         </Formik>
