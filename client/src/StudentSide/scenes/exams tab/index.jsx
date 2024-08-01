@@ -6,7 +6,7 @@ import {
   fetchQuestions,
   selectQuestion,
 } from "../../../features/questionSlice";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { selectUser } from "../../../features/userSlice";
 import motivation from "../../../images/motivation.jpg";
 import motivation1 from "../../../images/motivation1.jpg";
@@ -22,9 +22,13 @@ const images = [motivation, motivation1, motivation2, motivation3, motivation4];
 function ExamsTab() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation()
   const user = useSelector(selectUser);
   const questions = useSelector(selectQuestion);
   const [openExam, setOpenExam] = useState(false);
+
+  const isCompleted = location.state?.isCompleted || false
+  const topicId = location.state?.topicId
 
   useEffect(() => {
     dispatch(fetchQuestions());
@@ -41,7 +45,7 @@ function ExamsTab() {
   );
 
   const exams = filteredQuestions.filter(
-    (question) => question.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db"
+    (question) => question.categoryId === "d980cee0-449c-41d5-9ba9-870919ec5557"
   );
 
   return (
@@ -86,10 +90,10 @@ function ExamsTab() {
                   key={question.id}
                   title={question.title}
                   buttonText={
-                    question.isCompleted === true ? "Done" : "Attempt Exams"
+                    topicId === question.id && isCompleted === true ? "Done" : "Attempt Exams"
                   }
-                  color={question.isCompleted === true ? "gray" : "#83eaf8"}
-                  disabled={question.isCompleted}
+                  color={isCompleted === true ? "gray" : "#83eaf8"}
+                  disabled={isCompleted}
                   deadline={question.createdAt.split("T")[0]}
                   duration={question.timeLimit}
                   onClick={() => handleAttempt(question.id)}

@@ -3,9 +3,7 @@ const PrismaService = require("./prisma.service");
 const prisma = PrismaService;
 
 async function getValidSession() {
-  return await prisma.sessions.findMany({
-    valid: true
-  });
+  return await prisma.sessions.findMany();
 }
 
 async function getSessionById({ id, ip }) {

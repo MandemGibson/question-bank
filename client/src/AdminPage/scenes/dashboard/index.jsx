@@ -121,8 +121,13 @@ function AdminDashboard() {
 
   useEffect(() => {
     const fetchOnlineUsers = async () => {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"))
       try {
-        const res = await axios.get(`${apiUrl}/sessions`);
+        const res = await axios.get(`${apiUrl}/sessions`, {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`
+          }
+        });
         setOnlineUsers(res.data);
         console.log(res);
       } catch (error) {

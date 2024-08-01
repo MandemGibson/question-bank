@@ -1,4 +1,11 @@
-const { getQuestionsHandler, getQuestionByIdHandler, createQuestionsHandler, deleteQuestionsHandler, updateQuestionHandler, flagQuestionHandler } = require("../controllers/questions.controllers");
+const {
+  getQuestionsHandler,
+  getQuestionByIdHandler,
+  createQuestionsHandler,
+  deleteQuestionsHandler,
+  updateQuestionHandler,
+  flagQuestionHandler
+} = require("../controllers/questions.controllers");
 const { isStaff, isStudent } = require("../middleware/role");
 
 const questionRouter = require("express").Router();
@@ -15,4 +22,4 @@ questionRouter.patch("/:id", isStaff, updateQuestionHandler);
 
 questionRouter.patch("/:id/flag", isStudent, flagQuestionHandler);
 
-module.exports = questionRouter
+module.exports = questionRouter;

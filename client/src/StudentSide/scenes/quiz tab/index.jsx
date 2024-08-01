@@ -41,7 +41,7 @@ function QuizTab() {
   );
 
   const quiz = filteredQuestions.filter(
-    (question) => question.categoryId === "40f30331-7f3e-4480-9043-64f30d9b487e"
+    (question) => question.categoryId === "c09f8c0c-b9d0-4068-959d-96476e1a9a0f"
   );
 
   return (

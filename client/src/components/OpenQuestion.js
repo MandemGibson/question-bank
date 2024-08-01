@@ -2,7 +2,6 @@ import { Box, Button, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectQuestion } from "../features/questionSlice";
-import { selectUser } from "../features/userSlice";
 import { useNavigate, useParams } from "react-router";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import FlagIcon from "@mui/icons-material/Flag";
@@ -12,7 +11,6 @@ import axios from "axios";
 const boxShadow = "0px 4px 4px 0px rgba(0, 0, 0, 0.25)";
 
 function OpenQuestion() {
-  const user = useSelector(selectUser);
   const navigate = useNavigate();
   const { id } = useParams();
   const questions = useSelector(selectQuestion);
@@ -87,8 +85,6 @@ function OpenQuestion() {
     setSelectedChoices(newSelectedChoices);
   };
 
-  // const calculateResult = () => {};
-
   useEffect(() => {
     console.log(score);
   }, [score]);
@@ -127,10 +123,10 @@ function OpenQuestion() {
         }
       );
 
-      if (quiz.categoryId === "7eb6a67a-a9f7-448f-ae4c-e2450e7f39db") {
-        navigate("/exams-tab");
+      if (quiz.categoryId === "d980cee0-449c-41d5-9ba9-870919ec5557") {
+        navigate("/exams-tab", { state: { isCompleted: true, topicId: id } });
       } else {
-        navigate("/quiz-tab");
+        navigate("/quiz-tab", { state: { isCompleted: true, topicId: id } });
       }
     } catch (error) {
       console.error("Error making requesting: ", error);
@@ -138,17 +134,28 @@ function OpenQuestion() {
   };
 
   const handleFlagged = async (index) => {
+    const newFlagged = [...flagged];
+    newFlagged[index] = !newFlagged[index];
+    setFlagged(newFlagged);
+
     const { id } = quiz.questions[index];
+    const sessionId = JSON.parse(localStorage.getItem("sessionId"));
 
     try {
-      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
-      console.log(sessionId.sessionId);
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.patch(`${apiUrl}/questions/${id}/flag`, {
-        headers: {
-          Authorization: `Bearer ${sessionId.sessionId}`,
+      const res = await axios.patch(
+        `${apiUrl}/questions/${id}/flag`,
+        {
+          isFlagged: newFlagged[index],
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`,
+          },
+        }
+      );
+
+      console.log(res);
     } catch (error) {
       console.error("Error updating question", error);
     }

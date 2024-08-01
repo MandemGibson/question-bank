@@ -88,7 +88,7 @@ function QuestionSet({
               fontSize: "12px",
             }}
           >
-            {duration}
+            {duration} mins
           </p>
         </Box>
         <Box

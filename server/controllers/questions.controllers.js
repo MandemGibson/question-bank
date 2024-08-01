@@ -4,7 +4,7 @@ const {
   deleteQuestionById,
   updateQuestionById,
   createTopic,
-  flagQuestion,
+  flagQuestion
 } = require("../services/questions.service");
 
 async function getQuestionsHandler(req, res, next) {
@@ -71,17 +71,13 @@ async function deleteQuestionsHandler(req, res, next) {
 async function updateQuestionHandler(req, res, next) {
   try {
     const { id } = req.params;
-    const {
-      question,
-      image,
-      answerChoices,
-    } = req.body;
+    const { question, image, answerChoices } = req.body;
 
     const updatedQuestion = await updateQuestionById({
       id,
       question,
       image,
-      answerChoices,
+      answerChoices
     });
 
     res.json(updatedQuestion);
@@ -94,10 +90,11 @@ async function updateQuestionHandler(req, res, next) {
 async function flagQuestionHandler(req, res, next) {
   try {
     const { id } = req.params;
+    const { isFlagged } = req.body;
 
-    await flagQuestion(id);
+    const flagged = await flagQuestion(id, isFlagged);
 
-    res.sendStatus(200);
+    res.json(flagged);
   } catch (error) {
     console.error(error);
     next(error);

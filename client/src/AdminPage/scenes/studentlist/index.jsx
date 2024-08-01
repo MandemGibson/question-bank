@@ -98,6 +98,18 @@ function AddStudent() {
 
   console.log(studentArray);
 
+  const excelSerialToDate = (serial) => {
+    const utcDays = Math.floor(serial - 25569);
+    const utcValue = utcDays * 86400; // seconds per day
+    const date = new Date(utcValue * 1000);
+
+    // Adjust to local timezone
+    const offset = date.getTimezoneOffset();
+    date.setMinutes(date.getMinutes() - offset);
+
+    return date;
+  };
+
   const handleCreateStudentWithExcel = async () => {
     try {
       const excelRows = [...studentArray];
@@ -106,15 +118,21 @@ function AddStudent() {
           firstname: row.firstname,
           middlename: row.middlename,
           lastname: row.lastname,
-          dob: row.dob,
+          dob: excelSerialToDate(row.dob),
           residence: row.residence,
           password: row.password,
-          level: ["JHS 1"],
+          level: row.level,
         };
 
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"))
         const response = await axios.post(
           `${apiUrl}/students`,
-          data
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionId.sessionId}`
+            }
+          }
         );
         console.log(response.data);
       }
@@ -127,11 +145,14 @@ function AddStudent() {
 
   const handleCreateStudent = async (values) => {
     try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"))
       const response = await axios.post(
         `${apiUrl}/students`,
         values,
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`
+          }
         }
       );
       console.log(response);

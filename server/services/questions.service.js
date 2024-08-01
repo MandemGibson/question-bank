@@ -72,11 +72,7 @@ async function deleteQuestionById(id) {
   });
 }
 
-async function updateQuestionById({
-  id,
-  question,
-  answerChoices,
-}) {
+async function updateQuestionById({ id, question, answerChoices }) {
   if (answerChoices) {
     for (const answerChoice of answerChoices) {
       await prisma.answerChoice.update({
@@ -101,16 +97,15 @@ async function updateQuestionById({
       answerChoices: true
     }
   });
-
 }
 
-async function flagQuestion(questionId) {
+async function flagQuestion(questionId, isFlagged) {
   return await prisma.question.update({
     where: {
       id: questionId
     },
     data: {
-      isFlagged: true
+      isFlagged
     }
   });
 }

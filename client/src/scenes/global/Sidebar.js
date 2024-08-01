@@ -14,6 +14,7 @@ import { useSidebar } from "../../SidebarContext";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/userSlice";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -37,9 +38,25 @@ function Sidebar() {
   };
 
   const LogoutOutOfApp = async () => {
-    localStorage.clear();
-    dispatch(logout());
-    navigate("/");
+    try {
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"));
+      console.log(sessionId.sessionId);
+      const result = await axios.post(
+        "http://localhost:3005/api/auth/logout",
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`,
+          },
+        }
+      );
+      console.log(result.data);
+      localStorage.clear();
+      dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

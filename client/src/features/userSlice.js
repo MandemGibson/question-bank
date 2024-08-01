@@ -19,9 +19,6 @@ const userSlice = createSlice({
     logout: (state) => {
       state.users = null;
     },
-    // updateUser: (state, action) => {
-    //   const updatedUser = state.users.patch()
-    // }
   },
 });
 

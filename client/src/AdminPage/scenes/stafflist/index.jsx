@@ -159,9 +159,15 @@ function AddStaff() {
 
         if (!staffExist) {
           const apiUrl = process.env.REACT_APP_API_URL;
+        const sessionId = JSON.parse(localStorage.getItem("sessionId"))
           const response = await axios.post(
             `${apiUrl}/staffs`,
-            data
+            data,
+            {
+              headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`               
+              }
+            }
           );
           console.log(response.data);
         } else {
@@ -180,11 +186,14 @@ function AddStaff() {
   const handleCreateStaff = async (values) => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
+      const sessionId = JSON.parse(localStorage.getItem("sessionId"))
       const response = await axios.post(
         `${apiUrl}/staffs`,
         values,
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${sessionId.sessionId}`
+          }
         }
       );
       console.log(response);
